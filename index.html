@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>シュミネーター|趣味ねぇな…お呼びですか?</title>
+<meta name="description" content="質問に答えるだけで、神様「どうしましょう」があなたに眠る趣味を見抜きます。300種の趣味から、あなたにぴったりの一つを。">
+<!-- ▼▼ 公開時に必須:下の "https://example.com/shuminator" を GitHub Pages の本番URLに全置換(og:image / og:url / twitter:image の3+1箇所)。OGP画像は ogp.png を同じフォルダに置く ▼▼ -->
+<!-- OGP(FacebookやLINE等) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="シュミネーター|趣味ねぇな…お呼びですか?">
+<meta property="og:description" content="質問に答えるだけで、神様「どうしましょう」があなたに眠る趣味を見抜きます。300種の趣味から、あなたにぴったりの一つを。">
+<meta property="og:image" content="https://example.com/shuminator/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://example.com/shuminator/">
+<meta property="og:site_name" content="シュミネーター">
+<meta property="og:locale" content="ja_JP">
+<!-- Twitter(X)カード -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="シュミネーター|趣味ねぇな…お呼びですか?">
+<meta name="twitter:description" content="神様「どうしましょう」があなたに眠る趣味を見抜きます。あなたは何を言い当てられる?">
+<meta name="twitter:image" content="https://example.com/shuminator/ogp.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#171b33;       /* 夜空(背景) */
+  --night-2:#232849;
+  --washi:#faf4e6;       /* 和紙(カード) */
+  --washi-2:#f1e8d2;
+  --sumi:#37302a;        /* 墨(カード上の文字) */
+  --sumi-dim:#7d726a;
+  --ink:#f4f4f8;         /* 夜空上の文字 */
+  --ink-dim:#aab0d0;
+  --yes:#e8590c;         /* はい:朱 */
+  --yes-soft:#f8c89b;
+  --no:#3d4a8f;          /* いいえ:藍 */
+  --no-soft:#c3c9ec;
+  --mid:#e6dfd0;         /* わからない */
+  --gold:#f2cc8f;
+  --sakura:#ffb7c5;
+  --radius:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Zen Maru Gothic",sans-serif;
+  background:
+    radial-gradient(1000px 500px at 85% -5%, #2d3260 0%, transparent 55%),
+    radial-gradient(700px 450px at 5% 105%, #262a52 0%, transparent 50%),
+    var(--night);
+  color:var(--ink);
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  transition:background 1.4s ease;
+}
+/* 進行の可視化:質問が進むほど宇宙が開いていく(data-stage 0→4→finale) */
+body[data-stage="1"]{background:
+  radial-gradient(1100px 560px at 80% -8%, #343a72 0%, transparent 56%),
+  radial-gradient(760px 480px at 8% 106%, #2b2f60 0%, transparent 52%), #191d3c;}
+body[data-stage="2"]{background:
+  radial-gradient(1200px 620px at 78% -10%, #3d3f86 0%, transparent 58%),
+  radial-gradient(820px 520px at 10% 108%, #34306e 0%, transparent 54%), #1c1a44;}
+body[data-stage="3"]{background:
+  radial-gradient(1300px 700px at 76% -12%, #55408f 0%, transparent 60%),
+  radial-gradient(900px 560px at 12% 110%, #45307e 0%, transparent 56%), #211a4c;}
+body.act2,body[data-stage="4"]{background:
+  radial-gradient(1300px 680px at 82% -8%, #6b2f4a 0%, transparent 58%),
+  radial-gradient(820px 520px at 6% 106%, #43214a 0%, transparent 54%),
+  radial-gradient(700px 700px at 50% 120%, #7a3a2a 0%, transparent 60%), #2a1230;}
+/* 結果:宇宙の神秘が開かれ、後光が差す */
+body.finale{background:
+  radial-gradient(900px 900px at 50% 32%, #fff3c4 0%, #f0b866 14%, #b5642e 30%, #5a2a4e 52%, transparent 72%),
+  radial-gradient(1200px 700px at 50% 120%, #3a1c52 0%, transparent 60%), #1a1030;}
+body.finale .halo{opacity:1}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+.stars i{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;opacity:.4;animation:tw 3.5s infinite alternate;transition:opacity 1.4s}
+body[data-stage="2"] .stars i{opacity:.6}
+body[data-stage="3"] .stars i{opacity:.8}
+body.act2 .stars i,body[data-stage="4"] .stars i{opacity:.9}
+body.finale .stars i{opacity:.35}
+.halo{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.6s ease;
+  background:conic-gradient(from 0deg at 50% 34%, transparent 0deg, rgba(255,240,190,.16) 12deg, transparent 24deg, rgba(255,240,190,.16) 36deg, transparent 48deg, rgba(255,240,190,.16) 60deg, transparent 72deg, rgba(255,240,190,.16) 84deg, transparent 96deg, rgba(255,240,190,.16) 108deg, transparent 120deg, rgba(255,240,190,.16) 132deg, transparent 144deg, rgba(255,240,190,.16) 156deg, transparent 168deg, rgba(255,240,190,.16) 180deg, transparent 192deg);
+  animation:halospin 40s linear infinite}
+@keyframes halospin{to{transform:rotate(360deg)}}
+@keyframes tw{from{opacity:.1}to{opacity:.65}}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+
+.wrap{width:100%;max-width:520px;padding:16px 14px 50px;position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
+header{text-align:center;margin:4px 0 12px}
+.logo{font-family:"RocknRoll One",sans-serif;font-size:clamp(28px,7.5vw,40px);letter-spacing:.04em;color:var(--gold);text-shadow:0 3px 0 rgba(0,0,0,.35)}
+.logo span{color:var(--sakura)}
+.tagline{color:var(--ink-dim);font-size:13px;margin-top:4px}
+
+/* キャラクター */
+.stage{display:flex;flex-direction:column;align-items:center}
+.god{width:210px;height:249px;position:relative;filter:drop-shadow(0 8px 14px rgba(0,0,0,.45));animation:float 4s ease-in-out infinite;margin-bottom:-58px;z-index:0}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.god img{width:100%;height:100%;object-fit:contain}
+.godlink{display:block;width:100%;height:100%;position:relative;cursor:pointer;transition:transform .18s}
+.godlink:hover{transform:scale(1.05)}
+.godtip{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%) translateY(8px);
+  background:#ff0000;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:12px;
+  white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;box-shadow:0 3px 8px rgba(0,0,0,.4);z-index:5}
+.godlink:hover .godtip{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== 和紙カード(質問・結果):夜空との明確なコントラスト ===== */
+.qcard{
+  background:var(--washi);color:var(--sumi);
+  border-radius:var(--radius);width:100%;
+  padding:26px 18px 18px;
+  box-shadow:0 10px 0 rgba(0,0,0,.3), inset 0 0 0 1px #e5d9bd;
+  position:relative;z-index:1;
+}
+.qcard::before{ /* 吹き出しのしっぽ */
+  content:"";position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  border:12px solid transparent;border-bottom-color:var(--washi);border-top:0;
+}
+.qchip{
+  display:inline-block;background:var(--night);color:var(--gold);
+  font-family:"RocknRoll One",sans-serif;font-size:13px;
+  padding:4px 14px;border-radius:999px;margin-bottom:10px;letter-spacing:.08em;
+}
+.qtext{font-size:20px;font-weight:700;line-height:1.75;min-height:70px;white-space:pre-line}
+.qtext.long{font-size:17.5px;line-height:1.8}
+
+/* ===== 回答5段階(はい/いいえを上段に大きく横並び) ===== */
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}
+.answers .a-yes,.answers .a-no{min-height:68px;font-size:20px}
+.answers .a-idk{grid-column:1/-1;min-height:44px;font-size:15px}
+.nameplate{
+  background:var(--night-2);border:1px solid #4a5090;border-radius:999px;
+  padding:7px 24px;text-align:center;color:var(--gold);
+  font-size:15px;font-weight:700;letter-spacing:.06em;margin-bottom:12px;
+}
+.nameplate small{display:block;color:var(--ink-dim);font-size:11px;font-weight:500;letter-spacing:0}
+.mutter{color:#b0691f;font-size:13px;font-weight:700;min-height:18px;margin-bottom:4px}
+.guess-desc{font-size:14.5px;line-height:1.85;color:var(--sumi);background:#fff;border:1.5px solid #e2d6b8;border-radius:12px;padding:12px 14px;margin:4px 0 10px;text-align:left}
+.more{
+  display:block;width:100%;max-width:420px;margin:14px auto 0;
+  background:#fff;color:var(--yes);border:2.5px solid var(--yes);
+  border-radius:14px;padding:16px;font-size:17px;font-weight:700;
+  box-shadow:0 4px 0 #c9903f;
+}
+.more:hover{background:#fff4e8;transform:translateY(-1px)}
+.r-reason{text-align:center;color:var(--sumi);font-size:14px;line-height:1.9;margin:8px 0 2px;font-weight:700}
+.core-wrap{margin:10px 0 2px;text-align:center}
+.yt{display:block;background:#fff;border:1.5px solid #e2d6b8;border-radius:12px;padding:11px 14px;margin-bottom:9px;color:#c4302b;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 2px 0 #e2d6b8}
+.yt:hover{border-color:#c4302b}
+.yt img{width:100%;border-radius:8px;margin-bottom:6px;display:block}
+.core{display:inline-block;background:var(--night);color:var(--gold);font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 12px;margin:3px}
+/* 第二幕:夜明け前の空へ */
+.opt{
+  background:#fff;border:2px solid #e2d6b8;color:var(--sumi);
+  border-radius:13px;padding:15px;text-align:center;font-size:16px;font-weight:700;
+  box-shadow:0 3px 0 #e2d6b8;
+}
+.opt:hover{border-color:var(--yes)}
+button{font-family:inherit;cursor:pointer;border:none}
+.ans{
+  width:100%;min-height:54px;border-radius:13px;
+  font-size:17px;font-weight:700;letter-spacing:.02em;
+  transition:transform .07s, filter .12s;
+  border:2px solid transparent;
+}
+.ans small{display:block;font-size:12px;font-weight:500;opacity:.85;margin-top:1px}
+.ans:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.ans:active{transform:translateY(1px)}
+.ans:focus-visible{outline:3px solid var(--sumi);outline-offset:2px}
+.a-yes {background:var(--yes);color:#fff;box-shadow:0 4px 0 #a63d05}
+.a-pyes{background:var(--yes-soft);color:#7c3703;box-shadow:0 4px 0 #d8a26a}
+.a-idk {background:var(--mid);color:var(--sumi-dim);box-shadow:0 4px 0 #c7bda6}
+.a-pno {background:var(--no-soft);color:#2a336b;box-shadow:0 4px 0 #9299c9}
+.a-no  {background:var(--no);color:#fff;box-shadow:0 4px 0 #232b5e}
+
+.undo{background:none;color:var(--sumi-dim);font-size:13px;margin-top:12px;text-decoration:underline;width:100%}
+.undo:disabled{opacity:.35;text-decoration:none;cursor:default}
+
+/* 主要ボタン(夜空側) */
+.primary{
+  background:var(--yes);color:#fff;font-family:"RocknRoll One",sans-serif;
+  font-size:18px;padding:16px 30px;border-radius:999px;letter-spacing:.05em;
+  box-shadow:0 6px 0 #a63d05;transition:transform .08s;margin-top:18px;
+}
+.primary:hover{transform:translateY(-2px)}
+.primary:active{transform:translateY(2px);box-shadow:0 2px 0 #a63d05}
+.primary:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.ghost{background:transparent;color:var(--ink-dim);text-decoration:underline;font-size:14px;margin-top:14px}
+
+/* 推測・分岐ボタン */
+.choice{display:flex;flex-direction:column;gap:9px;margin-top:16px;width:100%}
+.guess-name{font-family:"RocknRoll One",sans-serif;font-size:clamp(24px,6.4vw,30px);color:var(--yes);display:block;margin:8px 0;text-align:center}
+
+/* 結果カード */
+.hobby-name{font-family:"RocknRoll One",sans-serif;font-size:clamp(25px,6.6vw,33px);color:var(--yes);text-align:center;margin:6px 0 12px}
+.hobby-desc{font-size:15.5px;line-height:1.95}
+.tools{margin-top:18px;border-top:2px dashed #d9cba6;padding-top:14px}
+.tools h3{font-size:14px;color:#b0691f;margin-bottom:10px}
+.tool{
+  display:block;background:#fff;color:var(--sumi);text-decoration:none;
+  padding:12px 14px;border-radius:12px;margin-bottom:9px;
+  border:1.5px solid #e2d6b8;box-shadow:0 2px 0 #e2d6b8;
+}
+.tool:hover{border-color:var(--yes)}
+.tool b{font-size:15px}
+.tool b::before{content:"🛒 "}
+.tool span{display:block;font-size:12.5px;color:var(--sumi-dim);margin-top:3px;line-height:1.6}
+.small{font-size:11px;color:var(--sumi-dim);margin-top:2px}
+
+/* 候補一覧・近縁趣味 */
+.list{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.cand{
+  background:#fff;border:2px solid #e2d6b8;color:var(--sumi);
+  border-radius:13px;padding:13px 14px;text-align:left;font-size:15.5px;font-weight:700;
+  box-shadow:0 3px 0 #e2d6b8;
+}
+.cand:hover{border-color:var(--yes)}
+.cand small{display:block;font-weight:400;color:var(--sumi-dim);font-size:12.5px;margin-top:3px;line-height:1.55}
+.cand-more{
+  background:linear-gradient(180deg,#ffd98a,#f5b94e);border:none;color:#5a3a12;
+  border-radius:13px;padding:15px 14px;text-align:center;font-size:15.5px;font-weight:800;
+  box-shadow:0 4px 0 #d99a2e;margin-top:6px;width:100%;line-height:1.5;cursor:pointer;
+}
+.cand-more:hover{filter:brightness(1.05)}
+.cand-more small{display:block;font-weight:600;color:#6b4a18;font-size:12px;margin-top:3px}
+
+.share{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+.share .primary{font-size:15px;padding:13px 20px;margin-top:0}
+.share .x-btn{background:#0f1419;box-shadow:0 6px 0 #000}
+
+@media(min-width:700px){
+  .wrap{max-width:660px}
+  .god{width:300px;height:356px;margin-bottom:-92px}
+  .qtext{font-size:22px}
+  .ans{font-size:18px;min-height:58px}
+  .answers .a-yes,.answers .a-no{min-height:76px;font-size:22px}
+  .logo{font-size:48px}
+  .hobby-name{font-size:36px}
+}
+footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim);font-size:12px;position:relative;z-index:2}
+.toplink{display:inline-block;margin-bottom:10px;background:rgba(255,255,255,.1);color:#e8dff5;border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:8px 20px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer}
+.toplink:hover{background:rgba(255,255,255,.18)}
+.hidden{display:none!important}
+.center{text-align:center}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+  <div class="halo"></div>
+
+<div class="wrap">
+  <header>
+    <div class="logo">シュミ<span>ネーター</span></div>
+    <div class="tagline">趣味ねぇな…お呼びですか?</div>
+  </header>
+
+  <!-- スタート -->
+  <section id="scr-start" class="stage">
+    <div class="nameplate">どうしましょう<small>特技:人生を良い方向に導く</small></div>
+    <img src="logo.png" alt="シュミネーター" style="width:min(88%,440px);display:block;margin:2px auto -4px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))">
+    <div class="god"></div>
+    <div class="qcard center">
+      <p style="font-size:17px;font-weight:700;line-height:2.1">
+        「趣味ねぇな…」と、<br>今、言いましたね?<br>
+        そう、私が<b style="color:var(--yes)">シュミネーター</b>。<br>
+        あなたに眠る趣味、言い当ててみせましょう。
+      </p>
+    </div>
+    <button class="primary" onclick="startGame()">見抜いてもらう</button>
+    <p class="small" style="color:var(--ink-dim)">300種の趣味から見抜きます|質問はふつう20〜30問</p>
+  </section>
+
+  <!-- 前提の確認(時間・お金) -->
+  <section id="scr-profile" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard">
+      <div class="center"><span class="qchip">見立ての前に</span></div>
+      <p class="qtext center" id="ptext"></p>
+      <div class="list" id="popts"></div>
+    </div>
+  </section>
+
+  <!-- 質問 -->
+  <section id="scr-q" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard">
+      <div class="center"><span class="qchip" id="qnum">Q1</span></div>
+      <p class="mutter center" id="mutter"></p>
+      <p class="qtext center" id="qtext"></p>
+      <div class="answers">
+        <button class="ans a-yes"  onclick="answer(1)">はい</button>
+        <button class="ans a-no"   onclick="answer(0)">いいえ</button>
+        <button class="ans a-pyes" onclick="answer(0.75)">たぶんそう<small>部分的にそう</small></button>
+        <button class="ans a-pno"  onclick="answer(0.25)">たぶん違う<small>そうでもない</small></button>
+        <button class="ans a-idk"  onclick="answer(0.5)">どちらでもない</button>
+      </div>
+      <button class="undo" id="undoBtn" onclick="undo()">← ひとつ前の質問に戻る</button>
+    </div>
+  </section>
+
+  <!-- 推測 -->
+  <section id="scr-guess" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard center">
+      <p style="font-size:17px;font-weight:700" id="guess-lead">見えました。あなたに眠る趣味——それは</p>
+      <span class="guess-name" id="guess-name"></span>
+      <p class="guess-desc" id="guess-desc"></p>
+      <p style="font-size:16px;font-weight:700">…ですね?</p>
+      <div class="choice">
+        <button class="ans a-yes" onclick="correct()">それだ!(気になる)</button>
+        <button class="ans a-pyes" onclick="alreadyDoing()">もうやってるよ</button>
+        <button class="ans a-pno" onclick="closeGuess()">惜しい!近いけど違う</button>
+        <button class="ans a-no" onclick="wrongGuess()">全然違うなぁ…</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 続けますか? -->
+  <section id="scr-continue" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard center">
+      <p style="font-size:17px;font-weight:700;line-height:2">おや、外しましたか…。<br>まだ続けますか?</p>
+      <div class="choice">
+        <button class="ans a-yes" onclick="continueGame()">続けましょう</button>
+        <button class="ans a-idk" onclick="showCandidates()">候補の一覧から選ぶ</button>
+        <button class="ans a-no" onclick="location.reload()">最初からやり直す</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 候補一覧 -->
+  <section id="scr-cands" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard">
+      <p class="center" style="font-size:16.5px;font-weight:700">私が視ている候補は、この辺りです。<br>ピンとくるものは、ありますか?</p>
+      <div class="list" id="cand-list"></div>
+      <button class="cand-more" onclick="giveUp()">この中にはない<small>もっと私に合う趣味を、見つけてほしい</small></button>
+    </div>
+  </section>
+
+  <!-- 降参→でも合う趣味は提案する -->
+  <section id="scr-giveup" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard center">
+      <p style="font-size:16px;font-weight:700;line-height:1.9">ぴたりとは、当てられませんでした。<br>でも——お話をうかがう中で、<br>あなたに<b style="color:var(--yes)">似合いそうな趣味</b>が視えています。</p>
+      <div class="list" id="giveup-list" style="text-align:left;margin-top:6px"></div>
+      <button class="ghost" onclick="location.reload()">最初からやり直す</button>
+    </div>
+  </section>
+
+  <!-- 第二幕への入口 -->
+  <section id="scr-act2" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard center">
+      <p style="font-size:17px;font-weight:700;line-height:2.05">
+        もちろん、知っていましたよ。<br>
+        あなたが「<span id="act2-known" style="color:var(--yes)"></span>」を<br>やっていることくらい。<br>
+        <b style="color:var(--yes)">さて——ここからが本番です。</b><br>
+        まだ出会っていない、<br>あなたの<b>“次”の趣味</b>を見立てましょう。
+      </p>
+      <button class="primary" onclick="startAct2()" style="box-shadow:0 6px 0 #a63d05">本番、はじめましょう</button>
+    </div>
+  </section>
+
+  <!-- 第二幕:根幹抽出の問い -->
+  <section id="scr-core" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard">
+      <div class="center"><span class="qchip">本番 最初の問い</span></div>
+      <p class="qtext center">「<span id="core-known" style="color:var(--yes)"></span>」の、<br>何が<b>いちばん</b>好きですか?</p>
+      <div class="list" id="core-opts"></div>
+    </div>
+  </section>
+
+  <!-- 中間の読み上げ -->
+  <section id="scr-read" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard center">
+      <div class="center"><span class="qchip">視えてきたこと</span></div>
+      <p class="qtext" id="read-text" style="text-align:center;white-space:pre-line"></p>
+      <div class="choice">
+        <button class="ans a-yes" onclick="confirmRead(true)">……当たってる</button>
+        <button class="ans a-pno" onclick="confirmRead(false)">少し違うかも</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 隣の世界線 -->
+  <section id="scr-related" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard">
+      <p class="center" style="font-size:16.5px;font-weight:700;line-height:1.9">おや、それもすでに?お目が高い。<br>では、<b style="color:var(--yes)">隣の世界線</b>のこれはどうでしょう。</p>
+      <div class="list" id="rel-list"></div>
+      <button class="cand-more" onclick="resumeQuestions()">どれも、しっくりこない<small>もっと私に合う趣味を、一緒に探す</small></button>
+    </div>
+  </section>
+
+  <!-- 結果 -->
+  <section id="scr-result" class="stage hidden">
+    <div class="god"></div>
+    <div class="qcard">
+      <p class="center" style="color:#b0691f;font-size:13px;font-weight:700" id="r-label">あなたに眠っていた趣味</p>
+      <p class="r-reason" id="r-reason"></p>
+      <h2 class="hobby-name" id="r-name"></h2>
+      <div class="core-wrap" id="r-core"></div>
+      <p class="hobby-desc" id="r-desc"></p>
+      <div class="tools">
+        <h3>▼ 最初にそろえる道具は、この3つです</h3>
+        <div id="r-tools"></div>
+        <p class="small">リンク先で価格や口コミを確かめてみてください</p>
+      </div>
+      <div class="tools">
+        <h3>▼ まずは動画で、その世界を覗いてみる</h3>
+        <div id="r-videos"></div>
+      </div>
+      <div class="tools">
+        <h3>▼ この趣味の人は、こんな趣味とも相性がいい</h3>
+        <div class="list" id="r-mates"></div>
+      </div>
+    </div>
+    <div class="share">
+      <button class="primary" onclick="downloadShareImage()">シェア画像を保存</button>
+      <button class="primary x-btn" onclick="shareX()">Xでシェア</button>
+    </div>
+    <button class="more" onclick="searchMore()">この趣味は確定!ほかの趣味も探す</button>
+    <button class="ghost" onclick="location.reload()">最初からやり直す</button>
+  </section>
+</div>
+
+<footer>
+  <button class="toplink" onclick="if(confirm('最初からやり直しますか?'))location.reload()">↑ トップに戻る</button>
+  <div>案内人:どうしましょう</div>
+  <div style="margin-top:8px"><a href="https://www.youtube.com/@doushimasho" target="_blank" rel="noopener" style="color:#ffb7c5;text-decoration:underline">どうしましょうのYouTubeチャンネル</a></div>
+  <div style="margin-top:10px;font-size:10.5px;color:var(--ink-dim);line-height:1.6;max-width:460px;margin-left:auto;margin-right:auto">
+    当サイトはAmazonのアソシエイトとして、適格販売により収入を得ています。<br>
+    紹介する道具は各趣味の一例です。購入は各自の判断でお願いします。
+  </div>
+</footer>
+
+<canvas id="share-canvas" width="1080" height="1080" class="hidden"></canvas>
+
+<script src="./hobbies.js"></script>
+<script src="./videos.js"></script>
+<script>
+/* ============================================================
+   ▼▼ 設定エリア(ショウさんが編集する場所) ▼▼
+============================================================ */
+// ① 立ち絵:表情ごとに画像URLを入れると差し替わる(空なら仮キャラ)
+// ① 立ち絵:シュミネーター.htmlと同じフォルダにPNGを置く前提のファイル名指定
+//    serioushappy は第二幕(本番)専用のドヤ顔として自動で切り替わります
+const CHARACTER_IMAGES = {
+  normal:"normal.png", thinking:"thinking.png", idea:"idea.png",
+  happy:"happy.png", sorry:"sorry.png",
+  serious:"serious.png", gyafun:"gyafun.png", serioushappy:"serioushappy.png"
+};
+const LOGO_IMG = "logo.png";  // タイトルロゴ(シェア画像・スタート画面で使用)
+// ② Amazonアソシエイトのタグ
+const AMAZON_TAG = "your-affiliate-tag-22";
+// ③ YouTube Data API v3 のキー(入れると結果画面が「検索上位3本のサムネイル表示」に切り替わる。空なら検索リンク表示)
+const YOUTUBE_API_KEY = "";
+// ④ 公開URLとハッシュタグ
+const SITE_URL = "https://example.com/shuminator";
+const HASHTAG  = "シュミネーター";
+// ⑤ YouTubeチャンネル(立ち絵クリックで飛ぶ導線)
+const YOUTUBE_URL = "https://www.youtube.com/@doushimasho";
+
+/* 趣味データベース(HOBBIES)とタグ質問(TAG_Q)は hobbies.js に分離 */
+
+/* ============================================================
+   ▼▼ 診断エンジン(核・領域モデル / 二幕構成)▼▼
+   質問4クラス: 核(CORE_Q) / 大領域(DAI_Q) / 細領域(SAI_Q)
+              / 認知(HOBBIESの認知キーから動的生成)+心理(PSY_Q)
+   データは hobbies.js:
+     h[0]名前 h[1]大領域 h[2]細領域 h[3]{核:0-4} h[4]認知キー
+     h[5]説明 h[6]道具 h[7]屋外0-4 h[8]費用0-4
+============================================================ */
+const CORES=["上達","攻略","達成","競う","組む","表現","模倣","発見","深掘","繋がる","披露","育てる","推す","収集","愛でる","記録","高揚","静穏","躍動","物語"];
+const CORE_IDX={}; CORES.forEach((c,i)=>CORE_IDX[c]=i);
+
+// 認知キー(複数趣味で共有されるものを質問化)
+const NIN_MAP={};
+HOBBIES.forEach((h,i)=>{ if(h[4]){ (NIN_MAP[h[4]]=NIN_MAP[h[4]]||[]).push(i); } });
+
+// 全質問を統一形式に:{id,kind,text, vec(核ベクトル) or dai/sai/nin}
+// 第1層:気質(kizu) h[9]=[io,solo,calm,make,keep,sns] 各-2..+2。はい=+側
+const KIZU_Q=[
+ {id:"k1",axis:1,text:"趣味は、誰かと一緒に\nワイワイ楽しみたいですか?"},
+ {id:"k2",axis:2,text:"落ち着くより、\nドキドキするほうが好きですか?"},
+ {id:"k3",axis:3,text:"観て味わうより、\n自分の手を動かすほうが好きですか?"},
+ {id:"k4",axis:4,text:"ひとつのことを、\nじっくり掘り下げたいですか?"},
+ {id:"k5",axis:5,text:"できたものは、\nSNSに載せたくなりますか?"}
+];
+// 尖り度(niche)を測る質問。答えに応じて nicheScore を動かし、珍しい趣味へ寄せる/離す
+const NICHE_Q=[
+ {id:"z0",text:"みんながやっていることには、\nあまり惹かれないほうですか?"},
+ {id:"z1",text:"誰も知らないような世界を、\n掘ってみたいですか?"},
+ {id:"z2",text:"定番より、ちょっと\n変わったものに惹かれますか?"}
+];
+const QUESTIONS=[];
+KIZU_Q.forEach(q=>QUESTIONS.push({id:q.id,kind:"kizu",axis:q.axis,text:q.text}));
+NICHE_Q.forEach(q=>QUESTIONS.push({id:q.id,kind:"niche",text:q.text}));
+CORE_Q.forEach(([c,t])=>QUESTIONS.push({id:"c_"+c,kind:"core",core:c,text:t}));
+DAI_Q.forEach(([d,t])=>QUESTIONS.push({id:"d_"+d,kind:"dai",dai:d,text:t}));
+SAI_Q.forEach(([s,t])=>QUESTIONS.push({id:"s_"+s,kind:"sai",sai:s,text:t}));
+PSY_Q.forEach((q,i)=>QUESTIONS.push({id:"p"+i,kind:"psy",mix:q[0],text:q[1]}));
+// 認知質問は「複数趣味を束ねるキー」だけ(1趣味だけのキーは指名になり絞り込みを歪めるので除外)
+// 聞き方を豊かに変える(テンプレ感をなくす)
+const NIN_PHRASE={
+ "鉄道":"電車や線路に、心が動くほうですか?","ハンドメイド":"自分の手で小物を作るのは、好きですか?",
+ "宇宙・星":"夜空や宇宙のことを、考えるのは好きですか?","釣り":"魚を釣る、あの駆け引きに惹かれますか?",
+ "昆虫":"虫を捕まえたり観察するのは、好きですか?","ガーデニング":"植物を育てる暮らしに、憧れますか?",
+ "昭和レトロ":"どこか懐かしい、昭和の空気に惹かれますか?","読書":"本を読むのは、好きなほうですか?",
+ "映画":"映画を観るのは、好きですか?","ミニチュア":"小さくて精巧なものに、ときめきますか?",
+ "模型":"模型づくりに、興味はありますか?","カメラ":"写真を撮るのは、好きですか?",
+ "発酵":"発酵や、仕込んで待つ料理に惹かれますか?","コーヒー":"コーヒーには、こだわりがあるほうですか?",
+ "キャンプ飯":"外で作って食べる料理に、わくわくしますか?","季節の手仕事":"旬のものを手仕事で保存するのは、好きですか?",
+ "お茶":"お茶を淹れて味わう時間は、好きですか?","ラーメン":"ラーメンには、ちょっとうるさいほうですか?",
+ "ギター":"ギターを弾いてみたい気持ち、ありますか?","瞑想":"心を静める時間を、大切にしたいですか?",
+ "配信":"自分で発信・配信することに、興味はありますか?","ホラー":"怖いもの見たさ、ありますか?",
+ "インディーゲーム":"隠れた名作を掘り当てるのは、好きですか?","サッカー":"サッカーは、好きですか?",
+ "格闘技":"格闘技の世界に、熱くなれますか?","将棋":"将棋に、興味はありますか?",
+ "和小物":"和の小物づくりに、心惹かれますか?"};
+const NIN_FALLBACK=["「◯◯」、\n気になりますか?","「◯◯」の世界に、\n惹かれますか?","「◯◯」は、\nお好きですか?"];
+Object.keys(NIN_MAP).forEach((k,idx)=>{
+  if(NIN_MAP[k].length<2) return; // 共有キーのみ採用
+  const tpl=NIN_PHRASE[k]||NIN_FALLBACK[idx%NIN_FALLBACK.length].replace("◯◯",k);
+  QUESTIONS.push({id:"n_"+k,kind:"nin",nin:k,text:tpl});
+});
+
+// 各趣味の「その質問に対する当てはまり度」0..1
+function val(h,q){
+  if(q.kind==="kizu") return ((h[9]?h[9][q.axis]:0)+2)/4;
+  if(q.kind==="niche") return (4-(h[10]!==undefined?h[10]:2))/4;  // 珍しい趣味ほど1に近い
+  if(q.kind==="core") return (h[3][q.core]||0)/4;
+  if(q.kind==="dai")  return h[1]===q.dai?1:0;
+  if(q.kind==="sai")  return h[2]===q.sai?1:0;
+  if(q.kind==="nin")  return h[4]===q.nin?1:0;
+  if(q.kind==="psy"){ let v=0.5; for(const[c,w]of q.mix) v+=w*(((h[3][c]||0)/4)-0.5); return Math.max(0,Math.min(1,v)); }
+  return 0;
+}
+// 趣味の核ベクトル(0..1 ×20)
+function coreVec(h){ return CORES.map(c=>(h[3][c]||0)/4); }
+function coreDist(a,b){ let d=0; for(let k=0;k<20;k++){const df=a[k]-b[k];d+=df*df;} return Math.sqrt(d); }
+function simTo(baseIdx,i){
+  const sim=1-Math.min(1,coreDist(coreVec(HOBBIES[baseIdx]),coreVec(HOBBIES[i]))/2.4);
+  const sameDai=HOBBIES[i][1]===HOBBIES[baseIdx][1];
+  const sameSai=HOBBIES[i][2]===HOBBIES[baseIdx][2];
+  return {sim,sameDai,sameSai};
+}
+
+// 前提質問(制約なしを第一選択肢に)
+const PROFILE_Q=[
+ {key:"time", text:"まず教えてください。趣味に使えそうな時間は、どんな形ですか?",
+  opts:[["いつでも・形は問わない","both"],["平日にこまめに","daily"],["休日にまとめて","weekend"]]},
+ {key:"money", text:"最初にかけられるお金は、どのくらいが心地よいですか?",
+  opts:[["問わない","any"],["数千円〜1万円くらいなら","1"],["ほぼゼロで始めたい","0"]]},
+ {key:"place", text:"新しい趣味、やるなら家の中と外、どちらがいいですか?",
+  opts:[["どちらでも","both"],["家の中でゆっくり","home"],["外に出て動きたい","out"]]}
+];
+
+let answers=[], prevAsked=new Set(), assertActive=false, read1=false, read2=false;
+let weights=[], excluded=new Set(), asked=new Set(), qCount=0, currentQ=null,
+    currentGuess=-1, wrongCount=0, lastGuessAt=0, history=[],
+    act=1, knownIdx=-1, knownCore=null, profile={}, profileIdx=0, resultIdx=-1, act2Start=0, noteText="",
+    nicheScore=0, shareBlob=null;  // shareBlob=結果表示時に先読みするシェア画像
+
+// 珍しい趣味を押し上げる/抑えるリフト係数。nicheScore>0で珍しい趣味が有利
+function liftFactor(i){
+  const pop=(HOBBIES[i][10]!==undefined?HOBBIES[i][10]:2);
+  const popNorm=(pop+1)/5;              // 0.2(珍)〜1.0(定番)
+  const exp=Math.max(-0.9,Math.min(0.9,nicheScore*0.55));
+  return Math.pow(1/popNorm, exp);       // exp>0で珍しい趣味を増幅、<0で定番を増幅
+}
+function isNiche(i){ return (HOBBIES[i][10]!==undefined?HOBBIES[i][10]:2)<=1; }
+
+function startGame(){
+  weights=HOBBIES.map(()=>1);
+  excluded.clear(); asked.clear();
+  qCount=0; wrongCount=0; lastGuessAt=0; history=[];
+  act=1; knownIdx=-1; knownCore=null; profile={}; profileIdx=0; resultIdx=-1; act2Start=0;
+  answers=[]; assertActive=false; read1=false; read2=false; nicheScore=0;
+  try{ prevAsked=new Set(JSON.parse(localStorage.getItem("shu_prevq")||"[]")); }catch(e){ prevAsked=new Set(); }
+  document.body.className="";
+  setStage(0);
+  showProfileQ();
+}
+
+/* ---- 前提の確認 ---- */
+function showProfileQ(){
+  const p=PROFILE_Q[profileIdx];
+  if(!p){ applyProfile(); show("scr-q"); setGod("thinking"); nextQuestion(); return; }
+  document.getElementById("ptext").textContent=p.text;
+  const box=document.getElementById("popts"); box.innerHTML="";
+  p.opts.forEach(([label,v])=>{
+    const b=document.createElement("button");
+    b.className="opt"; b.textContent=label;
+    b.onclick=()=>{ profile[p.key]=v; profileIdx++; showProfileQ(); };
+    box.appendChild(b);
+  });
+  show("scr-profile"); setGod("normal");
+}
+function applyProfile(){
+  HOBBIES.forEach((h,i)=>{
+    const cost=h[8]/4, out=h[7]/4;
+    if(profile.time==="daily" && out>=0.75) weights[i]*=0.5;
+    if(profile.money==="0"){ if(cost>=0.75) weights[i]*=0.15; else if(cost>=0.5) weights[i]*=0.45; }
+    if(profile.money==="1" && cost>=0.9) weights[i]*=0.4;
+    if(profile.place==="home"){ if(out>=0.9) weights[i]*=0.25; else if(out>=0.6) weights[i]*=0.6; }
+    if(profile.place==="out" && out<=0.15) weights[i]*=0.55;
+  });
+}
+
+function totalW(){ return weights.reduce((a,b,i)=>excluded.has(i)?a:a+b,0); }
+// 表示用の重み:第二幕(新しい趣味を探す)では珍しさ嗜好のリフトを効かせる
+function dispW(i){ return weights[i]*(act===2?liftFactor(i):1); }
+function topTwo(){ const idx=[...HOBBIES.keys()].filter(i=>!excluded.has(i)).sort((a,b)=>dispW(b)-dispW(a)); return [idx[0],idx[1]]; }
+function topShare(){ const [t]=topTwo(); const tw=totalW(); return tw>0?weights[t]/tw:0; }
+
+// 残り候補数(重みが生きている趣味の数)
+function aliveCount(){ const tw=totalW(); if(tw<=0)return 0; let n=0; HOBBIES.forEach((h,i)=>{ if(!excluded.has(i)&&weights[i]/tw>0.002) n++; }); return n; }
+
+// どの階層の質問を許可するか:広い層から始め、絞れたら次の層を開放
+// 「まず気質で大きく割る→核で動機→大領域→細領域→認知は最後の確認だけ」という規律
+function allowedKinds(){
+  const alive=aliveCount();
+  const askedKizu=[...asked].filter(id=>id[0]==="k").length;
+  const askedCore=[...asked].filter(id=>id.startsWith("c_")).length;
+  const askedDai=[...asked].filter(id=>id.startsWith("d_")).length;
+  const askedSai=[...asked].filter(id=>id.startsWith("s_")).length;
+  const askedNiche=[...asked].filter(id=>id[0]==="z").length;
+  // 第1層:気質+尖り度(最初の数問で大きく割る)
+  if(askedKizu<4) return {kinds:["kizu","niche","psy"], phase:"気質"};
+  // 尖り度をまだ聞いていなければ、ここで必ず聞く
+  if(askedNiche<3) return {kinds:["niche","kizu","psy"], phase:"嗜好"};
+  // 序盤:心理テスト風の問いで人物像を厚く作る(納得度アップ)
+  const askedPsy=[...asked].filter(id=>id[0]==="p").length;
+  if(askedPsy<5 && qCount<13) return {kinds:["psy","core"], phase:"深層"};
+  // 第2層:核・動機(候補が多いうちに動機像をしっかり作る)
+  if(askedCore<7 && alive>50) return {kinds:["core","psy"], phase:"動機"};
+  // 第3層:分野(大領域+共有認知キーで「どの世界か」を必ず特定)
+  if(askedDai<4 || alive>20) return {kinds:["dai","nin","core"], phase:"分野"};
+  // 第4層:細分(細領域が主役。認知キーと核で補助)
+  if(askedSai<5 || alive>7) return {kinds:["sai","nin","core"], phase:"細分"};
+  // 第5層:決め(同じ分野内を核の微差と認知で割る)
+  return {kinds:["core","sai","nin","psy"], phase:"決め"};
+}
+
+function pickQuestion(){
+  const total=totalW();
+  if(total<=0) return null;
+  const {kinds}=allowedKinds();
+  let cands=[];
+  for(const q of QUESTIONS){
+    if(asked.has(q.id)) continue;
+    if(!kinds.includes(q.kind)) continue;         // ← 階層の規律:許可された層だけ
+    let mean=0;
+    HOBBIES.forEach((h,i)=>{ if(!excluded.has(i)) mean+=weights[i]/total*val(h,q); });
+    let v=0;
+    HOBBIES.forEach((h,i)=>{ if(!excluded.has(i)){ const d=val(h,q)-mean; v+=weights[i]/total*d*d; } });
+    let score=v;
+    // 同じ層の中での優先:その層で主役の種を少し持ち上げる
+    if(q.kind===kinds[0]) score*=1.3;
+    if(prevAsked.has(q.id)) score*=0.6;
+    if(score>0.0003) cands.push({q,score});
+  }
+  // その層に有効な質問が尽きたら、次善の層へフォールバック
+  if(!cands.length){
+    for(const q of QUESTIONS){
+      if(asked.has(q.id)) continue;
+      let mean=0; HOBBIES.forEach((h,i)=>{ if(!excluded.has(i)) mean+=weights[i]/total*val(h,q); });
+      let v=0; HOBBIES.forEach((h,i)=>{ if(!excluded.has(i)){ const d=val(h,q)-mean; v+=weights[i]/total*d*d; } });
+      if(v>0.0003) cands.push({q,score:v});
+    }
+  }
+  if(!cands.length) return null;
+  cands.sort((a,b)=>b.score-a.score);
+  const top=cands.slice(0,3);                       // 揺らぎは上位3から
+  const tot=top.reduce((a,c)=>a+c.score,0);
+  let r=Math.random()*tot;
+  for(const c of top){ r-=c.score; if(r<=0) return c.q; }
+  return top[0].q;
+}
+
+function nextQuestion(){
+  const q=pickQuestion();
+  if(!q){ makeGuess(); return; }
+  currentQ=q; qCount++;
+  updateStage();
+  document.getElementById("qnum").textContent=(act===2?"本番 Q":"Q")+qCount;
+  // 確信型:候補の大半が該当するなら断定形に
+  assertActive=false;
+  let disp=q.text;
+  const tw=totalW();
+  if(tw>0 && qCount>=5){
+    let m=0; HOBBIES.forEach((h,i)=>{ if(!excluded.has(i)) m+=weights[i]/tw*val(h,q); });
+    if(m>=0.78 && /(です|ます)か\?$/.test(q.text)){
+      disp="……"+q.text.replace(/(です|ます)か\?$/,"$1よね?");
+      assertActive=true;
+    }
+  }
+  const qt=document.getElementById("qtext");
+  qt.textContent=disp; qt.classList.toggle("long",disp.length>=34);
+  document.getElementById("mutter").textContent=mutter(q);
+  document.getElementById("undoBtn").disabled=history.length===0;
+}
+
+function mutter(q){
+  if(noteText){ const t=noteText; noteText=""; return t; }
+  const share=topShare();
+  if(act===2){
+    if(share>0.4) return "……見えてきました。あなたの“次”が。";
+    if(share>0.2) return "なるほど、そこに惹かれますか。";
+    return "今の趣味の、その奥を探っています。";
+  }
+  if(share>0.45) return "……ほぼ見えています。あと少し。";
+  if(share>0.28) return "ふむ、だいぶ絞れてきましたよ。";
+  if(share>0.12) return "……輪郭が、見えてきました。";
+  if(qCount<=1) return "素直に答えてくださいね。";
+  return "";
+}
+
+function answer(a){
+  history.push({w:[...weights], asked:new Set(asked), q:qCount, ex:new Set(excluded), ans:answers.length});
+  asked.add(currentQ.id);
+  if(a>=0) answers.push({q:currentQ,a});
+  try{ localStorage.setItem("shu_prevq",JSON.stringify([...asked])); }catch(e){}
+  if(a>=0){
+    const isSharp=(currentQ.kind==="sai"||currentQ.kind==="nin"||currentQ.kind==="dai");
+    const alive=aliveCount();
+    // 終盤で候補が少ない時だけ核をやや鋭く(似た者同士を軽く分ける程度。当てすぎない)
+    const lateBoost=(currentQ.kind==="core"&&alive<=8)?1.2:1;
+    const slope=((a===0.5)?(isSharp?0.3:0.4):(a===1||a===0)?(isSharp?0.85:1.15):(isSharp?0.6:0.85))*lateBoost;
+    const floor=isSharp?0.12:0.06;
+    HOBBIES.forEach((h,i)=>{ if(!excluded.has(i)) weights[i]*=Math.max(floor,1-Math.abs(val(h,currentQ)-a)*slope); });
+    // 認知質問で「はい」なら、その認知キーの趣味を押し上げる/「いいえ」で下げる
+    if(currentQ.kind==="nin"){
+      (NIN_MAP[currentQ.nin]||[]).forEach(i=>{ if(!excluded.has(i)) weights[i]*= a>=0.75?1.6 : a<=0.25?0.3:1; });
+    }
+    // 尖り度の質問は、珍しい趣味への嗜好スコアを動かす(はい=珍しい好き)
+    if(currentQ.kind==="niche"){ nicheScore += (a-0.5)*1.6; }
+  }
+  if(assertActive){
+    if(a===1) noteText="……やはり。";
+    else if(a===0) noteText="なんと、読み違えましたか…。面白くなってきた。";
+    assertActive=false;
+  }
+  maybeGuessOrContinue();
+}
+function undo(){
+  if(!history.length) return;
+  const st=history.pop();
+  weights=st.w; asked=st.asked; excluded=st.ex; qCount=st.q; answers=answers.slice(0,st.ans);
+  nextQuestion();
+}
+
+function maybeGuessOrContinue(){
+  const [top,second]=topTwo();
+  const share=topShare();
+  const sg=qCount-lastGuessAt;
+  const need=3+wrongCount;
+  const alive=aliveCount();
+  const confident=(weights[top]>weights[second]*5 || share>0.55);
+  // 階層を最後まで降りて候補が十分絞れてから当てにいく(質問数は多めに)
+  const narrow=(alive<=5 || share>0.55);
+  let guess=false;
+  if(act===2){
+    const aq=qCount-act2Start;
+    guess=(aq>=10 && sg>=need && confident && narrow) || sg>=16+wrongCount*2;
+  }else{
+    guess=(qCount>=16 && sg>=need && confident && narrow) || (qCount>=32 && sg>=5+wrongCount*2);
+  }
+  if(guess){ tryGuess(); } else { nextQuestion(); }
+}
+function tryGuess(){
+  makeGuess();
+}
+
+function makeGuess(){
+  const [top]=topTwo();
+  if(top===undefined){ giveUp(); return; }
+  currentGuess=top; lastGuessAt=qCount;
+  document.getElementById("guess-lead").textContent = act===2
+    ? "見えました。あなたの“次”の世界線——それは"
+    : "見えました。あなたに眠る趣味——それは";
+  document.getElementById("guess-name").textContent=HOBBIES[top][0];
+  document.getElementById("guess-desc").textContent=HOBBIES[top][5];
+  show("scr-guess"); setGod("idea");
+}
+
+/* ---- 推測への4択 ---- */
+function correct(){ showResult(currentGuess); }
+function alreadyDoing(){
+  excluded.add(currentGuess); weights[currentGuess]=0;
+  if(act===1){
+    knownIdx=currentGuess;
+    knownCore=coreVec(HOBBIES[knownIdx]);
+    document.getElementById("act2-known").textContent=HOBBIES[knownIdx][0];
+    show("scr-act2"); setGod("serioushappy");
+  }else{
+    showRelated(currentGuess);
+  }
+}
+// 惜しい!:近傍を照らす
+function closeGuess(){
+  const g=currentGuess;
+  excluded.add(g); weights[g]=0;
+  HOBBIES.forEach((h,i)=>{ if(excluded.has(i))return; const {sim,sameSai,sameDai}=simTo(g,i);
+    weights[i]*=(0.45+0.8*sim)*(sameSai?1.5:sameDai?1.15:1); });
+  lastGuessAt=qCount-1;
+  noteText="惜しい、ですか…!ならば答えは、この近くに。";
+  show("scr-q"); setGod(act===2?"serious":"thinking"); nextQuestion();
+}
+// 全然違う:一帯から離れる
+function wrongGuess(){
+  const g=currentGuess;
+  excluded.add(g); weights[g]=0; wrongCount++;
+  if(wrongCount>=4){ showCandidates(); return; }
+  HOBBIES.forEach((h,i)=>{ if(excluded.has(i))return; const {sim}=simTo(g,i); weights[i]*=(0.4+0.6*(1-sim)); });
+  noteText="むむ、全然違いましたか…。方向を変えます。";
+  show("scr-q"); setGod("sorry"); nextQuestion();
+}
+function continueGame(){ show("scr-q"); setGod("thinking"); nextQuestion(); }
+
+/* ---- 第二幕:選択UIなしで核を保ち領域をずらす ---- */
+function startAct2(){
+  act=2; wrongCount=0; history=[]; act2Start=qCount;
+  document.body.classList.add("act2"); setStage(4);
+  // 第一幕で見抜いた「核」は真実として保持。領域の思い込みだけをほぐす
+  HOBBIES.forEach((h,i)=>{
+    if(excluded.has(i)) return;
+    const {sim,sameDai,sameSai}=simTo(knownIdx,i);
+    // 核が近い(その人に合う)ものは残しつつ、同じ領域からは離す
+    let w=Math.pow(weights[i],0.3);          // 第一幕の絞り込みを大きくほぐす
+    w*=(0.35+0.9*sim);                        // 核が近いほど有利(その人の真実)
+    if(sameSai) w*=0.25; else if(sameDai) w*=0.5; // 同じフィールドを避ける
+    weights[i]=w;
+  });
+  lastGuessAt=qCount;
+  noteText="あなたの“楽しさの核”は、視えています。あとは、まだ知らない世界を。";
+  show("scr-q"); setGod("serious"); nextQuestion();
+}
+
+function showRelated(baseIdx){
+  const scored=HOBBIES.map((h,i)=>{
+    if(i===baseIdx||excluded.has(i))return{i,s:-1,niche:false};
+    const {sim,sameDai}=simTo(baseIdx,i);
+    let s=(sim+(sameDai?0.15:0))*liftFactor(i);       // 相性×珍しさ嗜好
+    return{i,s,niche:isNiche(i)};
+  }).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
+  const pick=[];
+  const nichePool=scored.slice(0,25).filter(x=>x.niche);
+  if(nichePool.length) pick.push(nichePool[0].i);       // 尖り枠を1つ確保
+  for(const x of scored){ if(pick.length>=3)break; if(!pick.includes(x.i)) pick.push(x.i); }
+  const list=document.getElementById("rel-list"); list.innerHTML="";
+  pick.forEach(i=>{
+    const b=document.createElement("button");
+    b.className="cand";
+    const tag=isNiche(i)?" <span style='color:#d99a2e;font-size:11px;font-weight:800'>◆珍しい</span>":"";
+    b.innerHTML="<b>"+HOBBIES[i][0]+tag+"</b><small>"+HOBBIES[i][5]+"</small>";
+    b.onclick=()=>showResult(i);
+    list.appendChild(b);
+  });
+  show("scr-related"); setGod("idea");
+}
+function resumeQuestions(){ show("scr-q"); setGod(act===2?"serious":"thinking"); nextQuestion(); }
+
+/* ---- 候補一覧・降参 ---- */
+function showCandidates(){
+  const idx=[...HOBBIES.keys()].filter(i=>!excluded.has(i)).sort((a,b)=>dispW(b)-dispW(a)).slice(0,6);
+  const list=document.getElementById("cand-list"); list.innerHTML="";
+  idx.forEach(i=>{
+    const b=document.createElement("button");
+    b.className="cand";
+    const tag=isNiche(i)?" <span style='color:#d99a2e;font-size:11px;font-weight:800'>◆珍しい</span>":"";
+    b.innerHTML="<b>"+HOBBIES[i][0]+tag+"</b><small>"+HOBBIES[i][5]+"</small>";
+    b.onclick=()=>showResult(i);
+    list.appendChild(b);
+  });
+  show("scr-cands"); setGod("serious");
+}
+function giveUp(){
+  // 当てられなくても「合いそうな趣味」を提示する(それがこの診断の目的)
+  const idx=[...HOBBIES.keys()].filter(i=>!excluded.has(i)).sort((a,b)=>dispW(b)-dispW(a)).slice(0,3);
+  const list=document.getElementById("giveup-list"); list.innerHTML="";
+  idx.forEach(i=>{
+    const b=document.createElement("button");
+    b.className="cand";
+    const tag=isNiche(i)?" <span style='color:#d99a2e;font-size:11px;font-weight:800'>◆珍しい</span>":"";
+    b.innerHTML="<b>"+HOBBIES[i][0]+tag+"</b><small>"+HOBBIES[i][5]+"</small>";
+    b.onclick=()=>showResult(i);
+    list.appendChild(b);
+  });
+  show("scr-giveup"); setGod("gyafun");
+}
+
+/* ---- 読み上げ(断言回答のみ・短文) ---- */
+const CORE_READ={
+ "上達":"上達する手応えを、心から味わえる人","攻略":"仕組みを解き明かすのが好きな人","達成":"やり切ることに喜びを感じる人",
+ "競う":"勝負ごとに、つい燃えてしまう人","組む":"ゼロから何かを組み上げたい人","表現":"内側にあるものを、形にしたい人",
+ "模倣":"見本を再現することに長けた人","発見":"知らないものとの出会いを愛する人","深掘":"一つを深く掘り下げたくなる人",
+ "繋がる":"誰かと分かち合ってこそ、の人","披露":"作ったものを見せたくなる人","育てる":"何かを育て、見守るのが好きな人",
+ "推す":"誰かを応援せずにいられない人","収集":"集めて揃える癖を持つ人","愛でる":"美しいものを、ただ眺めていたい人",
+ "記録":"記録が貯まることに喜びを感じる人","高揚":"スリルを、ごちそうにできる人","静穏":"整う時間を、何より求める人",
+ "躍動":"体を動かす爽快が好きな人","物語":"物語の世界に、深く浸れる人"};
+const DAI_READ={"自然":"自然に癒される","食":"食への探究心が強い","音楽":"音楽が生活に欠かせない","ゲーム":"ゲームの世界を愛する","ものづくり":"手を動かして作りたい","アート・美":"美しいものに惹かれる","言葉・物語":"物語や言葉の世界が好きな","知・学び":"知ることが好きな","体を動かす":"体を動かすのが好きな","旅・まち":"知らない場所に惹かれる","盤上・卓上":"卓を囲む遊びが好きな","観る":"観て熱くなるのが好きな","暮らし":"暮らしにこだわる","テック":"新しい技術にワクワクする"};
+function readInsights(n){
+  const picks=[]; const usedC=new Set();
+  const strong=answers.filter(x=>x.a===1||x.a===0);
+  // まず核の強い断言
+  for(const {q,a} of strong){
+    if(picks.length>=n) break;
+    if(q.kind==="core" && a===1 && !usedC.has(q.core)){ usedC.add(q.core); picks.push(CORE_READ[q.core]); }
+    else if(q.kind==="dai" && a===1 && DAI_READ[q.dai]){ picks.push(DAI_READ[q.dai]+"人"); }
+  }
+  return picks;
+}
+function showReading(){
+  const p=readInsights(2);
+  if(p.length<2) return false;
+  document.getElementById("read-text").textContent="……視えてきました。\nあなたは——"+p[0]+"。\nそして、"+p[1]+"。\n\n違いますか?";
+  show("scr-read"); setGod(act===2?"serious":"idea");
+  return true;
+}
+function confirmRead(yes){
+  if(yes){ makeGuess(); return; }
+  HOBBIES.forEach((h,i)=>{ if(!excluded.has(i)) weights[i]=Math.pow(weights[i],0.85); });
+  lastGuessAt=qCount;
+  noteText="ほう……面白い。では、もう少しだけ。";
+  show("scr-q"); setGod(act===2?"serious":"thinking"); nextQuestion();
+}
+
+async function renderVideos(h){
+  const box=document.getElementById("r-videos");
+  const fixed=h[5];
+  // データ側で動画を固定指定している場合(将来の厳選用)
+  if(Array.isArray(fixed)&&fixed.length&&typeof fixed[0]==="object"){
+    box.innerHTML=fixed.slice(0,3).map(v=>`<a class="yt" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="" loading="lazy"><span>▶ ${esc(v.t||h[0])}</span></a>`).join("");
+    return;
+  }
+  // 焼き込み済みデータ(videos.js:GitHub Actionsで自動更新)があればサムネイル表示
+  const bk=(typeof BAKED_VIDEOS!=="undefined")&&BAKED_VIDEOS[h[0]];
+  const bkArr=bk?(Array.isArray(bk)?bk:bk.v):null;
+  if(bkArr&&bkArr.length){
+    box.innerHTML=bkArr.slice(0,3).map(v=>`<a class="yt" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="" loading="lazy"><span>▶ ${esc(v.t||h[0])}</span></a>`).join("");
+    return;
+  }
+  const themes=ytThemes(h);
+  // まず検索リンクを表示(APIキー未設定・通信失敗時はこのまま)
+  box.innerHTML=themes.map(([q,l])=>`<a class="yt yt-s" href="https://www.youtube.com/results?search_query=${encodeURIComponent(q)}" target="_blank" rel="noopener"><span>▶ ${l}:「${esc(q)}」の動画を探す</span></a>`).join("");
+  if(!YOUTUBE_API_KEY) return;
+  try{
+    let vids=null;
+    try{ vids=JSON.parse(localStorage.getItem("yt2:"+h[0])||"null"); }catch(e){}
+    if(!vids){
+      vids=[];
+      for(const [q,l] of themes){
+        const r=await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&relevanceLanguage=ja&regionCode=JP&q=${encodeURIComponent(q)}&key=${YOUTUBE_API_KEY}`);
+        if(!r.ok) throw new Error("api");
+        const j=await r.json();
+        const it=j.items&&j.items[0];
+        if(it&&it.id&&it.id.videoId) vids.push({id:it.id.videoId,t:it.snippet.title,th:it.snippet.thumbnails.medium.url,l});
+      }
+      try{ localStorage.setItem("yt2:"+h[0],JSON.stringify(vids)); }catch(e){}
+    }
+    if(vids&&vids.length){
+      box.innerHTML=vids.map(v=>`<a class="yt" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener"><img src="${v.th}" alt="" loading="lazy"><span>▶ ${v.l}|${esc(v.t)}</span></a>`).join("");
+    }
+  }catch(e){ /* 失敗時は検索リンクのまま(静かに劣化) */ }
+}
+
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function ytThemes(h){ return [[h[0]+" 始め方","始め方"],[h[0]+" 魅力 面白さ","この趣味の面白さ"],[h[0]+" 初心者","初心者向け"]]; }
+
+/* ---- 結果 ---- */
+function showResult(i){
+  resultIdx=i; const h=HOBBIES[i];
+  document.body.className=""; document.body.classList.add("finale");
+  document.getElementById("r-label").textContent = act===2 ? "あなたの“次”の世界線" : "あなたに眠っていた趣味";
+  document.getElementById("r-name").textContent=h[0];
+  // 魅力の核チップ(強い核 上位3)
+  const topCores=Object.entries(h[3]).filter(([c,v])=>v>=3).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([c])=>c);
+  document.getElementById("r-core").innerHTML="<span style='color:#b9a;font-size:12px'>この趣味の魅力の核:</span>"+topCores.map(c=>"<span class='core'>"+c+"</span>").join("");
+  // 理由演出:あなたの断言核 ∩ この趣味の強い核
+  const yourCores=new Set(answers.filter(x=>x.q.kind==="core"&&x.a===1).map(x=>x.q.core));
+  const rs=topCores.filter(c=>yourCores.has(c)).slice(0,2).map(c=>CORE_READ[c]);
+  document.getElementById("r-reason").textContent = rs.length? rs.join("。")+"。——そんなあなたに、視えたのは" : "";
+  document.getElementById("r-desc").textContent=h[5];
+  // 道具(Amazon:趣味名を文脈に前置)
+  const tools=document.getElementById("r-tools"); tools.innerHTML="";
+  const hb=h[0].split(/[・(【]/)[0];
+  h[6].forEach(([q,note])=>{
+    if(!q) return;
+    const a=document.createElement("a"); a.className="tool";
+    const kw=q.includes(hb)?q:hb+" "+q;
+    a.href="https://www.amazon.co.jp/s?k="+encodeURIComponent(kw)+"&tag="+AMAZON_TAG;
+    a.target="_blank"; a.rel="noopener";
+    a.innerHTML="<b>"+q+"</b><small>"+note+"</small>";
+    tools.appendChild(a);
+  });
+  renderVideos(h);
+  renderMates(i);
+  shareBlob=null; getShareBlob(b=>{ shareBlob=b; });   // 先読みしてキャッシュ
+  show("scr-result"); setGod(act===2?"serioushappy":"happy");
+}
+function searchMore(){
+  excluded.add(resultIdx); weights[resultIdx]=0;
+  HOBBIES.forEach((h,i)=>{ if(excluded.has(i))return; const {sim,sameDai}=simTo(resultIdx,i);
+    weights[i]=Math.pow(weights[i],0.4)*(0.4+0.6*(1-sim))*(sameDai?0.6:1); });
+  lastGuessAt=qCount; wrongCount=0;
+  if(act!==2){ act=2; act2Start=qCount; document.body.className=""; document.body.classList.add("act2"); setStage(4); }
+  else { document.body.className=""; document.body.classList.add("act2"); setStage(4); }
+  noteText="では——まだ知らない世界を、もう一つ。";
+  show("scr-q"); setGod("serious"); nextQuestion();
+}
+
+// 相性趣味:核が近く(その人向き)領域が違う趣味を3つ。
+// リフト(珍しさ嗜好で重みづけ)+尖り枠(必ず1つは珍しい趣味)で、王道収束を防ぐ
+function renderMates(ri){
+  const base=coreVec(HOBBIES[ri]);
+  const scored=HOBBIES.map((h,j)=>{
+    if(j===ri) return {j,sc:-1,niche:false};
+    const cd=coreDist(base,coreVec(h));
+    if(cd<0.35) return {j,sc:-1,niche:false};           // 核までそっくり=同類は出さない
+    const sim=1-Math.min(1,cd/2.4);
+    const sameDai=h[1]===HOBBIES[ri][1], sameSai=h[2]===HOBBIES[ri][2];
+    let sc=sim*2;
+    if(sameSai) sc*=0.25; else if(sameDai) sc*=0.6;     // 別フィールドを優遇
+    sc*=liftFactor(j);                                   // 珍しさ嗜好で重みづけ
+    return {j,sc,niche:isNiche(j)};
+  }).filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc);
+
+  const pick=[];
+  // 尖り枠:上位30件のうち最も相性の良い「珍しい趣味」を1つ必ず確保
+  const nichePool=scored.slice(0,30).filter(x=>x.niche);
+  if(nichePool.length) pick.push(nichePool[0].j);
+  // 残りを上位から(重複を避けて)埋める
+  for(const x of scored){ if(pick.length>=3)break; if(!pick.includes(x.j)) pick.push(x.j); }
+
+  const box=document.getElementById("r-mates"); box.innerHTML="";
+  pick.forEach(j=>{
+    const b=document.createElement("button");
+    b.className="cand";
+    const tag=isNiche(j)?" <span style='color:#d99a2e;font-size:11px;font-weight:800'>◆珍しい</span>":"";
+    b.innerHTML="<b>"+HOBBIES[j][0]+tag+"</b><small>"+HOBBIES[j][5]+"</small>";
+    b.onclick=()=>showResult(j);
+    box.appendChild(b);
+  });
+}
+
+/* ---- 進行の可視化:宇宙が段階的に開く ---- */
+function setStage(n){ document.body.setAttribute("data-stage",n); }
+function updateStage(){
+  // 第一幕:確信度で0→3、第二幕:4、結果:finale
+  if(act===2){ setStage(4); return; }
+  const s=topShare();
+  setStage(s>0.4?3:s>0.22?2:s>0.1?1:0);
+}
+
+
+/* ===== シェア ===== */
+// 立ち絵を背景に透かした結果カードを描く。毎回まっさらなcanvasを新規生成(汚染の持ち越しを防ぐ)
+// file://(ローカル)では立ち絵を描くとcanvasが汚染され保存不可になるため、その場合はエンブレム版にする
+function renderShareCanvas(withPortrait, done){
+  const c=document.createElement("canvas"); c.width=1080; c.height=1080;
+  const x=c.getContext("2d");
+  const h=HOBBIES[resultIdx];
+  const drawAll=(portrait,logo)=>{
+    // 背景(深い夜空→暁)
+    const g=x.createLinearGradient(0,0,1080,1080);
+    g.addColorStop(0,"#241640");g.addColorStop(.5,"#3d1c52");g.addColorStop(1,"#6b2b46");
+    x.fillStyle=g;x.fillRect(0,0,1080,1080);
+    // 大きな後光(斜め光芒)
+    x.save();x.translate(540,760);
+    for(let i=0;i<24;i++){ x.rotate(Math.PI/12); const grd=x.createLinearGradient(0,0,0,-680);
+      grd.addColorStop(0,"rgba(255,224,150,.13)");grd.addColorStop(1,"rgba(255,224,150,0)");
+      x.fillStyle=grd; x.fillRect(-9,-680,18,680); }
+    x.restore();
+    // 後光(下1/3あたりから立ち上る)
+    const halo=x.createRadialGradient(540,760,20,540,760,600);
+    halo.addColorStop(0,"rgba(255,243,196,.42)");halo.addColorStop(.45,"rgba(240,184,102,.14)");halo.addColorStop(1,"rgba(240,184,102,0)");
+    x.fillStyle=halo;x.fillRect(0,0,1080,1080);
+    // 立ち絵(公開時のみ):宇宙から見下ろす神のイメージ。顔が大きく上部を覆い、下は画面外へ
+    if(portrait){
+      const pw=1120, ph=pw*portrait.height/portrait.width;
+      x.save(); x.globalAlpha=0.16; x.drawImage(portrait,540-pw/2,-90,pw,ph); x.restore();
+      // 上部を少し締めて神々しさ+文字の可読性
+      const sc=x.createLinearGradient(0,0,0,420); sc.addColorStop(0,"rgba(20,10,32,.45)");sc.addColorStop(1,"rgba(20,10,32,0)");
+      x.fillStyle=sc; x.fillRect(0,0,1080,420);
+    }
+    // 星
+    x.fillStyle="rgba(255,255,255,.55)";
+    for(let i=0;i<60;i++){x.beginPath();x.arc(Math.random()*1080,Math.random()*1080,Math.random()*2.4+.5,0,7);x.fill();}
+    // 内側の額縁
+    x.strokeStyle="rgba(255,214,140,.55)";x.lineWidth=3;
+    roundRect(x,34,34,1012,1012,28);x.stroke();
+    x.strokeStyle="rgba(255,214,140,.22)";x.lineWidth=1;
+    roundRect(x,48,48,984,984,22);x.stroke();
+
+    x.textAlign="center";
+    // タイトル:ロゴ画像があれば使う。なければ文字タイトル(file://フォールバック)
+    if(logo){
+      const lw=700, lh=lw*logo.height/logo.width;
+      x.drawImage(logo,540-lw/2,40,lw,lh);
+    }else{
+      x.font="700 30px 'Zen Maru Gothic',sans-serif";
+      const cap="趣味ねぇな…お呼びですか?"; const cw0=x.measureText(cap).width+56;
+      const rg=x.createLinearGradient(540-cw0/2,0,540+cw0/2,0);
+      rg.addColorStop(0,"#e0568a");rg.addColorStop(1,"#c23a8a");
+      x.fillStyle=rg; roundRect(x,540-cw0/2,74,cw0,54,27);x.fill();
+      x.fillStyle="#fff";x.fillText(cap,540,110);
+      x.save();x.shadowColor="rgba(0,0,0,.35)";x.shadowBlur=10;
+      x.fillStyle="#ffd45e";x.font="800 66px 'RocknRoll One',sans-serif";
+      x.fillText("シュミネーター",540,196);x.restore();
+    }
+
+    // ラベル
+    x.fillStyle="#ffe1ec";x.font="700 33px 'Zen Maru Gothic',sans-serif";
+    x.fillText(act===2?"あなたの“次”の世界線は":"あなたに眠っていた趣味は",540,300);
+
+    // ヒーロー:趣味名(特大・縁取りで映える)
+    let name=h[0],size=104; x.font=`800 ${size}px 'RocknRoll One',sans-serif`;
+    while(x.measureText(name).width>940&&size>48){size-=6;x.font=`800 ${size}px 'RocknRoll One',sans-serif`;}
+    const ny=410;
+    // 下線の帯
+    const nw=Math.min(960,x.measureText(name).width+60);
+    const ug=x.createLinearGradient(540-nw/2,0,540+nw/2,0);
+    ug.addColorStop(0,"rgba(255,150,90,0)");ug.addColorStop(.5,"rgba(255,170,80,.9)");ug.addColorStop(1,"rgba(255,150,90,0)");
+    x.fillStyle=ug;x.fillRect(540-nw/2,ny+18,nw,7);
+    x.save();
+    x.lineJoin="round";x.strokeStyle="#5a1f14";x.lineWidth=12;x.strokeText(name,540,ny);
+    x.shadowColor="rgba(255,180,80,.5)";x.shadowBlur=24;
+    x.fillStyle="#ffd45e";x.fillText(name,540,ny);x.restore();
+
+    // 魅力の核チップ(大きめの丸ピル)
+    const cores=Object.entries(h[3]).filter(([c,v])=>v>=3).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([c])=>c);
+    x.font="700 30px 'Zen Maru Gothic',sans-serif";
+    let cw=cores.map(c=>x.measureText(c).width+56), tot=cw.reduce((a,b)=>a+b,0)+(cores.length-1)*18, sx=540-tot/2;
+    cores.forEach((c,i)=>{
+      const pg=x.createLinearGradient(sx,0,sx+cw[i],0); pg.addColorStop(0,"#7b52c8");pg.addColorStop(1,"#5b7be0");
+      x.fillStyle=pg; roundRect(x,sx,470,cw[i],56,28);x.fill();
+      x.fillStyle="#fff";x.fillText(c,sx+cw[i]/2,508); sx+=cw[i]+18;
+    });
+
+    // 説明(最大3行)
+    x.fillStyle="#f4ede3";x.font="400 29px 'Zen Maru Gothic',sans-serif";
+    wrapText(x,h[5],540,590,880,44,3);
+
+    // 相性のいい趣味(下部パネル)
+    const mates=mateNames(resultIdx);
+    x.fillStyle="rgba(255,255,255,.10)"; roundRect(x,90,772,900,180,22);x.fill();
+    x.strokeStyle="rgba(255,183,197,.5)";x.lineWidth=2; roundRect(x,90,772,900,180,22);x.stroke();
+    x.fillStyle="#ffb7c5";x.font="800 31px 'Zen Maru Gothic',sans-serif";
+    x.fillText("◆ 相性のいい趣味 ◆",540,828);
+    x.fillStyle="#f0e9fb";x.font="600 31px 'Zen Maru Gothic',sans-serif";
+    wrapText(x,mates.join("　/　"),540,884,840,44,2);
+
+    // フッター(ハッシュタグ)
+    x.fillStyle="#ffd45e";x.font="800 34px 'Zen Maru Gothic',sans-serif";
+    x.fillText("#シュミネーター",540,1006);
+    done(c);
+  };
+  // file://ではPNGを描くと汚染され保存できないので、その時は画像を使わず文字版にする
+  const canImg = withPortrait && location.protocol!=="file:";
+  if(canImg){
+    let logo=null, portrait=null, pending=2, fin=false;
+    const done2=()=>{ if(!fin){fin=true; drawAll(portrait,logo);} };
+    const one=()=>{ if(--pending<=0) done2(); };
+    const li=new Image(); li.onload=()=>{logo=li;one();}; li.onerror=()=>one(); li.src=LOGO_IMG;
+    const pi=new Image(); pi.onload=()=>{portrait=pi;one();}; pi.onerror=()=>one();
+    pi.src=(act===2?CHARACTER_IMAGES.serioushappy:CHARACTER_IMAGES.happy)||"happy.png";
+    setTimeout(done2,2000);
+  }else drawAll(null,null);
+}
+// canvasをBlob化。まっさらなcanvasなので汚染は起きないが、保険で二重に握る
+function getShareBlob(cb){
+  renderShareCanvas(true, c=>{
+    try{ c.toBlob(b=>{ if(b){cb(b);} else { renderShareCanvas(false,c2=>{ try{c2.toBlob(x=>cb(x||null),"image/png");}catch(e){cb(null);} }); } },"image/png"); }
+    catch(e){ renderShareCanvas(false,c2=>{ try{c2.toBlob(x=>cb(x||null),"image/png");}catch(e2){cb(null);} }); }
+  });
+}
+function saveBlob(blob,fname){
+  const objURL=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=objURL; a.download=fname;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(objURL),3000);
+}
+function mateNames(ri){
+  const base=coreVec(HOBBIES[ri]);
+  return HOBBIES.map((h,j)=>{
+    if(j===ri)return{j,sc:-1};
+    const cd=coreDist(base,coreVec(h)); if(cd<0.35)return{j,sc:-1};
+    const sim=1-Math.min(1,cd/2.4);
+    let sc=sim*2; if(h[2]===HOBBIES[ri][2])sc*=0.25; else if(h[1]===HOBBIES[ri][1])sc*=0.6;
+    sc*=liftFactor(j);
+    return{j,sc};
+  }).sort((a,b)=>b.sc-a.sc).slice(0,3).map(x=>HOBBIES[x.j][0]);
+}
+function wrapText(x,text,cx,cy,maxW,lh,maxLines){
+  const chars=[...text]; let line="",lines=[];
+  for(const ch of chars){ if(x.measureText(line+ch).width>maxW){ lines.push(line); line=ch; if(lines.length>=maxLines-1)break; } else line+=ch; }
+  if(line&&lines.length<maxLines)lines.push(line);
+  if(lines.length===maxLines){ let last=lines[maxLines-1]; while(x.measureText(last+"…").width>maxW&&last.length>1)last=last.slice(0,-1); if(x.measureText(lines[maxLines-1]).width>maxW)lines[maxLines-1]=last+"…"; }
+  lines.forEach((l,i)=>x.fillText(l,cx,cy+i*lh));
+}
+function downloadShareImage(){
+  if(shareBlob){ saveBlob(shareBlob,`シュミネーター_${HOBBIES[resultIdx][0]}.png`); return; }
+  getShareBlob(blob=>{ if(blob) saveBlob(blob,`シュミネーター_${HOBBIES[resultIdx][0]}.png`); else alert("画像の生成に失敗しました。更新して再度お試しください。"); });
+}
+function shareX(){
+  const hobby=HOBBIES[resultIdx][0];
+  const text=`「趣味ねぇな…」と思ってたら、神様に見抜かれた。\n私に眠る趣味は【${hobby}】らしい。\n#${HASHTAG}`;
+  const doShare=(blob)=>{
+    const file=blob?new File([blob],`シュミネーター_${hobby}.png`,{type:"image/png"}):null;
+    if(file && navigator.canShare && navigator.canShare({files:[file]})){
+      navigator.share({files:[file],text}).catch(()=>fallbackX(text,blob,hobby));
+    }else{ fallbackX(text,blob,hobby); }
+  };
+  if(shareBlob) doShare(shareBlob);         // 先読み済みなら即シェア(ジェスチャー保持)
+  else getShareBlob(doShare);
+}
+// PC等:画像を保存してからXの投稿画面を開く(画像は投稿画面で添付)
+function fallbackX(text,blob,hobby){
+  if(blob) saveBlob(blob,`シュミネーター_${hobby}.png`);
+  const url=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text+"\n"+SITE_URL)}`;
+  setTimeout(()=>window.open(url,"_blank"),400);
+}
+function roundRect(x,px,py,w,h,r){
+  x.beginPath();
+  x.moveTo(px+r,py);x.arcTo(px+w,py,px+w,py+h,r);x.arcTo(px+w,py+h,px,py+h,r);
+  x.arcTo(px,py+h,px,py,r);x.arcTo(px,py,px+w,py,r);x.closePath();
+}
+
+/* ===== 画面・キャラ ===== */
+function show(id){
+  ["scr-start","scr-profile","scr-q","scr-guess","scr-continue","scr-cands","scr-giveup","scr-act2","scr-core","scr-read","scr-related","scr-result"]
+    .forEach(s=>document.getElementById(s).classList.toggle("hidden",s!==id));
+  window.scrollTo({top:0});
+}
+const FACE={
+  normal:{m:"M60 78 Q70 86 80 78",e:"open"},
+  thinking:{m:"M62 80 Q70 78 78 80",e:"look"},
+  idea:{m:"M58 76 Q70 92 82 76",e:"wide"},
+  happy:{m:"M56 74 Q70 94 84 74",e:"smile"},
+  sorry:{m:"M60 84 Q70 76 80 84",e:"down"},
+  serious:{m:"M62 82 L78 82",e:"look"},
+  gyafun:{m:"M58 86 Q70 78 82 86",e:"down"}
+};
+const FALLBACK={serious:"thinking",gyafun:"sorry",serioushappy:"happy"};
+function godSVG(state){
+  const f=FACE[state]||FACE.normal;
+  let eyes="";
+  if(f.e==="smile") eyes=`<path d="M46 60 Q52 54 58 60 M82 60 Q88 54 94 60" stroke="#3a2402" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  else if(f.e==="down") eyes=`<path d="M46 58 Q52 64 58 58 M82 58 Q88 64 94 58" stroke="#3a2402" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  else{
+    const r=f.e==="wide"?7:5, dx=f.e==="look"?4:0;
+    eyes=`<circle cx="${52+dx}" cy="58" r="${r}" fill="#3a2402"/><circle cx="${88+dx}" cy="58" r="${r}" fill="#3a2402"/>`;
+  }
+  return `<svg viewBox="0 0 140 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="どうしましょう">
+    <ellipse cx="70" cy="16" rx="34" ry="9" fill="none" stroke="#f2cc8f" stroke-width="5"/>
+    <path d="M70 28 C110 28 122 66 118 100 C114 132 96 142 70 142 C44 142 26 132 22 100 C18 66 30 28 70 28 Z" fill="#fdf6ec" stroke="#e8d5b5" stroke-width="3"/>
+    <circle cx="40" cy="74" r="7" fill="#ffb7c5" opacity=".7"/>
+    <circle cx="100" cy="74" r="7" fill="#ffb7c5" opacity=".7"/>
+    ${eyes}
+    <path d="${f.m}" stroke="#3a2402" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </svg>`;
+}
+function setGod(state){
+  // 画像未設定の表情は、指定があれば近い表情の画像で代用
+  const imgState = CHARACTER_IMAGES[state] ? state : (FALLBACK[state]||state);
+  const inner = CHARACTER_IMAGES[imgState]
+    ? `<img src="${CHARACTER_IMAGES[imgState]}" alt="どうしましょう">`
+    : godSVG(state);
+  document.querySelectorAll(".god").forEach(el=>{
+    // 立ち絵をYouTubeチャンネルへの導線に(クリック/タップで開く)
+    el.innerHTML = `<a class="godlink" href="${YOUTUBE_URL}" target="_blank" rel="noopener" title="どうしましょうのYouTubeチャンネルへ">${inner}<span class="godtip">▶ どうしましょうのYouTube</span></a>`;
+  });
+}
+(function(){
+  const s=document.getElementById("stars");
+  for(let i=0;i<44;i++){
+    const st=document.createElement("i");
+    st.style.left=Math.random()*100+"%";
+    st.style.top=Math.random()*100+"%";
+    st.style.animationDelay=(Math.random()*3.5)+"s";
+    s.appendChild(st);
+  }
+})();
+setGod("normal");
+</script>
+</body>
+</html>
