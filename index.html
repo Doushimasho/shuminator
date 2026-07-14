@@ -374,19 +374,6 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
     </div>
   </section>
 
-  <!-- 中間の読み上げ -->
-  <section id="scr-read" class="stage hidden">
-    <div class="god"></div>
-    <div class="qcard center">
-      <div class="center"><span class="qchip">視えてきたこと</span></div>
-      <p class="qtext" id="read-text" style="text-align:center;white-space:pre-line"></p>
-      <div class="choice">
-        <button class="ans a-yes" onclick="confirmRead(true)">……当たってる</button>
-        <button class="ans a-pno" onclick="confirmRead(false)">少し違うかも</button>
-      </div>
-    </div>
-  </section>
-
   <!-- 隣の世界線 -->
   <section id="scr-related" class="stage hidden">
     <div class="god"></div>
@@ -448,6 +435,13 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
    ▼▼ 設定エリア(ショウさんが編集する場所) ▼▼
 ============================================================ */
 // ① 立ち絵:表情ごとに画像URLを入れると差し替わる(空なら仮キャラ)
+// ============================================================
+// 【差し替え可能な素材ファイル一覧】同じファイル名で上書きすれば絵が入れ替わります
+//   立ち絵8種: normal / thinking / idea / happy / sorry / serious / gyafun / serioushappy .png
+//   タイトルロゴ: logo.png(スタート画面・シェア画像で使用)
+//   OGP画像:  ogp.png(SNSリンクカード)
+//   ※新しい絵に差し替えるときは、上記と同じ名前で保存して同じフォルダに置くだけ
+// ============================================================
 // ① 立ち絵:シュミネーター.htmlと同じフォルダにPNGを置く前提のファイル名指定
 //    serioushappy は第二幕(本番)専用のドヤ顔として自動で切り替わります
 const CHARACTER_IMAGES = {
@@ -560,7 +554,7 @@ const PROFILE_Q=[
   opts:[["どちらでも","both"],["家の中でゆっくり","home"],["外に出て動きたい","out"]]}
 ];
 
-let answers=[], prevAsked=new Set(), assertActive=false, read1=false, read2=false;
+let answers=[], prevAsked=new Set(), assertActive=false;
 let weights=[], excluded=new Set(), asked=new Set(), qCount=0, currentQ=null,
     currentGuess=-1, wrongCount=0, lastGuessAt=0, history=[],
     act=1, knownIdx=-1, knownCore=null, profile={}, profileIdx=0, resultIdx=-1, act2Start=0, noteText="",
@@ -580,7 +574,7 @@ function startGame(){
   excluded.clear(); asked.clear();
   qCount=0; wrongCount=0; lastGuessAt=0; history=[];
   act=1; knownIdx=-1; knownCore=null; profile={}; profileIdx=0; resultIdx=-1; act2Start=0;
-  answers=[]; assertActive=false; read1=false; read2=false; nicheScore=0;
+  answers=[]; assertActive=false; nicheScore=0;
   try{ prevAsked=new Set(JSON.parse(localStorage.getItem("shu_prevq")||"[]")); }catch(e){ prevAsked=new Set(); }
   document.body.className="";
   setStage(0);
@@ -905,32 +899,6 @@ const CORE_READ={
  "記録":"記録が貯まることに喜びを感じる人","高揚":"スリルを、ごちそうにできる人","静穏":"整う時間を、何より求める人",
  "躍動":"体を動かす爽快が好きな人","物語":"物語の世界に、深く浸れる人"};
 const DAI_READ={"自然":"自然に癒される","食":"食への探究心が強い","音楽":"音楽が生活に欠かせない","ゲーム":"ゲームの世界を愛する","ものづくり":"手を動かして作りたい","アート・美":"美しいものに惹かれる","言葉・物語":"物語や言葉の世界が好きな","知・学び":"知ることが好きな","体を動かす":"体を動かすのが好きな","旅・まち":"知らない場所に惹かれる","盤上・卓上":"卓を囲む遊びが好きな","観る":"観て熱くなるのが好きな","暮らし":"暮らしにこだわる","テック":"新しい技術にワクワクする"};
-function readInsights(n){
-  const picks=[]; const usedC=new Set();
-  const strong=answers.filter(x=>x.a===1||x.a===0);
-  // まず核の強い断言
-  for(const {q,a} of strong){
-    if(picks.length>=n) break;
-    if(q.kind==="core" && a===1 && !usedC.has(q.core)){ usedC.add(q.core); picks.push(CORE_READ[q.core]); }
-    else if(q.kind==="dai" && a===1 && DAI_READ[q.dai]){ picks.push(DAI_READ[q.dai]+"人"); }
-  }
-  return picks;
-}
-function showReading(){
-  const p=readInsights(2);
-  if(p.length<2) return false;
-  document.getElementById("read-text").textContent="……視えてきました。\nあなたは——"+p[0]+"。\nそして、"+p[1]+"。\n\n違いますか?";
-  show("scr-read"); setGod(act===2?"serious":"idea");
-  return true;
-}
-function confirmRead(yes){
-  if(yes){ makeGuess(); return; }
-  HOBBIES.forEach((h,i)=>{ if(!excluded.has(i)) weights[i]=Math.pow(weights[i],0.85); });
-  lastGuessAt=qCount;
-  noteText="ほう……面白い。では、もう少しだけ。";
-  show("scr-q"); setGod(act===2?"serious":"thinking"); nextQuestion();
-}
-
 async function renderVideos(h){
   const box=document.getElementById("r-videos");
   const fixed=h[5];
@@ -1067,98 +1035,74 @@ function renderShareCanvas(withPortrait, done){
   const x=c.getContext("2d");
   const h=HOBBIES[resultIdx];
   const drawAll=(portrait,logo)=>{
-    // 背景(深い夜空→暁)
-    const g=x.createLinearGradient(0,0,1080,1080);
-    g.addColorStop(0,"#241640");g.addColorStop(.5,"#3d1c52");g.addColorStop(1,"#6b2b46");
+    const M=64; // マージン(セーフゾーン)
+    // 背景:プラム→インディゴの落ち着いたグラデ(色を絞る)
+    const g=x.createLinearGradient(0,0,0,1080);
+    g.addColorStop(0,"#2b1a44");g.addColorStop(.55,"#34204f");g.addColorStop(1,"#241540");
     x.fillStyle=g;x.fillRect(0,0,1080,1080);
-    // 大きな後光(斜め光芒)
-    x.save();x.translate(540,760);
-    for(let i=0;i<24;i++){ x.rotate(Math.PI/12); const grd=x.createLinearGradient(0,0,0,-680);
-      grd.addColorStop(0,"rgba(255,224,150,.13)");grd.addColorStop(1,"rgba(255,224,150,0)");
-      x.fillStyle=grd; x.fillRect(-9,-680,18,680); }
-    x.restore();
-    // 後光(下1/3あたりから立ち上る)
-    const halo=x.createRadialGradient(540,760,20,540,760,600);
-    halo.addColorStop(0,"rgba(255,243,196,.42)");halo.addColorStop(.45,"rgba(240,184,102,.14)");halo.addColorStop(1,"rgba(240,184,102,0)");
-    x.fillStyle=halo;x.fillRect(0,0,1080,1080);
-    // 立ち絵(公開時のみ):宇宙から見下ろす神のイメージ。顔が大きく上部を覆い、下は画面外へ
+    // 立ち絵:上部だけに大きく(見下ろす神)。下半分はスクリムで消して文字面をクリアに
     if(portrait){
-      const pw=1120, ph=pw*portrait.height/portrait.width;
-      x.save(); x.globalAlpha=0.16; x.drawImage(portrait,540-pw/2,-90,pw,ph); x.restore();
-      // 上部を少し締めて神々しさ+文字の可読性
-      const sc=x.createLinearGradient(0,0,0,420); sc.addColorStop(0,"rgba(20,10,32,.45)");sc.addColorStop(1,"rgba(20,10,32,0)");
-      x.fillStyle=sc; x.fillRect(0,0,1080,420);
+      const pw=980, ph=pw*portrait.height/portrait.width;
+      x.save(); x.globalAlpha=0.13; x.drawImage(portrait,540-pw/2,-70,pw,ph); x.restore();
     }
-    // 星
-    x.fillStyle="rgba(255,255,255,.55)";
-    for(let i=0;i<60;i++){x.beginPath();x.arc(Math.random()*1080,Math.random()*1080,Math.random()*2.4+.5,0,7);x.fill();}
-    // 内側の額縁
-    x.strokeStyle="rgba(255,214,140,.55)";x.lineWidth=3;
-    roundRect(x,34,34,1012,1012,28);x.stroke();
-    x.strokeStyle="rgba(255,214,140,.22)";x.lineWidth=1;
-    roundRect(x,48,48,984,984,22);x.stroke();
+    // 上→下へ背景色でフェード(立ち絵の下半分を隠して文字面を確保)
+    const fade=x.createLinearGradient(0,120,0,560);
+    fade.addColorStop(0,"rgba(44,26,68,0)");fade.addColorStop(1,"rgba(48,32,79,1)");
+    x.fillStyle=fade;x.fillRect(0,120,1080,460);
+    // 下からの淡い後光(1色・控えめ)
+    const halo=x.createRadialGradient(540,930,30,540,930,560);
+    halo.addColorStop(0,"rgba(255,214,132,.20)");halo.addColorStop(1,"rgba(255,214,132,0)");
+    x.fillStyle=halo;x.fillRect(0,560,1080,520);
+    // 星(上部のみ・控えめ)
+    x.fillStyle="rgba(255,255,255,.5)";
+    for(let i=0;i<28;i++){x.beginPath();x.arc(Math.random()*1080,Math.random()*360,Math.random()*1.8+.5,0,7);x.fill();}
+    // 細い額縁(1本・上品に)
+    x.strokeStyle="rgba(255,214,140,.35)";x.lineWidth=2;
+    roundRect(x,M-20,M-20,1080-(M-20)*2,1080-(M-20)*2,26);x.stroke();
 
     x.textAlign="center";
-    // タイトル:ロゴ画像があれば使う。なければ文字タイトル(file://フォールバック)
+    // ロゴ(控えめサイズ・上部)
     if(logo){
-      const lw=700, lh=lw*logo.height/logo.width;
-      x.drawImage(logo,540-lw/2,40,lw,lh);
+      const lw=440, lh=lw*logo.height/logo.width;
+      x.drawImage(logo,540-lw/2,92,lw,lh);
     }else{
-      x.font="700 30px 'Zen Maru Gothic',sans-serif";
-      const cap="趣味ねぇな…お呼びですか?"; const cw0=x.measureText(cap).width+56;
-      const rg=x.createLinearGradient(540-cw0/2,0,540+cw0/2,0);
-      rg.addColorStop(0,"#e0568a");rg.addColorStop(1,"#c23a8a");
-      x.fillStyle=rg; roundRect(x,540-cw0/2,74,cw0,54,27);x.fill();
-      x.fillStyle="#fff";x.fillText(cap,540,110);
-      x.save();x.shadowColor="rgba(0,0,0,.35)";x.shadowBlur=10;
-      x.fillStyle="#ffd45e";x.font="800 66px 'RocknRoll One',sans-serif";
-      x.fillText("シュミネーター",540,196);x.restore();
+      x.fillStyle="#ffd45e";x.font="800 60px 'RocknRoll One',sans-serif";
+      x.save();x.shadowColor="rgba(0,0,0,.3)";x.shadowBlur=8;x.fillText("シュミネーター",540,190);x.restore();
+      x.fillStyle="#e6a8c4";x.font="500 26px 'Zen Maru Gothic',sans-serif";x.fillText("趣味ねぇな…お呼びですか?",540,232);
     }
 
-    // ラベル
-    x.fillStyle="#ffe1ec";x.font="700 33px 'Zen Maru Gothic',sans-serif";
-    x.fillText(act===2?"あなたの“次”の世界線は":"あなたに眠っていた趣味は",540,300);
+    // ラベル(小さく・字間広め・上品)
+    x.fillStyle="#e7c98f";x.font="500 30px 'Zen Maru Gothic',sans-serif";
+    x.fillText(act===2?"あなたの 次の 世界線":"あなたに 眠っていた 趣味",540,432);
 
-    // ヒーロー:趣味名(特大・縁取りで映える)
-    let name=h[0],size=104; x.font=`800 ${size}px 'RocknRoll One',sans-serif`;
-    while(x.measureText(name).width>940&&size>48){size-=6;x.font=`800 ${size}px 'RocknRoll One',sans-serif`;}
-    const ny=410;
-    // 下線の帯
-    const nw=Math.min(960,x.measureText(name).width+60);
-    const ug=x.createLinearGradient(540-nw/2,0,540+nw/2,0);
-    ug.addColorStop(0,"rgba(255,150,90,0)");ug.addColorStop(.5,"rgba(255,170,80,.9)");ug.addColorStop(1,"rgba(255,150,90,0)");
-    x.fillStyle=ug;x.fillRect(540-nw/2,ny+18,nw,7);
-    x.save();
-    x.lineJoin="round";x.strokeStyle="#5a1f14";x.lineWidth=12;x.strokeText(name,540,ny);
-    x.shadowColor="rgba(255,180,80,.5)";x.shadowBlur=24;
-    x.fillStyle="#ffd45e";x.fillText(name,540,ny);x.restore();
+    // ヒーロー:趣味名(主役・特大・柔らかい影のみ)
+    let name=h[0],size=112; x.font=`400 ${size}px 'RocknRoll One',sans-serif`;
+    while(x.measureText(name).width>880&&size>52){size-=6;x.font=`400 ${size}px 'RocknRoll One',sans-serif`;}
+    x.save();x.shadowColor="rgba(0,0,0,.35)";x.shadowBlur=18;x.shadowOffsetY=4;
+    x.fillStyle="#ffd970";x.fillText(name,540,540);x.restore();
+    // 名前の下:短い金の罫線
+    x.strokeStyle="rgba(255,214,132,.7)";x.lineWidth=3;x.beginPath();x.moveTo(400,586);x.lineTo(680,586);x.stroke();
 
-    // 魅力の核チップ(大きめの丸ピル)
+    // 魅力の核(ピルをやめ、中黒区切りの一行に)
     const cores=Object.entries(h[3]).filter(([c,v])=>v>=3).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([c])=>c);
-    x.font="700 30px 'Zen Maru Gothic',sans-serif";
-    let cw=cores.map(c=>x.measureText(c).width+56), tot=cw.reduce((a,b)=>a+b,0)+(cores.length-1)*18, sx=540-tot/2;
-    cores.forEach((c,i)=>{
-      const pg=x.createLinearGradient(sx,0,sx+cw[i],0); pg.addColorStop(0,"#7b52c8");pg.addColorStop(1,"#5b7be0");
-      x.fillStyle=pg; roundRect(x,sx,470,cw[i],56,28);x.fill();
-      x.fillStyle="#fff";x.fillText(c,sx+cw[i]/2,508); sx+=cw[i]+18;
-    });
+    x.fillStyle="#d9c8ef";x.font="500 30px 'Zen Maru Gothic',sans-serif";
+    x.fillText(cores.join("　・　"),540,648);
 
-    // 説明(最大3行)
-    x.fillStyle="#f4ede3";x.font="400 29px 'Zen Maru Gothic',sans-serif";
-    wrapText(x,h[5],540,590,880,44,3);
+    // 説明(2行・落ち着いた色)
+    x.fillStyle="#cabfe0";x.font="400 28px 'Zen Maru Gothic',sans-serif";
+    wrapText(x,h[5],540,724,820,42,2);
 
-    // 相性のいい趣味(下部パネル)
+    // 相性のいい趣味(区切り線＋見出し＋一行。パネルは使わず余白で見せる)
+    x.strokeStyle="rgba(255,255,255,.14)";x.lineWidth=1;x.beginPath();x.moveTo(240,842);x.lineTo(840,842);x.stroke();
+    x.fillStyle="#e0a8c0";x.font="700 26px 'Zen Maru Gothic',sans-serif";
+    x.fillText("相性のいい趣味",540,894);
     const mates=mateNames(resultIdx);
-    x.fillStyle="rgba(255,255,255,.10)"; roundRect(x,90,772,900,180,22);x.fill();
-    x.strokeStyle="rgba(255,183,197,.5)";x.lineWidth=2; roundRect(x,90,772,900,180,22);x.stroke();
-    x.fillStyle="#ffb7c5";x.font="800 31px 'Zen Maru Gothic',sans-serif";
-    x.fillText("◆ 相性のいい趣味 ◆",540,828);
-    x.fillStyle="#f0e9fb";x.font="600 31px 'Zen Maru Gothic',sans-serif";
-    wrapText(x,mates.join("　/　"),540,884,840,44,2);
+    x.fillStyle="#efe7f8";x.font="500 30px 'Zen Maru Gothic',sans-serif";
+    wrapText(x,mates.join("　/　"),540,942,860,42,2);
 
-    // フッター(ハッシュタグ)
-    x.fillStyle="#ffd45e";x.font="800 34px 'Zen Maru Gothic',sans-serif";
-    x.fillText("#シュミネーター",540,1006);
+    // フッター(ハッシュタグ・金)
+    x.fillStyle="#ffd45e";x.font="700 32px 'Zen Maru Gothic',sans-serif";
+    x.fillText("#シュミネーター",540,1012);
     done(c);
   };
   // file://ではPNGを描くと汚染され保存できないので、その時は画像を使わず文字版にする
@@ -1211,20 +1155,22 @@ function downloadShareImage(){
 function shareX(){
   const hobby=HOBBIES[resultIdx][0];
   const text=`「趣味ねぇな…」と思ってたら、神様に見抜かれた。\n私に眠る趣味は【${hobby}】らしい。\n#${HASHTAG}`;
-  const doShare=(blob)=>{
-    const file=blob?new File([blob],`シュミネーター_${hobby}.png`,{type:"image/png"}):null;
-    if(file && navigator.canShare && navigator.canShare({files:[file]})){
-      navigator.share({files:[file],text}).catch(()=>fallbackX(text,blob,hobby));
-    }else{ fallbackX(text,blob,hobby); }
-  };
-  if(shareBlob) doShare(shareBlob);         // 先読み済みなら即シェア(ジェスチャー保持)
-  else getShareBlob(doShare);
+  // モバイル:画像を直接添付してネイティブ共有(Xアプリに画像が載る)
+  if(shareBlob && navigator.canShare){
+    const file=new File([shareBlob],`シュミネーター_${hobby}.png`,{type:"image/png"});
+    if(navigator.canShare({files:[file]})){
+      navigator.share({files:[file],text}).catch(()=>openXIntent(text));
+      return;
+    }
+  }
+  // PC等:X投稿画面を「クリックと同期で」開く(ポップアップブロック回避)＋画像を保存
+  openXIntent(text);
+  if(shareBlob) saveBlob(shareBlob,`シュミネーター_${hobby}.png`);
+  else getShareBlob(blob=>{ if(blob) saveBlob(blob,`シュミネーター_${hobby}.png`); });
 }
-// PC等:画像を保存してからXの投稿画面を開く(画像は投稿画面で添付)
-function fallbackX(text,blob,hobby){
-  if(blob) saveBlob(blob,`シュミネーター_${hobby}.png`);
+function openXIntent(text){
   const url=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text+"\n"+SITE_URL)}`;
-  setTimeout(()=>window.open(url,"_blank"),400);
+  window.open(url,"_blank","noopener");
 }
 function roundRect(x,px,py,w,h,r){
   x.beginPath();
@@ -1234,7 +1180,7 @@ function roundRect(x,px,py,w,h,r){
 
 /* ===== 画面・キャラ ===== */
 function show(id){
-  ["scr-start","scr-profile","scr-q","scr-guess","scr-continue","scr-cands","scr-giveup","scr-act2","scr-core","scr-read","scr-related","scr-result"]
+  ["scr-start","scr-profile","scr-q","scr-guess","scr-continue","scr-cands","scr-giveup","scr-act2","scr-core","scr-related","scr-result"]
     .forEach(s=>document.getElementById(s).classList.toggle("hidden",s!==id));
   window.scrollTo({top:0});
 }
