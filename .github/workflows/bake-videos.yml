@@ -1,11 +1,12 @@
 # =====================================================
 # シュミネーター 動画データ自動更新ワークフロー
 # 置き場所:リポジトリの .github/workflows/bake-videos.yml
-# 事前準備:GitHubリポジトリの Settings → Secrets → Actions に
-#           YT_API_KEY(YouTube Data API v3のキー)を登録
+# 任意設定:Settings → Secrets and variables → Actions に
+#           YT_API_KEY(YouTube Data API v3のキー)を登録すると
+#           より安定するAPI方式に自動で切り替わる(なくても動く)
 # 動き:毎日 日本時間 午前3時に bake_videos.js を実行し、
 #       更新が古い趣味から90件ぶん動画データを取り直して
-#       videos.js を自動コミット(全300種が約4日で一巡)
+#       videos.js を自動コミット(全333種が数日で一巡)
 # =====================================================
 name: bake-videos
 
@@ -16,6 +17,10 @@ on:
 
 permissions:
   contents: write
+
+concurrency:
+  group: bake-videos        # 同時に2つ走らせない(押し間違い対策)
+  cancel-in-progress: false
 
 jobs:
   bake:
@@ -34,5 +39,10 @@ jobs:
           git config user.name "shuminator-bot"
           git config user.email "actions@users.noreply.github.com"
           git add videos.js
-          git commit -m "動画データ自動更新" || echo "変更なし"
-          git push
+          if git diff --cached --quiet; then
+            echo "変更なし"
+          else
+            git commit -m "動画データ自動更新"
+            git pull --rebase origin main   # 保存前に最新を取り込む(追い越し衝突を防ぐ)
+            git push || (git pull --rebase origin main && git push)
+          fi
