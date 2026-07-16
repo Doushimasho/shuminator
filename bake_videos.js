@@ -21,8 +21,13 @@ const HOBBIES = eval("[" + hj.match(/const HOBBIES=\[([\s\S]*?)\n\];/)[1] + "]")
 let BAKED = {};
 try {
   const vj = fs.readFileSync("videos.js", "utf8");
-  BAKED = eval("(" + vj.match(/const BAKED_VIDEOS = (\{[\s\S]*?\});?\s*$/m)[1] + ")") || {};
+  // 最初の { から最後の } までを丸ごと取る(行単位の正規表現は途中で切れるため廃止)
+  const a = vj.indexOf("{", vj.indexOf("BAKED_VIDEOS"));
+  const b = vj.lastIndexOf("}");
+  if (a > -1 && b > a) BAKED = eval("(" + vj.slice(a, b + 1) + ")") || {};
 } catch (e) { BAKED = {}; }
+const PREV_COUNT = Object.keys(BAKED).length;
+console.log("既存データ読み込み: " + PREV_COUNT + "件");
 
 const targets = HOBBIES.map(h => h[0])
   .sort((a, b) => ((BAKED[a] && BAKED[a].u) || 0) - ((BAKED[b] && BAKED[b].u) || 0))
@@ -94,6 +99,10 @@ async function fetchApi(q) {
     // 連続で失敗が続く=ブロック中とみなし、この回は切り上げ(次回実行が続きから拾う)
     if (streak >= 10) { console.error("連続失敗が続くため今回はここで終了(次回続きから)"); break; }
     await new Promise(res => setTimeout(res, 2500 + Math.random() * 2000)); // 行儀よく間隔をあける
+  }
+  if (Object.keys(BAKED).length < PREV_COUNT) {
+    console.error(`安全装置:収録数が減るため書き込みを中止(${PREV_COUNT}件→${Object.keys(BAKED).length}件)`);
+    process.exit(0);
   }
   fs.writeFileSync("videos.js",
     "/* シュミネーター 焼き込み動画データ(bake_videos.jsが自動生成) */\nconst BAKED_VIDEOS = " +

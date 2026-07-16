@@ -93,6 +93,16 @@ body.finale .stars i{opacity:.35}
 
 .wrap{width:100%;max-width:520px;padding:16px 14px 50px;position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
 header{text-align:center;margin:4px 0 12px}
+/* プレイ中はヘッダーを小さくたたみ、回答ボタンを画面上部に寄せる */
+body.playing header{margin:2px 0 4px}
+body.playing .title-sub,body.playing .tagline{display:none}
+body.playing .logo{font-size:22px;-webkit-text-stroke:1px #6a3a12;filter:drop-shadow(0 2px 1px rgba(0,0,0,.45))}
+@media(max-width:480px){
+  .wrap{padding:8px 12px 44px}
+  .god{width:164px;height:194px;margin-bottom:-44px}
+  header{margin:2px 0 8px}
+  body.playing .god{width:148px;height:175px;margin-bottom:-40px}
+}
 .logo{
   font-family:"RocknRoll One",sans-serif;font-size:clamp(34px,9vw,52px);letter-spacing:.03em;line-height:1.15;
   background:linear-gradient(180deg,#fff8dc 0%,#ffe680 30%,#f7be46 52%,#ffdd76 74%,#e79a2b 100%);
@@ -278,7 +288,7 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
       </p>
     </div>
     <button class="primary" onclick="startGame()">見抜いてもらう</button>
-    <p class="small" style="color:var(--ink-dim)">300種の趣味から見抜きます|質問はふつう20〜30問</p>
+    <p class="small" style="color:var(--ink-dim)">300種の趣味から見抜きます|質問はふつう20〜30問<br>ゲーム配信・動画でのご利用は自由です(許可・連絡は不要)</p>
   </section>
 
   <!-- 前提の確認(時間・お金) -->
@@ -430,6 +440,7 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
   <div>案内人:どうしましょう</div>
   <div style="margin-top:8px"><a href="https://www.youtube.com/@doushimasho" target="_blank" rel="noopener" style="color:#ffb7c5;text-decoration:underline">どうしましょうのYouTubeチャンネル</a></div>
   <div style="margin-top:10px;font-size:10.5px;color:var(--ink-dim);line-height:1.6;max-width:460px;margin-left:auto;margin-right:auto">
+    ゲーム配信・動画・SNSでのご利用は自由です(許可・連絡は不要です)。<br>
     当サイトはAmazonのアソシエイトとして、適格販売により収入を得ています。<br>
     紹介する道具は各趣味の一例です。購入は各自の判断でお願いします。
   </div>
@@ -577,6 +588,7 @@ function liftFactor(i){
 function isNiche(i){ return (HOBBIES[i][10]!==undefined?HOBBIES[i][10]:2)<=1; }
 
 function startGame(){
+  document.body.classList.add("playing");  // ヘッダーを小さくたたみ回答を上へ
   weights=HOBBIES.map(()=>1);
   excluded.clear(); asked.clear();
   qCount=0; wrongCount=0; lastGuessAt=0; history=[];
@@ -1042,76 +1054,75 @@ function renderShareCanvas(withPortrait, done){
   const x=c.getContext("2d");
   const h=HOBBIES[resultIdx];
   const drawAll=(portrait)=>{
-    const M=64; // マージン(セーフゾーン)
-    // 背景:プラム→インディゴの落ち着いたグラデ(色を絞る)
+    /* ===== 夜空の背景 ===== */
     const g=x.createLinearGradient(0,0,0,1080);
-    g.addColorStop(0,"#2b1a44");g.addColorStop(.55,"#34204f");g.addColorStop(1,"#241540");
+    g.addColorStop(0,"#1c1638");g.addColorStop(.5,"#2c1e52");g.addColorStop(1,"#463063");
     x.fillStyle=g;x.fillRect(0,0,1080,1080);
-    // 立ち絵:上部だけに大きく(見下ろす神)。下半分はスクリムで消して文字面をクリアに
-    if(portrait){
-      const pw=980, ph=pw*portrait.height/portrait.width;
-      x.save(); x.globalAlpha=0.13; x.drawImage(portrait,540-pw/2,-70,pw,ph); x.restore();
-    }
-    // 上→下へ背景色でフェード(立ち絵の下半分を隠して文字面を確保)
-    const fade=x.createLinearGradient(0,120,0,560);
-    fade.addColorStop(0,"rgba(44,26,68,0)");fade.addColorStop(1,"rgba(48,32,79,1)");
-    x.fillStyle=fade;x.fillRect(0,120,1080,460);
-    // 下からの淡い後光(1色・控えめ)
-    const halo=x.createRadialGradient(540,930,30,540,930,560);
-    halo.addColorStop(0,"rgba(255,214,132,.20)");halo.addColorStop(1,"rgba(255,214,132,0)");
-    x.fillStyle=halo;x.fillRect(0,560,1080,520);
+    // キャラ背後のやわらかな光
+    const glow=x.createRadialGradient(540,290,40,540,290,470);
+    glow.addColorStop(0,"rgba(255,233,190,.30)");glow.addColorStop(1,"rgba(255,233,190,0)");
+    x.fillStyle=glow;x.fillRect(0,0,1080,720);
     // 星(上部のみ・控えめ)
-    x.fillStyle="rgba(255,255,255,.5)";
-    for(let i=0;i<28;i++){x.beginPath();x.arc(Math.random()*1080,Math.random()*360,Math.random()*1.8+.5,0,7);x.fill();}
-    // 細い額縁(1本・上品に)
-    x.strokeStyle="rgba(255,214,140,.35)";x.lineWidth=2;
-    roundRect(x,M-20,M-20,1080-(M-20)*2,1080-(M-20)*2,26);x.stroke();
+    for(let i=0;i<42;i++){const sx=Math.random()*1080,sy=Math.random()*300,sr=Math.random()*1.8+.5;
+      x.beginPath();x.arc(sx,sy,sr,0,7);x.fillStyle="rgba(255,255,255,"+(Math.random()*.35+.3).toFixed(2)+")";x.fill();}
 
     x.textAlign="center";
-    // ロゴ(控えめサイズ・上部)
-    // タイトル(文字。ロゴ画像は不使用)
-    x.fillStyle="#ffe1ec";x.font="700 28px 'Zen Maru Gothic',sans-serif";
-    x.save();x.shadowColor="rgba(0,0,0,.4)";x.shadowBlur=6;
-    x.fillText("新しい趣味を見つけます",540,96);x.restore();
+    /* ===== タイトル(サイトと同じ金の意匠) ===== */
+    x.fillStyle="#ffd9e6";x.font="700 26px 'Zen Maru Gothic',sans-serif";
+    x.save();x.shadowColor="rgba(0,0,0,.45)";x.shadowBlur=6;x.fillText("新しい趣味を見つけます",540,52);x.restore();
     x.save();x.lineJoin="round";
-    x.font="400 74px 'RocknRoll One',sans-serif";
-    x.strokeStyle="#6a3a12";x.lineWidth=10;x.strokeText("シュミネーター",540,176);
-    const tg=x.createLinearGradient(0,130,0,200);
+    x.font="400 76px 'RocknRoll One',sans-serif";
+    x.strokeStyle="#6a3a12";x.lineWidth=10;x.strokeText("シュミネーター",540,134);
+    const tg=x.createLinearGradient(0,84,0,154);
     tg.addColorStop(0,"#fff8dc");tg.addColorStop(.35,"#ffe680");tg.addColorStop(.6,"#f7be46");tg.addColorStop(1,"#e79a2b");
-    x.fillStyle=tg;x.fillText("シュミネーター",540,176);x.restore();
+    x.fillStyle=tg;x.fillText("シュミネーター",540,134);x.restore();
 
-    // ラベル(小さく・字間広め・上品)
-    x.fillStyle="#e7c98f";x.font="500 30px 'Zen Maru Gothic',sans-serif";
-    x.fillText(act===2?"あなたの 次の 世界線":"あなたに 眠っていた 趣味",540,432);
+    /* ===== どうしましょう(カードの上から顔をのぞかせる) ===== */
+    if(portrait){
+      const pw=480, ph=pw*portrait.height/portrait.width;
+      x.save();x.shadowColor="rgba(0,0,0,.35)";x.shadowBlur=16;
+      x.drawImage(portrait,540-pw/2,140,pw,ph);x.restore();
+    }
 
-    // ヒーロー:趣味名(主役・特大・柔らかい影のみ)
-    let name=h[0],size=112; x.font=`400 ${size}px 'RocknRoll One',sans-serif`;
-    while(x.measureText(name).width>880&&size>52){size-=6;x.font=`400 ${size}px 'RocknRoll One',sans-serif`;}
-    x.save();x.shadowColor="rgba(0,0,0,.35)";x.shadowBlur=18;x.shadowOffsetY=4;
-    x.fillStyle="#ffd970";x.fillText(name,540,540);x.restore();
-    // 名前の下:短い金の罫線
-    x.strokeStyle="rgba(255,214,132,.7)";x.lineWidth=3;x.beginPath();x.moveTo(400,586);x.lineTo(680,586);x.stroke();
+    /* ===== 和紙の結果カード ===== */
+    x.save();x.shadowColor="rgba(0,0,0,.45)";x.shadowBlur=30;x.shadowOffsetY=12;
+    x.fillStyle="#faf4e6";roundRect(x,64,352,952,614,46);x.fill();x.restore();
 
-    // 魅力の核(ピルをやめ、中黒区切りの一行に)
+    // ラベル
+    x.fillStyle="#b9557d";x.font="700 27px 'Zen Maru Gothic',sans-serif";
+    x.fillText(act===2?"あなたの“次”の世界線":"あなたに眠っていた趣味",540,414);
+    // 趣味名(主役)
+    let name=h[0],size=94;x.font=`400 ${size}px 'RocknRoll One',sans-serif`;
+    while(x.measureText(name).width>860&&size>46){size-=6;x.font=`400 ${size}px 'RocknRoll One',sans-serif`;}
+    x.fillStyle="#453058";x.fillText(name,540,500);
+    // 金の飾り罫
+    const rg=x.createLinearGradient(340,0,740,0);
+    rg.addColorStop(0,"rgba(240,182,78,0)");rg.addColorStop(.5,"#f0b64e");rg.addColorStop(1,"rgba(240,182,78,0)");
+    x.fillStyle=rg;x.fillRect(340,530,400,4);
+    // 魅力の核チップ
     const cores=Object.entries(h[3]).filter(([c,v])=>v>=3).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([c])=>c);
-    x.fillStyle="#d9c8ef";x.font="500 30px 'Zen Maru Gothic',sans-serif";
-    x.fillText(cores.join("　・　"),540,648);
-
-    // 説明(2行・落ち着いた色)
-    x.fillStyle="#cabfe0";x.font="400 28px 'Zen Maru Gothic',sans-serif";
-    wrapText(x,h[5],540,724,820,42,2);
-
-    // 相性のいい趣味(区切り線＋見出し＋一行。パネルは使わず余白で見せる)
-    x.strokeStyle="rgba(255,255,255,.14)";x.lineWidth=1;x.beginPath();x.moveTo(240,842);x.lineTo(840,842);x.stroke();
-    x.fillStyle="#e0a8c0";x.font="700 26px 'Zen Maru Gothic',sans-serif";
-    x.fillText("相性のいい趣味",540,894);
+    x.font="700 26px 'Zen Maru Gothic',sans-serif";
+    let cw=cores.map(c=>x.measureText(c).width+46),tot=cw.reduce((a,b)=>a+b,0)+(cores.length-1)*14,sx2=540-tot/2;
+    cores.forEach((c,i)=>{ x.fillStyle="#7a4a86";roundRect(x,sx2,558,cw[i],46,23);x.fill();
+      x.fillStyle="#fff";x.fillText(c,sx2+cw[i]/2,590);sx2+=cw[i]+14; });
+    // 説明(最大2行)
+    x.fillStyle="#6d6258";x.font="400 27px 'Zen Maru Gothic',sans-serif";
+    wrapText(x,h[5],540,662,800,42,2);
+    // 区切り線
+    x.fillStyle="#e6dcc6";x.fillRect(200,744,680,2);
+    // 相性のいい趣味
+    x.fillStyle="#b9557d";x.font="700 24px 'Zen Maru Gothic',sans-serif";
+    x.fillText("相性のいい趣味",540,792);
     const mates=mateNames(resultIdx);
-    x.fillStyle="#efe7f8";x.font="500 30px 'Zen Maru Gothic',sans-serif";
-    wrapText(x,mates.join("　/　"),540,942,860,42,2);
+    x.fillStyle="#4c4258";x.font="500 27px 'Zen Maru Gothic',sans-serif";
+    wrapText(x,mates.join("　/　"),540,838,820,42,2);
 
-    // フッター(ハッシュタグ・金)
-    x.fillStyle="#ffd45e";x.font="700 32px 'Zen Maru Gothic',sans-serif";
-    x.fillText("#シュミネーター",540,1012);
+    /* ===== フッター(拡散用) ===== */
+    x.save();x.shadowColor="rgba(0,0,0,.4)";x.shadowBlur=6;
+    x.fillStyle="#ffd45e";x.font="400 34px 'RocknRoll One',sans-serif";
+    x.fillText("#シュミネーター",540,1022);x.restore();
+    x.fillStyle="#b7a6d6";x.font="500 19px 'Zen Maru Gothic',sans-serif";
+    x.fillText("doushimasho.github.io/shuminator",540,1058);
     done(c);
   };
   // file://ではPNGを描くと汚染され保存できないので、その時は画像を使わず文字版にする
@@ -1162,16 +1173,9 @@ function downloadShareImage(){
 function shareX(){
   const hobby=HOBBIES[resultIdx][0];
   const text=`「趣味ねぇな…」と思ってたら、神様に見抜かれた。\n私に眠る趣味は【${hobby}】らしい。\n#${HASHTAG}`;
-  // モバイル:画像を直接添付してネイティブ共有(Xアプリに画像が載る)
-  if(shareBlob && navigator.canShare){
-    const file=new File([shareBlob],`シュミネーター_${hobby}.png`,{type:"image/png"});
-    if(navigator.canShare({files:[file]})){
-      navigator.share({files:[file],text}).catch(()=>openXIntent(text));
-      return;
-    }
-  }
-  // PC等:X投稿画面を「クリックと同期で」開く(ポップアップブロック回避)＋画像を保存
+  // どの端末でも必ずXの投稿画面を開く(クリックと同期=ポップアップブロック回避)
   openXIntent(text);
+  // 画像も保存しておく(投稿画面でそのまま添付できるように)
   if(shareBlob) saveBlob(shareBlob,`シュミネーター_${hobby}.png`);
   else getShareBlob(blob=>{ if(blob) saveBlob(blob,`シュミネーター_${hobby}.png`); });
 }
