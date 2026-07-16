@@ -101,7 +101,15 @@ body.playing .logo{font-size:22px;-webkit-text-stroke:1px #6a3a12;filter:drop-sh
   .wrap{padding:8px 12px 44px}
   .god{width:164px;height:194px;margin-bottom:-44px}
   header{margin:2px 0 8px}
-  body.playing .god{width:148px;height:175px;margin-bottom:-40px}
+  /* プレイ中はさらに圧縮:ヘッダーを消し、回答4択が1画面に収まる高さへ */
+  body.playing header{display:none}
+  body.playing .wrap{padding-top:6px}
+  body.playing .god{width:126px;height:149px;margin-bottom:-34px}
+  body.playing .qcard{padding:18px 14px 14px}
+  body.playing .qtext{font-size:18.5px;line-height:1.65;min-height:0}
+  body.playing .mutter{min-height:0}
+  body.playing .choice{margin-top:12px;gap:8px}
+  body.playing .ans{min-height:50px;font-size:16.5px}
 }
 .logo{
   font-family:"RocknRoll One",sans-serif;font-size:clamp(34px,9vw,52px);letter-spacing:.03em;line-height:1.15;
@@ -430,6 +438,7 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
       <button class="primary" onclick="downloadShareImage()">シェア画像を保存</button>
       <button class="primary x-btn" onclick="shareX()">Xでシェア</button>
     </div>
+    <p id="share-hint" style="text-align:center;font-size:12px;color:var(--ink-dim);min-height:16px;margin:6px 0 0"></p>
     <button class="more" onclick="searchMore()">この趣味は確定!ほかの趣味も探す</button>
     <button class="ghost" onclick="location.reload()">最初からやり直す</button>
   </section>
@@ -449,7 +458,10 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
 <canvas id="share-canvas" width="1080" height="1080" class="hidden"></canvas>
 
 <script src="./hobbies.js"></script>
-<script src="./videos.js"></script>
+<script>
+// videos.jsは毎日自動更新されるため、1時間単位でキャッシュを更新して最新のサムネイルを反映
+document.write('<script src="./videos.js?v='+Math.floor(Date.now()/3600000)+'"><\/script>');
+</script>
 <script>
 /* ============================================================
    ▼▼ 設定エリア(ショウさんが編集する場所) ▼▼
@@ -1172,12 +1184,22 @@ function downloadShareImage(){
 }
 function shareX(){
   const hobby=HOBBIES[resultIdx][0];
-  const text=`「趣味ねぇな…」と思ってたら、神様に見抜かれた。\n私に眠る趣味は【${hobby}】らしい。\n#${HASHTAG}`;
-  // どの端末でも必ずXの投稿画面を開く(クリックと同期=ポップアップブロック回避)
+  const text=`私に眠る趣味は【${hobby}】らしい。\n#シュミネーター #趣味診断`;
+  const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  // スマホ:画像つきで共有シートへ(Xを選ぶと画像が添付された投稿になる)
+  if(isMobile && shareBlob && navigator.canShare){
+    const file=new File([shareBlob],`シュミネーター_${hobby}.png`,{type:"image/png"});
+    if(navigator.canShare({files:[file]})){
+      navigator.share({files:[file],text:text+"\n"+SITE_URL}).catch(()=>openXIntent(text));
+      return;
+    }
+  }
+  // PC:X投稿画面をクリックと同期で開く+画像を保存(投稿画面へドラッグ&ドロップで添付)
   openXIntent(text);
-  // 画像も保存しておく(投稿画面でそのまま添付できるように)
   if(shareBlob) saveBlob(shareBlob,`シュミネーター_${hobby}.png`);
   else getShareBlob(blob=>{ if(blob) saveBlob(blob,`シュミネーター_${hobby}.png`); });
+  const hint=document.getElementById("share-hint");
+  if(hint) hint.textContent="画像を保存しました。Xの投稿画面にドラッグ&ドロップすると添付できます";
 }
 function openXIntent(text){
   const url=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text+"\n"+SITE_URL)}`;
