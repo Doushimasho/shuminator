@@ -1,0 +1,38 @@
+# =====================================================
+# シュミネーター 動画データ自動更新ワークフロー
+# 置き場所:リポジトリの .github/workflows/bake-videos.yml
+# 事前準備:GitHubリポジトリの Settings → Secrets → Actions に
+#           YT_API_KEY(YouTube Data API v3のキー)を登録
+# 動き:毎日 日本時間 午前3時に bake_videos.js を実行し、
+#       更新が古い趣味から90件ぶん動画データを取り直して
+#       videos.js を自動コミット(全300種が約4日で一巡)
+# =====================================================
+name: bake-videos
+
+on:
+  schedule:
+    - cron: "0 18 * * *"   # UTC18時 = 日本時間 午前3時
+  workflow_dispatch:        # 手動実行ボタンも使える
+
+permissions:
+  contents: write
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 動画データを更新
+        run: node bake_videos.js --max 90
+        env:
+          YT_API_KEY: ${{ secrets.YT_API_KEY }}
+      - name: videos.js をコミット
+        run: |
+          git config user.name "shuminator-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add videos.js
+          git commit -m "動画データ自動更新" || echo "変更なし"
+          git push

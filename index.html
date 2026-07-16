@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>シュミネーター|趣味ねぇな…お呼びですか?</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
 <meta name="description" content="質問に答えるだけで、神様「どうしましょう」があなたに眠る趣味を見抜きます。300種の趣味から、あなたにぴったりの一つを。">
 <!-- ▼▼ 公開時に必須:下の "https://example.com/shuminator" を GitHub Pages の本番URLに全置換(og:image / og:url / twitter:image の3+1箇所)。OGP画像は ogp.png を同じフォルダに置く ▼▼ -->
 <!-- OGP(FacebookやLINE等) -->
@@ -90,8 +93,13 @@ body.finale .stars i{opacity:.35}
 
 .wrap{width:100%;max-width:520px;padding:16px 14px 50px;position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
 header{text-align:center;margin:4px 0 12px}
-.logo{font-family:"RocknRoll One",sans-serif;font-size:clamp(28px,7.5vw,40px);letter-spacing:.04em;color:var(--gold);text-shadow:0 3px 0 rgba(0,0,0,.35)}
-.logo span{color:var(--sakura)}
+.logo{
+  font-family:"RocknRoll One",sans-serif;font-size:clamp(34px,9vw,52px);letter-spacing:.03em;line-height:1.15;
+  background:linear-gradient(180deg,#fff8dc 0%,#ffe680 30%,#f7be46 52%,#ffdd76 74%,#e79a2b 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-stroke:1.6px #6a3a12;
+  filter:drop-shadow(0 3px 2px rgba(0,0,0,.5)) drop-shadow(0 1px 0 #8a5016);
+}
 .tagline{color:var(--ink-dim);font-size:13px;margin-top:4px}
 
 /* キャラクター */
@@ -136,6 +144,7 @@ header{text-align:center;margin:4px 0 12px}
   font-size:15px;font-weight:700;letter-spacing:.06em;margin-bottom:12px;
 }
 .nameplate small{display:block;color:var(--ink-dim);font-size:11px;font-weight:500;letter-spacing:0}
+.title-sub{text-align:center;color:#ffe1ec;font-size:15px;font-weight:700;letter-spacing:.1em;text-shadow:0 2px 6px rgba(0,0,0,.45);margin-bottom:2px}
 .mutter{color:#b0691f;font-size:13px;font-weight:700;min-height:18px;margin-bottom:4px}
 .guess-desc{font-size:14.5px;line-height:1.85;color:var(--sumi);background:#fff;border:1.5px solid #e2d6b8;border-radius:12px;padding:12px 14px;margin:4px 0 10px;text-align:left}
 .more{
@@ -252,14 +261,14 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
 
 <div class="wrap">
   <header>
-    <div class="logo">シュミ<span>ネーター</span></div>
+    <div class="title-sub">新しい趣味を見つけます</div>
+    <div class="logo">シュミネーター</div>
     <div class="tagline">趣味ねぇな…お呼びですか?</div>
   </header>
 
   <!-- スタート -->
   <section id="scr-start" class="stage">
     <div class="nameplate">どうしましょう<small>特技:人生を良い方向に導く</small></div>
-    <img src="logo.png" alt="シュミネーター" style="width:min(88%,440px);display:block;margin:2px auto -4px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))">
     <div class="god"></div>
     <div class="qcard center">
       <p style="font-size:17px;font-weight:700;line-height:2.1">
@@ -438,7 +447,6 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
 // ============================================================
 // 【差し替え可能な素材ファイル一覧】同じファイル名で上書きすれば絵が入れ替わります
 //   立ち絵8種: normal / thinking / idea / happy / sorry / serious / gyafun / serioushappy .png
-//   タイトルロゴ: logo.png(スタート画面・シェア画像で使用)
 //   OGP画像:  ogp.png(SNSリンクカード)
 //   ※新しい絵に差し替えるときは、上記と同じ名前で保存して同じフォルダに置くだけ
 // ============================================================
@@ -449,7 +457,6 @@ const CHARACTER_IMAGES = {
   happy:"happy.png", sorry:"sorry.png",
   serious:"serious.png", gyafun:"gyafun.png", serioushappy:"serioushappy.png"
 };
-const LOGO_IMG = "logo.png";  // タイトルロゴ(シェア画像・スタート画面で使用)
 // ② Amazonアソシエイトのタグ
 const AMAZON_TAG = "your-affiliate-tag-22";
 // ③ YouTube Data API v3 のキー(入れると結果画面が「検索上位3本のサムネイル表示」に切り替わる。空なら検索リンク表示)
@@ -1034,7 +1041,7 @@ function renderShareCanvas(withPortrait, done){
   const c=document.createElement("canvas"); c.width=1080; c.height=1080;
   const x=c.getContext("2d");
   const h=HOBBIES[resultIdx];
-  const drawAll=(portrait,logo)=>{
+  const drawAll=(portrait)=>{
     const M=64; // マージン(セーフゾーン)
     // 背景:プラム→インディゴの落ち着いたグラデ(色を絞る)
     const g=x.createLinearGradient(0,0,0,1080);
@@ -1062,14 +1069,16 @@ function renderShareCanvas(withPortrait, done){
 
     x.textAlign="center";
     // ロゴ(控えめサイズ・上部)
-    if(logo){
-      const lw=440, lh=lw*logo.height/logo.width;
-      x.drawImage(logo,540-lw/2,92,lw,lh);
-    }else{
-      x.fillStyle="#ffd45e";x.font="800 60px 'RocknRoll One',sans-serif";
-      x.save();x.shadowColor="rgba(0,0,0,.3)";x.shadowBlur=8;x.fillText("シュミネーター",540,190);x.restore();
-      x.fillStyle="#e6a8c4";x.font="500 26px 'Zen Maru Gothic',sans-serif";x.fillText("趣味ねぇな…お呼びですか?",540,232);
-    }
+    // タイトル(文字。ロゴ画像は不使用)
+    x.fillStyle="#ffe1ec";x.font="700 28px 'Zen Maru Gothic',sans-serif";
+    x.save();x.shadowColor="rgba(0,0,0,.4)";x.shadowBlur=6;
+    x.fillText("新しい趣味を見つけます",540,96);x.restore();
+    x.save();x.lineJoin="round";
+    x.font="400 74px 'RocknRoll One',sans-serif";
+    x.strokeStyle="#6a3a12";x.lineWidth=10;x.strokeText("シュミネーター",540,176);
+    const tg=x.createLinearGradient(0,130,0,200);
+    tg.addColorStop(0,"#fff8dc");tg.addColorStop(.35,"#ffe680");tg.addColorStop(.6,"#f7be46");tg.addColorStop(1,"#e79a2b");
+    x.fillStyle=tg;x.fillText("シュミネーター",540,176);x.restore();
 
     // ラベル(小さく・字間広め・上品)
     x.fillStyle="#e7c98f";x.font="500 30px 'Zen Maru Gothic',sans-serif";
@@ -1108,14 +1117,12 @@ function renderShareCanvas(withPortrait, done){
   // file://ではPNGを描くと汚染され保存できないので、その時は画像を使わず文字版にする
   const canImg = withPortrait && location.protocol!=="file:";
   if(canImg){
-    let logo=null, portrait=null, pending=2, fin=false;
-    const done2=()=>{ if(!fin){fin=true; drawAll(portrait,logo);} };
-    const one=()=>{ if(--pending<=0) done2(); };
-    const li=new Image(); li.onload=()=>{logo=li;one();}; li.onerror=()=>one(); li.src=LOGO_IMG;
-    const pi=new Image(); pi.onload=()=>{portrait=pi;one();}; pi.onerror=()=>one();
+    let fin=false;
+    const go=p=>{ if(!fin){fin=true; drawAll(p);} };
+    const pi=new Image(); pi.onload=()=>go(pi); pi.onerror=()=>go(null);
     pi.src=(act===2?CHARACTER_IMAGES.serioushappy:CHARACTER_IMAGES.happy)||"happy.png";
-    setTimeout(done2,2000);
-  }else drawAll(null,null);
+    setTimeout(()=>go(null),2000);
+  }else drawAll(null);
 }
 // canvasをBlob化。まっさらなcanvasなので汚染は起きないが、保険で二重に握る
 function getShareBlob(cb){
