@@ -1079,43 +1079,43 @@ function renderShareCanvas(withPortrait, done){
 
     /* ===== どうしましょう(カードの上から顔をのぞかせる) ===== */
     if(portrait){
-      const pw=480, ph=pw*portrait.height/portrait.width;
+      const pw=440, ph=pw*portrait.height/portrait.width;
       x.save();x.shadowColor="rgba(0,0,0,.35)";x.shadowBlur=16;
-      x.drawImage(portrait,540-pw/2,140,pw,ph);x.restore();
+      x.drawImage(portrait,540-pw/2,152,pw,ph);x.restore();
     }
 
     /* ===== 和紙の結果カード ===== */
     x.save();x.shadowColor="rgba(0,0,0,.45)";x.shadowBlur=30;x.shadowOffsetY=12;
-    x.fillStyle="#faf4e6";roundRect(x,64,352,952,614,46);x.fill();x.restore();
+    x.fillStyle="#faf4e6";roundRect(x,64,400,952,566,46);x.fill();x.restore();
 
     // ラベル
     x.fillStyle="#b9557d";x.font="700 27px 'Zen Maru Gothic',sans-serif";
-    x.fillText(act===2?"あなたの“次”の世界線":"あなたに眠っていた趣味",540,414);
+    x.fillText(act===2?"あなたの“次”の世界線":"あなたに眠っていた趣味",540,458);
     // 趣味名(主役)
     let name=h[0],size=94;x.font=`400 ${size}px 'RocknRoll One',sans-serif`;
     while(x.measureText(name).width>860&&size>46){size-=6;x.font=`400 ${size}px 'RocknRoll One',sans-serif`;}
-    x.fillStyle="#453058";x.fillText(name,540,500);
+    x.fillStyle="#453058";x.fillText(name,540,544);
     // 金の飾り罫
     const rg=x.createLinearGradient(340,0,740,0);
     rg.addColorStop(0,"rgba(240,182,78,0)");rg.addColorStop(.5,"#f0b64e");rg.addColorStop(1,"rgba(240,182,78,0)");
-    x.fillStyle=rg;x.fillRect(340,530,400,4);
+    x.fillStyle=rg;x.fillRect(340,574,400,4);
     // 魅力の核チップ
     const cores=Object.entries(h[3]).filter(([c,v])=>v>=3).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([c])=>c);
     x.font="700 26px 'Zen Maru Gothic',sans-serif";
     let cw=cores.map(c=>x.measureText(c).width+46),tot=cw.reduce((a,b)=>a+b,0)+(cores.length-1)*14,sx2=540-tot/2;
-    cores.forEach((c,i)=>{ x.fillStyle="#7a4a86";roundRect(x,sx2,558,cw[i],46,23);x.fill();
-      x.fillStyle="#fff";x.fillText(c,sx2+cw[i]/2,590);sx2+=cw[i]+14; });
+    cores.forEach((c,i)=>{ x.fillStyle="#7a4a86";roundRect(x,sx2,602,cw[i],46,23);x.fill();
+      x.fillStyle="#fff";x.fillText(c,sx2+cw[i]/2,634);sx2+=cw[i]+14; });
     // 説明(最大2行)
     x.fillStyle="#6d6258";x.font="400 27px 'Zen Maru Gothic',sans-serif";
-    wrapText(x,h[5],540,662,800,42,2);
+    wrapText(x,h[5],540,702,800,42,2);
     // 区切り線
-    x.fillStyle="#e6dcc6";x.fillRect(200,744,680,2);
+    x.fillStyle="#e6dcc6";x.fillRect(200,784,680,2);
     // 相性のいい趣味
     x.fillStyle="#b9557d";x.font="700 24px 'Zen Maru Gothic',sans-serif";
-    x.fillText("相性のいい趣味",540,792);
+    x.fillText("相性のいい趣味",540,830);
     const mates=mateNames(resultIdx);
     x.fillStyle="#4c4258";x.font="500 27px 'Zen Maru Gothic',sans-serif";
-    wrapText(x,mates.join("　/　"),540,838,820,42,2);
+    wrapText(x,mates.join("　/　"),540,874,820,42,2);
 
     /* ===== フッター(拡散用) ===== */
     x.save();x.shadowColor="rgba(0,0,0,.4)";x.shadowBlur=6;
