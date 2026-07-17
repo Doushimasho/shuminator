@@ -164,6 +164,14 @@ body.playing .logo{font-size:22px;-webkit-text-stroke:1px #6a3a12;filter:drop-sh
 .nameplate small{display:block;color:var(--ink-dim);font-size:11px;font-weight:500;letter-spacing:0}
 .title-sub{text-align:center;color:#ffe1ec;font-size:15px;font-weight:700;letter-spacing:.1em;text-shadow:0 2px 6px rgba(0,0,0,.45);margin-bottom:2px}
 .mutter{color:#b0691f;font-size:13px;font-weight:700;min-height:18px;margin-bottom:4px}
+/* 運営者情報・プライバシーポリシーのモーダル */
+.policy-wrap{position:fixed;inset:0;background:rgba(10,8,20,.74);z-index:60;display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto}
+.policy-wrap.hidden{display:none}
+.policy-card{background:var(--washi);color:var(--sumi);border-radius:18px;max-width:560px;width:100%;max-height:82vh;overflow-y:auto;padding:22px 20px 18px;font-size:13px;line-height:1.85;text-align:left;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+.policy-card h2{font-size:15px;margin:16px 0 6px;color:#7a4a86;border-left:4px solid #f0b64e;padding-left:8px}
+.policy-card h2:first-child{margin-top:0}
+.policy-card a{color:#b9557d}
+.policy-close{display:block;margin:14px auto 0}
 .guess-desc{font-size:14.5px;line-height:1.85;color:var(--sumi);background:#fff;border:1.5px solid #e2d6b8;border-radius:12px;padding:12px 14px;margin:4px 0 10px;text-align:left}
 .more{
   display:block;width:100%;max-width:420px;margin:14px auto 0;
@@ -448,12 +456,44 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
   <button class="toplink" onclick="if(confirm('最初からやり直しますか?'))location.reload()">↑ トップに戻る</button>
   <div>案内人:どうしましょう</div>
   <div style="margin-top:8px"><a href="https://www.youtube.com/@doushimasho" target="_blank" rel="noopener" style="color:#ffb7c5;text-decoration:underline">どうしましょうのYouTubeチャンネル</a></div>
+  <div style="margin-top:6px"><button class="toplink" onclick="togglePolicy(true)">運営者情報・プライバシーポリシー</button></div>
   <div style="margin-top:10px;font-size:10.5px;color:var(--ink-dim);line-height:1.6;max-width:460px;margin-left:auto;margin-right:auto">
     ゲーム配信・動画・SNSでのご利用は自由です(許可・連絡は不要です)。<br>
     当サイトはAmazonのアソシエイトとして、適格販売により収入を得ています。<br>
     紹介する道具は各趣味の一例です。購入は各自の判断でお願いします。
   </div>
 </footer>
+
+<!-- 運営者情報・プライバシーポリシー -->
+<div id="policy-modal" class="policy-wrap hidden" onclick="if(event.target===this)togglePolicy(false)">
+  <div class="policy-card">
+    <h2>運営者情報</h2>
+    <p>
+      運営者:導師真ショウ(どうしま しょう)<br>
+      国家資格キャリアコンサルタント/VTuber<br>
+      「シュミネーター」は、新しい趣味に出会うきっかけを届けるために個人で運営している無料の診断ゲームです。<br>
+      活動:<a href="https://www.youtube.com/@doushimasho" target="_blank" rel="noopener">YouTube</a>/<a href="https://x.com/doushimasho" target="_blank" rel="noopener">X(@doushimasho)</a><br>
+      お問い合わせ:X(@doushimasho)へのDM、またはYouTubeチャンネルのコメント欄までお願いします。
+    </p>
+    <h2>プライバシーポリシー</h2>
+    <p>
+      当サイトの診断は、すべてお使いのブラウザ内で処理されます。診断の回答内容や結果を当サイトのサーバーへ送信・保存することはなく、氏名やメールアドレス等の個人情報の入力も求めません。<br>
+      フォントや動画サムネイルの表示のため、外部サービス(Google Fonts、YouTube、Amazon)を読み込んでおり、その際に各事業者へアクセス情報が送信される場合があります。詳細は各サービスのプライバシーポリシーをご確認ください。
+    </p>
+    <h2>アフィリエイトについて</h2>
+    <p>
+      当サイトは、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。<br>
+      紹介する道具は各趣味の一例です。価格や仕様はリンク先で最新の情報をご確認のうえ、購入は各自のご判断でお願いします。
+    </p>
+    <h2>免責事項</h2>
+    <p>
+      診断結果は娯楽および趣味探しの参考を目的としたもので、その正確性や特定の成果を保証するものではありません。当サイトの利用により生じたいかなる損害についても、運営者は責任を負いかねます。<br>
+      ゲーム配信・動画・SNSでのご利用は自由です(許可・連絡は不要です)。
+    </p>
+    <p style="color:var(--sumi-dim);font-size:11.5px">制定日:2026年7月17日</p>
+    <button class="primary policy-close" onclick="togglePolicy(false)">閉じる</button>
+  </div>
+</div>
 
 <canvas id="share-canvas" width="1080" height="1080" class="hidden"></canvas>
 
@@ -481,7 +521,7 @@ const CHARACTER_IMAGES = {
   serious:"serious.png", gyafun:"gyafun.png", serioushappy:"serioushappy.png"
 };
 // ② Amazonアソシエイトのタグ
-const AMAZON_TAG = "your-affiliate-tag-22";
+const AMAZON_TAG = "doushimasho44-22";
 // ③ YouTube Data API v3 のキー(入れると結果画面が「検索上位3本のサムネイル表示」に切り替わる。空なら検索リンク表示)
 const YOUTUBE_API_KEY = "";
 // ④ 公開URLとハッシュタグ
@@ -1251,6 +1291,9 @@ function godSVG(state){
     ${eyes}
     <path d="${f.m}" stroke="#3a2402" stroke-width="4" fill="none" stroke-linecap="round"/>
   </svg>`;
+}
+function togglePolicy(on){
+  document.getElementById("policy-modal").classList.toggle("hidden",!on);
 }
 function setGod(state){
   // 画像未設定の表情は、指定があれば近い表情の画像で代用
