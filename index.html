@@ -1225,7 +1225,9 @@ function downloadShareImage(){
 function shareX(){
   const hobby=HOBBIES[resultIdx][0];
   const text=`私に眠る趣味は【${hobby}】らしい。\n#シュミネーター #趣味診断`;
-  const url=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text+"\n"+SITE_URL)}`;
+  // Xはカードを「共有URL単位」で数日キャッシュするため、日替わりの目印を付けて常に最新カードを取得させる
+  const shareUrl=SITE_URL+"?d="+Math.floor(Date.now()/86400000);
+  const url=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text+"\n"+shareUrl)}`;
   if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
     // スマホ:ページ遷移で直接Xへ(Xアプリが入っていればアプリが開く)。最も確実な一本道
     location.href=url;
