@@ -24,6 +24,8 @@
 <meta name="twitter:title" content="シュミネーター|趣味ねぇな…お呼びですか?">
 <meta name="twitter:description" content="神様「どうしましょう」があなたに眠る趣味を見抜きます。あなたは何を言い当てられる?">
 <meta name="twitter:image" content="https://doushimasho.github.io/shuminator/ogp.png?v=2">
+<!-- アクセス解析(GoatCounter)。登録コードを変えた場合は下の shuminator を差し替え -->
+<script data-goatcounter="https://shuminator.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
@@ -478,7 +480,8 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
     <h2>プライバシーポリシー</h2>
     <p>
       当サイトの診断は、すべてお使いのブラウザ内で処理されます。診断の回答内容や結果を当サイトのサーバーへ送信・保存することはなく、氏名やメールアドレス等の個人情報の入力も求めません。<br>
-      フォントや動画サムネイルの表示のため、外部サービス(Google Fonts、YouTube、Amazon)を読み込んでおり、その際に各事業者へアクセス情報が送信される場合があります。詳細は各サービスのプライバシーポリシーをご確認ください。
+      フォントや動画サムネイルの表示のため、外部サービス(Google Fonts、YouTube、Amazon)を読み込んでおり、その際に各事業者へアクセス情報が送信される場合があります。詳細は各サービスのプライバシーポリシーをご確認ください。<br>
+      また、サイト改善のためアクセス解析ツール(GoatCounter)を使用しています。これは個人を特定しない匿名のアクセス情報(ページの閲覧数など)を集計するもので、Cookieは使用していません。
     </p>
     <h2>アフィリエイトについて</h2>
     <p>
@@ -639,7 +642,12 @@ function liftFactor(i){
 }
 function isNiche(i){ return (HOBBIES[i][10]!==undefined?HOBBIES[i][10]:2)<=1; }
 
+// イベント計測(GoatCounter)。訪問→開始→完走→シェアの歩留まりを見る
+function track(ev){
+  try{ if(window.goatcounter&&window.goatcounter.count) window.goatcounter.count({path:ev,event:true}); }catch(e){}
+}
 function startGame(){
+  track("play-start");
   document.body.classList.add("playing");  // ヘッダーを小さくたたみ回答を上へ
   weights=HOBBIES.map(()=>1);
   excluded.clear(); asked.clear();
@@ -1019,6 +1027,7 @@ function ytThemes(h){ return [[h[0]+" 始め方","始め方"],[h[0]+" 魅力 面
 
 /* ---- 結果 ---- */
 function showResult(i){
+  track("result");
   resultIdx=i; const h=HOBBIES[i];
   document.body.className=""; document.body.classList.add("finale");
   document.getElementById("r-label").textContent = act===2 ? "あなたの“次”の世界線" : "あなたに眠っていた趣味";
@@ -1224,10 +1233,12 @@ function wrapText(x,text,cx,cy,maxW,lh,maxLines){
   lines.forEach((l,i)=>x.fillText(l,cx,cy+i*lh));
 }
 function downloadShareImage(){
+  track("share-image");
   if(shareBlob){ saveBlob(shareBlob,`シュミネーター_${HOBBIES[resultIdx][0]}.png`); return; }
   getShareBlob(blob=>{ if(blob) saveBlob(blob,`シュミネーター_${HOBBIES[resultIdx][0]}.png`); else alert("画像の生成に失敗しました。更新して再度お試しください。"); });
 }
 function shareX(){
+  track("share-x");
   const hobby=HOBBIES[resultIdx][0];
   const text=`私に眠る趣味は【${hobby}】らしい。\n#シュミネーター #趣味診断`;
   // Xはカードを「共有URL単位」で数日キャッシュするため、日替わりの目印を付けて常に最新カードを取得させる
