@@ -752,6 +752,10 @@ function nextQuestion(){
   const q=pickQuestion();
   if(!q){ makeGuess(); return; }
   currentQ=q; qCount++;
+  renderQuestion(q);
+}
+// 質問の描画だけを行う(「戻る」の時は再抽選せず、この関数で同じ質問を出し直す)
+function renderQuestion(q){
   updateStage();
   document.getElementById("qnum").textContent=(act===2?"本番 Q":"Q")+qCount;
   // 確信型:候補の大半が該当するなら断定形に
@@ -787,7 +791,7 @@ function mutter(q){
 }
 
 function answer(a){
-  history.push({w:[...weights], asked:new Set(asked), q:qCount, ex:new Set(excluded), ans:answers.length});
+  history.push({w:[...weights], asked:new Set(asked), q:qCount, ex:new Set(excluded), ans:answers.length, cq:currentQ});
   asked.add(currentQ.id);
   if(a>=0) answers.push({q:currentQ,a});
   try{ localStorage.setItem("shu_prevq",JSON.stringify([...asked])); }catch(e){}
@@ -817,7 +821,8 @@ function undo(){
   if(!history.length) return;
   const st=history.pop();
   weights=st.w; asked=st.asked; excluded=st.ex; qCount=st.q; answers=answers.slice(0,st.ans);
-  nextQuestion();
+  if(st.cq){ currentQ=st.cq; renderQuestion(currentQ); }  // 同じ質問を同じ番号で出し直す(再抽選しない)
+  else nextQuestion();
 }
 
 function maybeGuessOrContinue(){
