@@ -1225,33 +1225,20 @@ function downloadShareImage(){
 function shareX(){
   const hobby=HOBBIES[resultIdx][0];
   const text=`私に眠る趣味は【${hobby}】らしい。\n#シュミネーター #趣味診断`;
-  const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  // スマホ:画像つきで共有シートへ(Xを選ぶと画像が添付された投稿になる)
-  if(isMobile && shareBlob && navigator.canShare){
-    const file=new File([shareBlob],`シュミネーター_${hobby}.png`,{type:"image/png"});
-    if(navigator.canShare({files:[file]})){
-      navigator.share({files:[file],text:text+"\n"+SITE_URL}).catch(e=>{
-        if(e && e.name==="AbortError") return;   // ユーザーが共有シートを閉じただけ→何もしない
-        openXIntent(text);                        // 本当の失敗時のみXへ(遷移方式なのでブロックされない)
-      });
-      return;
-    }
+  const url=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text+"\n"+SITE_URL)}`;
+  if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
+    // スマホ:ページ遷移で直接Xへ(Xアプリが入っていればアプリが開く)。最も確実な一本道
+    location.href=url;
+    return;
   }
-  // PC:X投稿画面をクリックと同期で開く+画像を保存(投稿画面へドラッグ&ドロップで添付)
-  openXIntent(text);
+  // PC:X投稿画面を新規タブで開く+画像を自動保存(投稿画面へドラッグ&ドロップで添付)
+  window.open(url,"_blank","noopener");
   if(shareBlob) saveBlob(shareBlob,`シュミネーター_${hobby}.png`);
   else getShareBlob(blob=>{ if(blob) saveBlob(blob,`シュミネーター_${hobby}.png`); });
   const hint=document.getElementById("share-hint");
   if(hint) hint.textContent="画像を保存しました。Xの投稿画面にドラッグ&ドロップすると添付できます";
 }
-function openXIntent(text){
-  const url=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text+"\n"+SITE_URL)}`;
-  if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
-    location.href=url;   // スマホ:ページ遷移ならブロックされず、Xアプリが直接開く
-  }else{
-    window.open(url,"_blank","noopener");
-  }
-}
+
 function roundRect(x,px,py,w,h,r){
   x.beginPath();
   x.moveTo(px+r,py);x.arcTo(px+w,py,px+w,py+h,r);x.arcTo(px+w,py+h,px,py+h,r);
