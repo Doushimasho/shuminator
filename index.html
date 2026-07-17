@@ -13,7 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="シュミネーター|趣味ねぇな…お呼びですか?">
 <meta property="og:description" content="質問に答えるだけで、神様「どうしましょう」があなたに眠る趣味を見抜きます。300種の趣味から、あなたにぴったりの一つを。">
-<meta property="og:image" content="https://doushimasho.github.io/shuminator/ogp.png">
+<meta property="og:image" content="https://doushimasho.github.io/shuminator/ogp.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://doushimasho.github.io/shuminator/">
@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="シュミネーター|趣味ねぇな…お呼びですか?">
 <meta name="twitter:description" content="神様「どうしましょう」があなたに眠る趣味を見抜きます。あなたは何を言い当てられる?">
-<meta name="twitter:image" content="https://doushimasho.github.io/shuminator/ogp.png">
+<meta name="twitter:image" content="https://doushimasho.github.io/shuminator/ogp.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
@@ -1190,7 +1190,10 @@ function shareX(){
   if(isMobile && shareBlob && navigator.canShare){
     const file=new File([shareBlob],`シュミネーター_${hobby}.png`,{type:"image/png"});
     if(navigator.canShare({files:[file]})){
-      navigator.share({files:[file],text:text+"\n"+SITE_URL}).catch(()=>openXIntent(text));
+      navigator.share({files:[file],text:text+"\n"+SITE_URL}).catch(e=>{
+        if(e && e.name==="AbortError") return;   // ユーザーが共有シートを閉じただけ→何もしない
+        openXIntent(text);                        // 本当の失敗時のみXへ(遷移方式なのでブロックされない)
+      });
       return;
     }
   }
@@ -1203,7 +1206,11 @@ function shareX(){
 }
 function openXIntent(text){
   const url=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text+"\n"+SITE_URL)}`;
-  window.open(url,"_blank","noopener");
+  if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
+    location.href=url;   // スマホ:ページ遷移ならブロックされず、Xアプリが直接開く
+  }else{
+    window.open(url,"_blank","noopener");
+  }
 }
 function roundRect(x,px,py,w,h,r){
   x.beginPath();
