@@ -175,6 +175,16 @@ body.playing .logo{font-size:22px;-webkit-text-stroke:1px #6a3a12;filter:drop-sh
 .policy-card h2:first-child{margin-top:0}
 .policy-card a{color:#b9557d}
 .policy-close{display:block;margin:14px auto 0}
+/* 今日の趣味みくじ */
+.omikuji-btn{
+  display:block;margin:10px auto 0;padding:10px 22px;border-radius:999px;border:1.5px solid rgba(255,214,140,.55);
+  background:rgba(255,214,140,.10);color:var(--gold);font-family:inherit;font-size:14.5px;font-weight:700;cursor:pointer;
+  transition:transform .07s, background .15s;
+}
+.omikuji-btn:hover{transform:translateY(-1px);background:rgba(255,214,140,.18)}
+.omk-date{color:#b9557d;font-weight:700;font-size:14px;text-align:center;margin:0 0 6px}
+.omk-name{font-family:"RocknRoll One",sans-serif;font-size:clamp(30px,8vw,44px);color:#453058;text-align:center;margin:4px 0 10px;line-height:1.3}
+.omk-desc{font-size:14.5px;line-height:1.9;color:#5c5148;text-align:center;margin:0 0 4px}
 .guess-desc{font-size:14.5px;line-height:1.85;color:var(--sumi);background:#fff;border:1.5px solid #e2d6b8;border-radius:12px;padding:12px 14px;margin:4px 0 10px;text-align:left}
 .more{
   display:block;width:100%;max-width:420px;margin:14px auto 0;
@@ -307,6 +317,7 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
       </p>
     </div>
     <button class="primary" onclick="startGame()">見抜いてもらう</button>
+    <button class="omikuji-btn" onclick="showOmikuji()">⛩ 今日の趣味みくじを引く</button>
     <p class="small" style="color:var(--ink-dim)">300種の趣味から見抜きます|質問はふつう20〜30問<br>ゲーム配信・動画でのご利用は自由です(許可・連絡は不要)<br><a href="hobby-finder.html" style="color:#ffb7c5;text-decoration:underline">▶ 趣味の見つけ方がわからない人へ(読み物)</a></p>
   </section>
 
@@ -466,6 +477,19 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
     紹介する道具は各趣味の一例です。購入は各自の判断でお願いします。
   </div>
 </footer>
+
+<!-- 今日の趣味みくじ -->
+<div id="omikuji-modal" class="policy-wrap hidden" onclick="if(event.target===this)toggleOmikuji(false)">
+  <div class="policy-card" style="max-width:440px;text-align:center">
+    <p class="omk-date" id="omk-date"></p>
+    <p style="margin:0;color:#7a4a86;font-weight:700">あなたの今日の趣味は——</p>
+    <p class="omk-name" id="omk-name"></p>
+    <p class="omk-desc" id="omk-desc"></p>
+    <p style="font-size:12px;color:var(--sumi-dim);margin:8px 0 0">みくじは1日1回、日付が変わると新しくなります</p>
+    <button class="primary" style="margin:14px auto 0;display:block" onclick="shareOmikuji()">この結果をXでつぶやく</button>
+    <button class="toplink" style="margin:10px auto 0;display:block" onclick="toggleOmikuji(false)">閉じる</button>
+  </div>
+</div>
 
 <!-- 運営者情報・プライバシーポリシー -->
 <div id="policy-modal" class="policy-wrap hidden" onclick="if(event.target===this)togglePolicy(false)">
@@ -1300,6 +1324,35 @@ function godSVG(state){
 }
 function togglePolicy(on){
   document.getElementById("policy-modal").classList.toggle("hidden",!on);
+}
+/* ===== 今日の趣味みくじ:1日1回・人ごとに違う趣味(日付+個人ソルトで決定) ===== */
+function todaysOmikuji(){
+  const d=new Date();
+  const key=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+  let salt=parseInt(localStorage.getItem("omikujiSalt")||"0",10);
+  if(!salt){ salt=(Math.floor(Math.random()*90000)+10000); localStorage.setItem("omikujiSalt",String(salt)); }
+  let x=(key+salt)>>>0;
+  x=(x*9301+49297)%233280;           // 簡易シャッフル(同日同人=同結果)
+  return HOBBIES[x%HOBBIES.length];
+}
+function showOmikuji(){
+  track("omikuji");
+  const d=new Date(); const h=todaysOmikuji();
+  document.getElementById("omk-date").textContent=(d.getMonth()+1)+"月"+d.getDate()+"日の趣味みくじ";
+  document.getElementById("omk-name").textContent=h[0];
+  document.getElementById("omk-desc").textContent=h[5];
+  toggleOmikuji(true);
+}
+function toggleOmikuji(on){
+  document.getElementById("omikuji-modal").classList.toggle("hidden",!on);
+}
+function shareOmikuji(){
+  track("omikuji-share");
+  const h=todaysOmikuji();
+  const text=`今日の趣味みくじは【${h[0]}】でした。\n#シュミネーター #今日の趣味みくじ`;
+  const url=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text+"\n"+SITE_URL+"?p=201")}`;
+  if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){ location.href=url; }
+  else{ window.open(url,"_blank","noopener"); }
 }
 function setGod(state){
   // 画像未設定の表情は、指定があれば近い表情の画像で代用
