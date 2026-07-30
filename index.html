@@ -8,12 +8,12 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
-<meta name="description" content="質問に答えるだけで、神様「どうしましょう」があなたに眠る趣味を見抜きます。300種の趣味から、あなたにぴったりの一つを。">
+<meta name="description" content="質問に答えるだけで、神様「どうしましょう」があなたに眠る趣味を見抜きます。全1000種の趣味から、あなたにぴったりの一つを。">
 <!-- ✓ 本番URL設定済み(https://doushimasho.github.io/shuminator/)。リポジトリ名を変えた場合のみ og:image / og:url / twitter:image と SITE_URL を修正 -->
 <!-- OGP(FacebookやLINE等) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="シュミネーター|趣味ねぇな…お呼びですか?">
-<meta property="og:description" content="質問に答えるだけで、神様「どうしましょう」があなたに眠る趣味を見抜きます。300種の趣味から、あなたにぴったりの一つを。">
+<meta property="og:description" content="質問に答えるだけで、神様「どうしましょう」があなたに眠る趣味を見抜きます。全1000種の趣味から、あなたにぴったりの一つを。">
 <meta property="og:image" content="https://doushimasho.github.io/shuminator/ogp.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -318,7 +318,7 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
     </div>
     <button class="primary" onclick="startGame()">見抜いてもらう</button>
     <button class="omikuji-btn" onclick="showOmikuji()">⛩ 今日の趣味みくじを引く</button>
-    <p class="small" style="color:var(--ink-dim)">300種の趣味から見抜きます|質問はふつう20〜30問<br>ゲーム配信・動画でのご利用は自由です(許可・連絡は不要)<br><a href="hobby-finder.html" style="color:#ffb7c5;text-decoration:underline">▶ 趣味の見つけ方がわからない人へ(読み物)</a></p>
+    <p class="small" style="color:var(--ink-dim)">全1000種の趣味から見抜きます|質問はふつう20〜30問<br>ゲーム配信・動画でのご利用は自由です(許可・連絡は不要)<br><a href="zukan.html" style="color:#ffb7c5;text-decoration:underline">▶ 趣味図鑑(全1000種)を見る</a>|<a href="hobby-finder.html" style="color:#ffb7c5;text-decoration:underline">趣味の見つけ方</a></p>
   </section>
 
   <!-- 前提の確認(時間・お金) -->
@@ -461,6 +461,7 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
       <button class="primary x-btn" onclick="shareX()">Xでシェア</button>
     </div>
     <p id="share-hint" style="text-align:center;font-size:12px;color:var(--ink-dim);min-height:16px;margin:6px 0 0"></p>
+    <p style="text-align:center;margin:10px 0 0"><a id="zukan-link" href="zukan.html" style="color:#ffb7c5;font-size:13.5px;text-decoration:underline">▶ この趣味の図鑑ページを読む(道具・動画・相性)</a></p>
     <button class="more" onclick="searchMore()">この趣味は確定!ほかの趣味も探す</button>
     <button class="ghost" onclick="location.reload()">最初からやり直す</button>
   </section>
@@ -1066,6 +1067,7 @@ function ytThemes(h){ return [[h[0]+" 始め方","始め方"],[h[0]+" 魅力 面
 /* ---- 結果 ---- */
 function showResult(i){
   track("result");
+  { const zl=document.getElementById("zukan-link"); if(zl) zl.href="hobby/"+(i+1)+".html?p=302"; }
   resultIdx=i; const h=HOBBIES[i];
   document.body.className=""; document.body.classList.add("finale");
   document.getElementById("r-label").textContent = act===2 ? "あなたの“次”の世界線" : "あなたに眠っていた趣味";
@@ -1339,6 +1341,15 @@ function togglePolicy(on){
   document.getElementById("policy-modal").classList.toggle("hidden",!on);
 }
 /* ===== 今日の趣味みくじ:1日1回・人ごとに違う趣味(日付+個人ソルトで決定) ===== */
+function todaysOmikujiIndex(){
+  const d=new Date();
+  const key=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+  let salt=parseInt(localStorage.getItem("omikujiSalt")||"0",10);
+  if(!salt){ salt=(Math.floor(Math.random()*90000)+10000); localStorage.setItem("omikujiSalt",String(salt)); }
+  let x=(key+salt)>>>0;
+  x=(x*9301+49297)%233280;
+  return x%HOBBIES.length;
+}
 function todaysOmikuji(){
   const d=new Date();
   const key=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
@@ -1350,11 +1361,8 @@ function todaysOmikuji(){
 }
 function showOmikuji(){
   track("omikuji");
-  const d=new Date(); const h=todaysOmikuji();
-  document.getElementById("omk-date").textContent=(d.getMonth()+1)+"月"+d.getDate()+"日の趣味みくじ";
-  document.getElementById("omk-name").textContent=h[0];
-  document.getElementById("omk-desc").textContent=h[5];
-  toggleOmikuji(true);
+  // 図鑑の個別ページへ飛ばす(情報量が多く、そのまま読み物になる)
+  location.href="hobby/"+(todaysOmikujiIndex()+1)+".html?p=301";
 }
 function toggleOmikuji(on){
   document.getElementById("omikuji-modal").classList.toggle("hidden",!on);
