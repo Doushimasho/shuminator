@@ -115,6 +115,13 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 .item{display:block;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--ink);font-size:14px;border:1px solid rgba(255,255,255,.09)}
 .item:hover{background:rgba(255,255,255,.14)}
 .count{color:var(--dim);font-size:13px;text-align:center;margin-bottom:4px}
+/* 上部CTA */
+.cta-top{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:15.5px;text-decoration:none;padding:12px 16px;border-radius:13px;margin:0 0 16px;box-shadow:0 5px 0 #b23a6e}
+.cta-top small{display:block;font-weight:500;font-size:12px;opacity:.92;margin-top:2px}
+/* 常に押せる浮遊ボタン */
+.fab{position:fixed;right:16px;bottom:16px;z-index:50;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:14.5px;text-decoration:none;padding:13px 20px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.28)}
+.fab:hover{filter:brightness(1.06)}
+@media(max-width:480px){.fab{right:12px;bottom:12px;font-size:13.5px;padding:12px 17px}}
 `;
 
 function head(title, desc, canonical, extraJsonLd) {
@@ -174,7 +181,9 @@ function hobbyPage(h, i) {
   })}</script>`;
 
   let s = head(`${h[0]}とは｜趣味図鑑｜シュミネーター`, desc, url, jsonld);
-  s += `\n<p class="crumb"><a href="${SITE}/zukan.html">趣味図鑑</a> › ${esc(h[1])} › ${esc(h[2])}</p>\n<div class="card">`;
+  s += `\n<p class="crumb"><a href="${SITE}/zukan.html">趣味図鑑</a> › ${esc(h[1])} › ${esc(h[2])}</p>`;
+  s += `\n<a class="cta-top" href="${SITE}/?p=303">▶ あなたに眠る趣味を診断してもらう<small>質問に答えるだけ・3分・無料・全1000種から</small></a>`;
+  s += `\n<div class="card">`;
   s += `\n<p class="tagline">No.${id} ／ ${esc(h[1])}</p>`;
   s += `\n<h1>${esc(h[0])}</h1>`;
   s += `\n<div class="rule"></div>`;
@@ -224,7 +233,7 @@ function hobbyPage(h, i) {
   s += next ? `<a class="next" href="${SITE}/hobby/${i + 2}.html">${esc(next)} →</a>` : `<a class="next" href="${SITE}/zukan.html">図鑑へ →</a>`;
   s += `</div>`;
   s += `\n<footer><a href="${SITE}/zukan.html">趣味図鑑トップ</a> ・ <a href="${SITE}/hobby-finder.html">趣味の見つけ方</a><br>監修:導師真ショウ(国家資格キャリアコンサルタント)<br><a href="${SITE}/">シュミネーター</a>は、全1000種からあなたに眠る趣味を見抜く無料の診断ゲームです。</footer>`;
-  s += `\n</div></body></html>`;
+  s += `\n</div><a class="fab" href="${SITE}/?p=304">🔮 趣味を診断する</a></body></html>`;
   return s;
 }
 
@@ -237,6 +246,7 @@ function zukanPage() {
     `世の中の趣味を${HOBBIES.length}種、20ジャンルに分類した図鑑。それぞれの始め方・道具・相性のいい趣味がわかります。`,
     url);
   s += `\n<p class="crumb">全${HOBBIES.length}種・20ジャンルの趣味図鑑</p>`;
+  s += `\n<a class="cta-top" href="${SITE}/?p=305">▶ あなたに眠る趣味を診断してもらう<small>どれが自分に合うか、神様に見抜いてもらえます(無料・3分)</small></a>`;
   s += `\n<div class="tools-bar"><input id="q" type="search" placeholder="趣味名で検索（例：苔、ボード、和）" aria-label="趣味名で検索">
 <select class="gsel" id="gsel"><option value="">すべてのジャンル</option>${Object.keys(byGenre).map(g => `<option>${esc(g)}</option>`).join('')}</select></div>`;
   s += `\n<p class="count" id="cnt"></p>`;
@@ -267,7 +277,7 @@ function zukanPage() {
   q.addEventListener('input',run); gs.addEventListener('change',run);
 })();
 </script>`;
-  s += `\n</div></body></html>`;
+  s += `\n</div><a class="fab" href="${SITE}/?p=306">🔮 趣味を診断する</a></body></html>`;
   return s;
 }
 
