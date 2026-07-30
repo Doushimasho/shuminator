@@ -597,6 +597,10 @@ CORE_Q.forEach(([c,t])=>QUESTIONS.push({id:"c_"+c,kind:"core",core:c,text:t}));
 DAI_Q.forEach(([d,t])=>QUESTIONS.push({id:"d_"+d,kind:"dai",dai:d,text:t}));
 SAI_Q.forEach(([s,t])=>QUESTIONS.push({id:"s_"+s,kind:"sai",sai:s,text:t}));
 PSY_Q.forEach((q,i)=>QUESTIONS.push({id:"p"+i,kind:"psy",mix:q[0],text:q[1]}));
+GAIN_Q.forEach(q=>QUESTIONS.push({id:q.id,kind:"gain",mode:q.mode,peak:q.peak,text:q.text}));
+SPAN_Q.forEach(q=>QUESTIONS.push({id:q.id,kind:"span",mode:q.mode,peak:q.peak,text:q.text}));
+CURVE_Q.forEach(q=>QUESTIONS.push({id:q.id,kind:"curve",mode:q.mode,peak:q.peak,text:q.text}));
+CULT_Q.forEach(q=>QUESTIONS.push({id:q.id,kind:"cult",map:q.map,text:q.text}));
 // 認知質問は「複数趣味を束ねるキー」だけ(1趣味だけのキーは指名になり絞り込みを歪めるので除外)
 // 聞き方を豊かに変える(テンプレ感をなくす)
 const NIN_PHRASE={
@@ -630,6 +634,15 @@ function val(h,q){
   if(q.kind==="sai")  return h[2]===q.sai?1:0;
   if(q.kind==="nin")  return h[4]===q.nin?1:0;
   if(q.kind==="psy"){ let v=0.5; for(const[c,w]of q.mix) v+=w*(((h[3][c]||0)/4)-0.5); return Math.max(0,Math.min(1,v)); }
+  // 追加レイヤー:成果のかたち / 時間の単位 / 習得曲線 / 文化の色
+  if(q.kind==="gain"||q.kind==="span"||q.kind==="curve"){
+    const idx=q.kind==="gain"?11:(q.kind==="span"?12:13);
+    const x=(h[idx]!==undefined?h[idx]:2);
+    if(q.mode==="high") return x/4;
+    if(q.mode==="low")  return 1-x/4;
+    return 1-Math.abs(x-q.peak)/2.5;   // peak型:特定の値に近いほど1
+  }
+  if(q.kind==="cult"){ const x=(h[14]!==undefined?h[14]:3); return q.map[x]; }
   return 0;
 }
 // 趣味の核ベクトル(0..1 ×20)
