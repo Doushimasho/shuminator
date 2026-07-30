@@ -129,7 +129,7 @@ function head(title, desc, canonical, extraJsonLd) {
 <meta property="og:type" content="article">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
-<meta property="og:image" content="${SITE}/ogp.png?v=2">
+<meta property="og:image" content="${SITE}/ogp.png?v=3">
 <meta property="og:url" content="${canonical}">
 <meta property="og:site_name" content="シュミネーター">
 <link rel="icon" type="image/png" sizes="32x32" href="${SITE}/favicon-32.png">
