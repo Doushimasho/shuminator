@@ -115,6 +115,26 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 .item{display:block;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--ink);font-size:14px;border:1px solid rgba(255,255,255,.09)}
 .item:hover{background:rgba(255,255,255,.14)}
 .count{color:var(--dim);font-size:13px;text-align:center;margin-bottom:4px}
+/* ランダム生成 */
+.gen{text-align:center}
+.genh1{font-family:"RocknRoll One",sans-serif;font-size:clamp(23px,5.6vw,32px);color:#fff;margin:4px 0 14px}
+.slot{background:rgba(255,255,255,.07);border:2px solid rgba(247,190,70,.45);border-radius:16px;min-height:96px;display:flex;align-items:center;justify-content:center;padding:12px;margin-bottom:14px}
+.slot.spinning{border-color:rgba(255,125,176,.75)}
+.slot-idle{color:#a294c4;font-size:15px}
+.slot-run{font-family:"RocknRoll One",sans-serif;font-size:clamp(24px,6vw,34px);color:#cbbde6;opacity:.75}
+.slot-hit{font-family:"RocknRoll One",sans-serif;font-size:clamp(28px,7.5vw,44px);color:var(--gold);text-shadow:0 3px 0 rgba(106,58,18,.85)}
+.spin{width:100%;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-family:inherit;font-weight:700;font-size:19px;border:none;padding:17px;border-radius:15px;box-shadow:0 6px 0 #b23a6e;cursor:pointer}
+.spin:active{transform:translateY(3px);box-shadow:0 3px 0 #b23a6e}
+.spin:disabled{filter:grayscale(.6);opacity:.6;cursor:not-allowed}
+.opt{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0 6px}
+.gsel2{padding:9px 10px;border-radius:10px;border:1.5px solid rgba(255,255,255,.22);background:#2c1e52;color:#fff;font-size:13.5px;font-family:inherit}
+.hit{color:var(--dim);font-size:12.5px;margin:2px 0 12px}
+.out{display:grid;gap:9px}
+.rcard{display:block;background:var(--washi);color:var(--sumi);border-radius:13px;padding:13px 15px;text-decoration:none;text-align:left}
+.rcard b{color:#453058;font-size:18px}
+.rcard span{display:block;font-size:12.5px;color:#8a7d72;margin-top:2px}
+.acts{display:flex;gap:9px;justify-content:center;margin-top:14px}
+.mini{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.24);color:var(--ink);font-family:inherit;font-size:13.5px;padding:9px 16px;border-radius:10px;text-decoration:none;cursor:pointer}
 /* 上部CTA */
 .cta-top{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:15.5px;text-decoration:none;padding:12px 16px;border-radius:13px;margin:0 0 16px;box-shadow:0 5px 0 #b23a6e}
 .cta-top small{display:block;font-weight:500;font-size:12px;opacity:.92;margin-top:2px}
@@ -281,16 +301,152 @@ function zukanPage() {
   return s;
 }
 
-// ---------- 出力 ----------
+// ---------- ランダム趣味ジェネレーター ----------
+function randomPage() {
+  const url = `${SITE}/random.html`;
+  // ページに埋め込む最小限のデータ（名前/ID/ジャンル/費用/屋外/時間/習得/文化）
+  const data = HOBBIES.map((h, i) => [
+    h[0], i + 1, h[1],
+    h[8], h[7],
+    (h[12] !== undefined ? h[12] : 1),
+    (h[13] !== undefined ? h[13] : 2),
+    (h[14] !== undefined ? h[14] : 3)
+  ]);
+  const genres = [...new Set(HOBBIES.map(h => h[1]))];
+
+  const jsonld = `<script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org", "@type": "WebApplication",
+    "name": "ランダム趣味ジェネレーター",
+    "applicationCategory": "EntertainmentApplication",
+    "operatingSystem": "Web",
+    "description": `全${HOBBIES.length}種の趣味からランダムに1つ選ぶ無料ツール。条件を絞って生成でき、暇つぶし・配信のネタ決め・創作のお題出しに使えます。`,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+    "inLanguage": "ja", "url": url
+  })}</script>`;
+
+  let s2 = head(
+    `ランダム趣味ジェネレーター｜全${HOBBIES.length}種からランダムに趣味を1つ選ぶ`,
+    `ボタンを押すだけで、全${HOBBIES.length}種の趣味からランダムに1つ選びます。予算・屋内屋外・かかる時間で絞り込み可能。暇なとき、配信のネタ決め、創作のお題出しに。登録不要・無料。`,
+    url, jsonld);
+
+  s2 += `\n<p class="crumb">全${HOBBIES.length}種からランダムに1つ選びます・登録不要・無料</p>`;
+  s2 += `
+<div class="gen">
+  <h1 class="genh1">ランダム趣味ジェネレーター</h1>
+  <div id="slot" class="slot"><span class="slot-idle">ボタンを押してください</span></div>
+  <button id="spin" class="spin">🎲 趣味を引く</button>
+  <div class="opt">
+    <select id="g" class="gsel2"><option value="">ジャンル：すべて</option>${genres.map(g => `<option>${esc(g)}</option>`).join('')}</select>
+    <select id="c" class="gsel2"><option value="">予算：こだわらない</option><option value="0">ほぼ0円から</option><option value="1">数千円まで</option><option value="2">1万円くらいまで</option></select>
+    <select id="o" class="gsel2"><option value="">場所：こだわらない</option><option value="in">室内でできる</option><option value="out">外でやる</option></select>
+    <select id="t" class="gsel2"><option value="">時間：こだわらない</option><option value="0">すきま時間</option><option value="1">1〜2時間</option><option value="2">半日つかう</option><option value="4">何年も育てる</option></select>
+    <select id="v" class="gsel2"><option value="">難度：こだわらない</option><option value="easy">初日から楽しめる</option><option value="deep">じっくり極める</option></select>
+    <select id="n" class="gsel2"><option value="1">1つ引く</option><option value="3">3つ引く</option><option value="5">5つ引く</option></select>
+  </div>
+  <p id="hit" class="hit"></p>
+  <div id="out" class="out"></div>
+  <div id="acts" class="acts" style="display:none">
+    <button id="copy" class="mini">結果をコピー</button>
+    <a id="xsh" class="mini" href="#" target="_blank" rel="noopener">Xでシェア</a>
+  </div>
+</div>
+
+<div class="card" style="margin-top:22px">
+<h2>こんなときに</h2>
+<p style="font-size:14.5px">
+<b>休みの日、何をするか決まらないとき。</b>選択肢が多すぎると人は選べなくなります。いっそ運に任せてしまうと、案外すんなり動き出せることがあります。<br><br>
+<b>配信や動画のネタ決めに。</b>「出た趣味について語る」「出た趣味を実際にやってみる」など、そのまま企画になります。配信・動画でのご利用は自由です（許可・連絡は不要）。<br><br>
+<b>創作のお題出しに。</b>キャラクターの趣味を決める、物語の設定を転がす。実在する${HOBBIES.length}種から出るので、リアリティのある設定になります。<br><br>
+<b>友達や家族と。</b>「今月はこれをやってみる」と決めてしまう遊び方も。ひとりで選ぶより、案外続きます。
+</p>
+<h2>使い方</h2>
+<p style="font-size:14.5px">ボタンを押すだけです。条件を絞りたいときは、ジャンル・予算・場所・時間・難度から選んでください。出てきた趣味の名前をタップすると、その趣味の図鑑ページ（道具・費用・始め方の動画・相性のいい趣味）が開きます。</p>
+</div>
+
+<a class="cta" href="${SITE}/?p=311">▶ ランダムじゃなく、自分に合う趣味を知りたい方はこちら<small>質問に答えるだけ・3分・神様が${HOBBIES.length}種から見抜きます</small></a>
+<p style="text-align:center;margin:8px 0 0"><a href="${SITE}/zukan.html" style="color:var(--sakura);font-size:14px">▶ ${HOBBIES.length}種すべてを眺める（趣味図鑑）</a></p>
+<footer>このツールは趣味診断ゲーム「<a href="${SITE}/">シュミネーター</a>」が提供しています。<br>監修:導師真ショウ(国家資格キャリアコンサルタント)</footer>`;
+
+  s2 += `
+<script>
+var DATA=${JSON.stringify(data)};
+(function(){
+  var slot=document.getElementById('slot'),out=document.getElementById('out'),hit=document.getElementById('hit'),
+      acts=document.getElementById('acts'),btn=document.getElementById('spin'),
+      g=document.getElementById('g'),c=document.getElementById('c'),o=document.getElementById('o'),
+      t=document.getElementById('t'),v=document.getElementById('v'),n=document.getElementById('n');
+  var last=[];
+  function pool(){
+    return DATA.filter(function(d){
+      if(g.value && d[2]!==g.value) return false;
+      if(c.value!=='' && d[3]>parseInt(c.value,10)) return false;
+      if(o.value==='in' && d[4]>1) return false;
+      if(o.value==='out' && d[4]<3) return false;
+      if(t.value!=='' && d[5]!==parseInt(t.value,10)) return false;
+      if(v.value==='easy' && d[6]>1) return false;
+      if(v.value==='deep' && d[6]<3) return false;
+      return true;
+    });
+  }
+  function refresh(){
+    var p=pool();
+    hit.textContent = p.length ? ('この条件で '+p.length+' 種') : '条件が厳しすぎるようです。どれかを「こだわらない」に戻してみてください';
+    btn.disabled=p.length===0;
+  }
+  [g,c,o,t,v].forEach(function(e){e.addEventListener('change',refresh);});
+  refresh();
+
+  function card(d){
+    return '<a class="rcard" href="${SITE}/hobby/'+d[1]+'.html?p=312"><b>'+d[0]+'</b><span>'+d[2]+' ／ 詳しく見る →</span></a>';
+  }
+  btn.addEventListener('click',function(){
+    var p=pool(); if(!p.length) return;
+    var cnt=parseInt(n.value,10), i=0, spins=14;
+    acts.style.display='none'; out.innerHTML='';
+    slot.classList.add('spinning');
+    var iv=setInterval(function(){
+      slot.innerHTML='<span class="slot-run">'+p[Math.floor(Math.random()*p.length)][0]+'</span>';
+      if(++i>=spins){
+        clearInterval(iv);
+        slot.classList.remove('spinning');
+        var picked=[],copy=p.slice();
+        for(var k=0;k<cnt&&copy.length;k++){ picked.push(copy.splice(Math.floor(Math.random()*copy.length),1)[0]); }
+        last=picked;
+        slot.innerHTML='<span class="slot-hit">'+picked[0][0]+'</span>';
+        out.innerHTML=picked.map(card).join('');
+        acts.style.display='flex';
+        var txt=picked.length>1
+          ? 'ランダムに引いた趣味は【'+picked.map(function(x){return x[0];}).join('】【')+'】でした。'
+          : 'ランダムに引いた趣味は【'+picked[0][0]+'】でした。';
+        document.getElementById('xsh').href='https://twitter.com/intent/tweet?text='+encodeURIComponent(txt+'\\n#シュミネーター #ランダム趣味\\n${SITE}/random.html?p=313');
+        if(window.goatcounter&&window.goatcounter.count){try{window.goatcounter.count({path:'random-spin',event:true});}catch(e){}}
+      }
+    },55);
+  });
+  document.getElementById('copy').addEventListener('click',function(){
+    var txt=last.map(function(x){return x[0];}).join('、');
+    if(navigator.clipboard){navigator.clipboard.writeText(txt);}
+    this.textContent='コピーしました'; var b=this;
+    setTimeout(function(){b.textContent='結果をコピー';},1400);
+  });
+})();
+</script>`;
+  s2 += `\n</div><a class="fab" href="${SITE}/?p=314">🔮 趣味を診断する</a></body></html>`;
+  return s2;
+}
+
+// ---------- 出力 ----------`;
 fs.mkdirSync('hobby', { recursive: true });
 HOBBIES.forEach((h, i) => {
   fs.writeFileSync(path.join('hobby', (i + 1) + '.html'), hobbyPage(h, i));
 });
 fs.writeFileSync('zukan.html', zukanPage());
+fs.writeFileSync('random.html', randomPage());
 
 const urls = [
   [`${SITE}/`, '1.0'],
   [`${SITE}/zukan.html`, '0.9'],
+  [`${SITE}/random.html`, '0.9'],
   [`${SITE}/hobby-finder.html`, '0.8'],
   [`${SITE}/solo-hobbies.html`, '0.7'],
   [`${SITE}/indoor-hobbies.html`, '0.7'],
