@@ -129,10 +129,24 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 .opt{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0 6px}
 .gsel2{padding:9px 10px;border-radius:10px;border:1.5px solid rgba(255,255,255,.22);background:#2c1e52;color:#fff;font-size:13.5px;font-family:inherit}
 .hit{color:var(--dim);font-size:12.5px;margin:2px 0 12px}
-.out{display:grid;gap:9px}
-.rcard{display:block;background:var(--washi);color:var(--sumi);border-radius:13px;padding:13px 15px;text-decoration:none;text-align:left}
-.rcard b{color:#453058;font-size:18px}
-.rcard span{display:block;font-size:12.5px;color:#8a7d72;margin-top:2px}
+.out{display:grid;gap:12px}
+.rcard{background:var(--washi);color:var(--sumi);border-radius:16px;padding:16px 16px 14px;text-align:left;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+.rcat{margin:0;font-size:11.5px;color:#b9557d;font-weight:700;letter-spacing:.04em}
+.rname{font-family:"RocknRoll One",sans-serif;font-size:clamp(20px,5.4vw,25px);color:#453058;margin:3px 0 8px;line-height:1.35}
+.rchips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
+.rchip{background:#7a4a86;color:#fff;border-radius:999px;padding:3px 11px;font-size:11.5px;font-weight:700;font-style:normal}
+.rdesc{margin:0 0 11px;font-size:13.5px;line-height:1.8;color:#4c443c}
+.rspecs{display:grid;grid-template-columns:1fr 1fr;gap:5px 10px;border-top:1px solid #e5d9bd;padding-top:10px}
+.rspec{display:flex;gap:6px;align-items:baseline;min-width:0}
+.rspec .rk{font-size:11px;color:#a2968a;white-space:nowrap}
+.rspec .rv{font-size:12.5px;font-weight:700;color:#453058;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rspec:last-child{grid-column:1 / -1}
+.rmore{display:block;margin-top:11px;text-align:center;background:#7a4a86;color:#fff;text-decoration:none;font-size:13px;font-weight:700;padding:10px;border-radius:10px}
+@media(max-width:380px){
+  .rspecs{grid-template-columns:1fr}
+  .rspec:last-child{grid-column:auto}
+  .rdesc{font-size:13px}
+}
 .acts{display:flex;gap:9px;justify-content:center;margin-top:14px}
 .faq2 dt{font-weight:700;color:#7a4a86;margin-top:15px;font-size:14.5px}
 .faq2 dd{margin:4px 0 0;font-size:14px;color:#5c5148}
@@ -312,7 +326,11 @@ function randomPage() {
     h[8], h[7],
     (h[12] !== undefined ? h[12] : 1),
     (h[13] !== undefined ? h[13] : 2),
-    (h[14] !== undefined ? h[14] : 3)
+    (h[14] !== undefined ? h[14] : 3),
+    h[5],                                                   // 説明文
+    Object.entries(h[3]).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]), // 魅力の核 上位3
+    h[2],                                                   // 細領域
+    (h[11] !== undefined ? h[11] : 2)                       // 成果のかたち
   ]);
   const genres = [...new Set(HOBBIES.map(h => h[1]))];
 
@@ -427,8 +445,28 @@ var DATA=${JSON.stringify(data)};
   [g,c,o,t,v].forEach(function(e){e.addEventListener('change',refresh);});
   refresh();
 
+  var GAIN=['体験が残る','からだが変わる','技が身につく','記録が集まる','かたちに残る'];
+  var SPAN=['すきま時間','1〜2時間','半日〜1日','数日がかり','何年もかけて'];
+  var CURVE=['初日から楽しい','わりとすぐ楽しい','ほどよく練習','じっくり練習','極めるほど深い'];
+  var COST=['ほぼ0円から','数千円から','1万円前後から','数万円から','しっかり投資'];
+  var PLACE=['室内でできる','ほぼ室内','室内でも外でも','外が主役','がっつり屋外'];
   function card(d){
-    return '<a class="rcard" href="${SITE}/hobby/'+d[1]+'.html?p=312"><b>'+d[0]+'</b><span>'+d[2]+' ／ 詳しく見る →</span></a>';
+    var chips = d[9].map(function(c){return '<i class="rchip">'+c+'</i>';}).join('');
+    var spec = [
+      ['予算', COST[d[3]]],
+      ['場所', PLACE[d[4]]],
+      ['時間', SPAN[d[5]]],
+      ['上達', CURVE[d[6]]],
+      ['のこるもの', GAIN[d[11]]]
+    ].map(function(x){return '<div class="rspec"><span class="rk">'+x[0]+'</span><span class="rv">'+x[1]+'</span></div>';}).join('');
+    return '<div class="rcard">'
+      + '<p class="rcat">'+d[2]+' ／ '+d[10]+'</p>'
+      + '<h3 class="rname">'+d[0]+'</h3>'
+      + '<div class="rchips">'+chips+'</div>'
+      + '<p class="rdesc">'+d[8]+'</p>'
+      + '<div class="rspecs">'+spec+'</div>'
+      + '<a class="rmore" href="${SITE}/hobby/'+d[1]+'.html?p=312">道具・動画・相性のいい趣味を見る →</a>'
+      + '</div>';
   }
   btn.addEventListener('click',function(){
     var p=pool(); if(!p.length) return;
