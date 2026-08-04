@@ -66,6 +66,26 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 .item{display:block;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--ink);font-size:14px;border:1px solid rgba(255,255,255,.09)}
 .item:hover{background:rgba(255,255,255,.14)}
 .count{color:var(--dim);font-size:13px;text-align:center;margin-bottom:4px}
+/* ランダム生成 */
+.gen{text-align:center}
+.genh1{font-family:"RocknRoll One",sans-serif;font-size:clamp(23px,5.6vw,32px);color:#fff;margin:4px 0 14px}
+.slot{background:rgba(255,255,255,.07);border:2px solid rgba(247,190,70,.45);border-radius:16px;min-height:96px;display:flex;align-items:center;justify-content:center;padding:12px;margin-bottom:14px}
+.slot.spinning{border-color:rgba(255,125,176,.75)}
+.slot-idle{color:#a294c4;font-size:15px}
+.slot-run{font-family:"RocknRoll One",sans-serif;font-size:clamp(24px,6vw,34px);color:#cbbde6;opacity:.75}
+.slot-hit{font-family:"RocknRoll One",sans-serif;font-size:clamp(28px,7.5vw,44px);color:var(--gold);text-shadow:0 3px 0 rgba(106,58,18,.85)}
+.spin{width:100%;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-family:inherit;font-weight:700;font-size:19px;border:none;padding:17px;border-radius:15px;box-shadow:0 6px 0 #b23a6e;cursor:pointer}
+.spin:active{transform:translateY(3px);box-shadow:0 3px 0 #b23a6e}
+.spin:disabled{filter:grayscale(.6);opacity:.6;cursor:not-allowed}
+.opt{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0 6px}
+.gsel2{padding:9px 10px;border-radius:10px;border:1.5px solid rgba(255,255,255,.22);background:#2c1e52;color:#fff;font-size:13.5px;font-family:inherit}
+.hit{color:var(--dim);font-size:12.5px;margin:2px 0 12px}
+.out{display:grid;gap:9px}
+.rcard{display:block;background:var(--washi);color:var(--sumi);border-radius:13px;padding:13px 15px;text-decoration:none;text-align:left}
+.rcard b{color:#453058;font-size:18px}
+.rcard span{display:block;font-size:12.5px;color:#8a7d72;margin-top:2px}
+.acts{display:flex;gap:9px;justify-content:center;margin-top:14px}
+.mini{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.24);color:var(--ink);font-family:inherit;font-size:13.5px;padding:9px 16px;border-radius:10px;text-decoration:none;cursor:pointer}
 /* 上部CTA */
 .cta-top{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:15.5px;text-decoration:none;padding:12px 16px;border-radius:13px;margin:0 0 16px;box-shadow:0 5px 0 #b23a6e}
 .cta-top small{display:block;font-weight:500;font-size:12px;opacity:.92;margin-top:2px}
@@ -91,7 +111,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%83%89%E3%83%BC%E3%83%AB%E3%83%8F%E3%82%A6%E3%82%B9%20%E7%B5%84%E7%AB%8B%E3%82%AD%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>ドールハウス 組立キット</b><span>家具まで全部作れるオールインワン</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E7%B2%BE%E5%AF%86%E3%83%94%E3%83%B3%E3%82%BB%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>精密ピンセット</b><span>小さな部品の接着に指では無理がある</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=LED%E3%83%9F%E3%83%8B%E3%83%A9%E3%82%A4%E3%83%88%20%E6%A8%A1%E5%9E%8B%E7%94%A8&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>LEDミニライト 模型用</b><span>窓に灯りがともると世界が生まれる</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=xLjE7gQnJ7Y" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/xLjE7gQnJ7Y/mqdefault.jpg" alt="【初心者】が最初に覚える５ステップ‼️ドールハウス始め方。"><span>【初心者】が最初に覚える５ステップ‼️ドールハウス始め方。</span></a><a class="vid" href="https://www.youtube.com/watch?v=wkXcSlJS5Tg" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/wkXcSlJS5Tg/mqdefault.jpg" alt="これを知らないと上手く作れない！５つのスキル。初心者の為のドールハウス始め方。"><span>これを知らないと上手く作れない！５つのスキル。初心者の為のドールハウス始め方。</span></a><a class="vid" href="https://www.youtube.com/watch?v=IUcZ5B9yqAs" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/IUcZ5B9yqAs/mqdefault.jpg" alt="初心者が揃えるべき７つの道具。初心者の為のドールハウス始め方。"><span>初心者が揃えるべき７つの道具。初心者の為のドールハウス始め方。</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=xLjE7gQnJ7Y" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/xLjE7gQnJ7Y/mqdefault.jpg" alt="【初心者】が最初に覚える５ステップ‼️ドールハウス始め方。"><span>【初心者】が最初に覚える５ステップ‼️ドールハウス始め方。</span></a><a class="vid" href="https://www.youtube.com/watch?v=WLTBdc2MYPw" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/WLTBdc2MYPw/mqdefault.jpg" alt="最初に覚える技術はこれ‼️初心者の為のドールハウス始め方。How to make Dollhouse"><span>最初に覚える技術はこれ‼️初心者の為のドールハウス始め方。How to make Dollhouse</span></a><a class="vid" href="https://www.youtube.com/watch?v=IUcZ5B9yqAs" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/IUcZ5B9yqAs/mqdefault.jpg" alt="初心者が揃えるべき７つの道具。初心者の為のドールハウス始め方。"><span>初心者が揃えるべき７つの道具。初心者の為のドールハウス始め方。</span></a></div>
 <h2>相性のいい趣味</h2>
 <div class="mates"><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/842.html">季節のしつらえ</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/81.html">ホームカクテル</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/899.html">ジュエリーリメイク</a></div>
 <a class="cta" href="https://doushimasho.github.io/shuminator/">あなたに眠る趣味を診断する<small>質問に答えるだけ・3分・全1000種から神様が見抜きます</small></a>

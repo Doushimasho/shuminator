@@ -66,6 +66,26 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 .item{display:block;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--ink);font-size:14px;border:1px solid rgba(255,255,255,.09)}
 .item:hover{background:rgba(255,255,255,.14)}
 .count{color:var(--dim);font-size:13px;text-align:center;margin-bottom:4px}
+/* ランダム生成 */
+.gen{text-align:center}
+.genh1{font-family:"RocknRoll One",sans-serif;font-size:clamp(23px,5.6vw,32px);color:#fff;margin:4px 0 14px}
+.slot{background:rgba(255,255,255,.07);border:2px solid rgba(247,190,70,.45);border-radius:16px;min-height:96px;display:flex;align-items:center;justify-content:center;padding:12px;margin-bottom:14px}
+.slot.spinning{border-color:rgba(255,125,176,.75)}
+.slot-idle{color:#a294c4;font-size:15px}
+.slot-run{font-family:"RocknRoll One",sans-serif;font-size:clamp(24px,6vw,34px);color:#cbbde6;opacity:.75}
+.slot-hit{font-family:"RocknRoll One",sans-serif;font-size:clamp(28px,7.5vw,44px);color:var(--gold);text-shadow:0 3px 0 rgba(106,58,18,.85)}
+.spin{width:100%;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-family:inherit;font-weight:700;font-size:19px;border:none;padding:17px;border-radius:15px;box-shadow:0 6px 0 #b23a6e;cursor:pointer}
+.spin:active{transform:translateY(3px);box-shadow:0 3px 0 #b23a6e}
+.spin:disabled{filter:grayscale(.6);opacity:.6;cursor:not-allowed}
+.opt{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0 6px}
+.gsel2{padding:9px 10px;border-radius:10px;border:1.5px solid rgba(255,255,255,.22);background:#2c1e52;color:#fff;font-size:13.5px;font-family:inherit}
+.hit{color:var(--dim);font-size:12.5px;margin:2px 0 12px}
+.out{display:grid;gap:9px}
+.rcard{display:block;background:var(--washi);color:var(--sumi);border-radius:13px;padding:13px 15px;text-decoration:none;text-align:left}
+.rcard b{color:#453058;font-size:18px}
+.rcard span{display:block;font-size:12.5px;color:#8a7d72;margin-top:2px}
+.acts{display:flex;gap:9px;justify-content:center;margin-top:14px}
+.mini{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.24);color:var(--ink);font-family:inherit;font-size:13.5px;padding:9px 16px;border-radius:10px;text-decoration:none;cursor:pointer}
 /* 上部CTA */
 .cta-top{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:15.5px;text-decoration:none;padding:12px 16px;border-radius:13px;margin:0 0 16px;box-shadow:0 5px 0 #b23a6e}
 .cta-top small{display:block;font-weight:500;font-size:12px;opacity:.92;margin-top:2px}
@@ -91,7 +111,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E7%B7%B4%E3%82%8A%E5%88%87%E3%82%8A%20%E6%89%8B%E4%BD%9C%E3%82%8A%E3%82%AD%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>練り切り 手作りキット</b><span>あんと道具が揃い今日から和菓子職人</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E4%B8%89%E8%A7%92%E6%A3%92&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>三角棒</b><span>花びらの筋を入れる和菓子専用の木べら</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E8%8C%B6%E7%AD%85%E3%83%BB%E6%8A%B9%E8%8C%B6%E3%82%BB%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>茶筅・抹茶セット</b><span>自作の菓子に一服。至福の完成形</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=PPk34QZX4rQ" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/PPk34QZX4rQ/mqdefault.jpg" alt="自宅で簡単！和菓子作り体験　練り切りの作り方"><span>自宅で簡単！和菓子作り体験　練り切りの作り方</span></a><a class="vid" href="https://www.youtube.com/watch?v=3sWnLKqx47M" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/3sWnLKqx47M/mqdefault.jpg" alt="【和菓子職人】誰でも簡単！「ねりきり餡」作り方"><span>【和菓子職人】誰でも簡単！「ねりきり餡」作り方</span></a><a class="vid" href="https://www.youtube.com/watch?v=y_lYp61mleY" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/y_lYp61mleY/mqdefault.jpg" alt="創業２００年超の老舗和菓子店が織りなす美和菓子作りの一日に密着【京都　亀屋良長】"><span>創業２００年超の老舗和菓子店が織りなす美和菓子作りの一日に密着【京都　亀屋良長】</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=PPk34QZX4rQ" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/PPk34QZX4rQ/mqdefault.jpg" alt="自宅で簡単！和菓子作り体験　練り切りの作り方"><span>自宅で簡単！和菓子作り体験　練り切りの作り方</span></a><a class="vid" href="https://www.youtube.com/watch?v=n41pa5uPplU" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/n41pa5uPplU/mqdefault.jpg" alt="和菓子作りには欠かせない【基本の土台作り】きれいな和菓子を作るには、まずきれいな土台が必要です。【和菓子の作り方】　和菓子職人を育てる京都和菓子の学校"><span>和菓子作りには欠かせない【基本の土台作り】きれいな和菓子を作るには、まずきれいな土台が必要です。【和菓子の作り方】　和菓子職人を育てる京都和菓子の学校</span></a><a class="vid" href="https://www.youtube.com/watch?v=lLgH32tqWg8" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/lLgH32tqWg8/mqdefault.jpg" alt="創業明治5年　出雲の和菓子屋　坂根屋　和菓子作り体験YouTube　春の上生菓子 山笑う"><span>創業明治5年　出雲の和菓子屋　坂根屋　和菓子作り体験YouTube　春の上生菓子 山笑う</span></a></div>
 <h2>相性のいい趣味</h2>
 <div class="mates"><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/45.html">羊毛フェルト</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/258.html">つまみ細工</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/260.html">ビーズ刺繍</a></div>
 <a class="cta" href="https://doushimasho.github.io/shuminator/">あなたに眠る趣味を診断する<small>質問に答えるだけ・3分・全1000種から神様が見抜きます</small></a>

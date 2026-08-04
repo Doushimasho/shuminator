@@ -66,6 +66,26 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 .item{display:block;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--ink);font-size:14px;border:1px solid rgba(255,255,255,.09)}
 .item:hover{background:rgba(255,255,255,.14)}
 .count{color:var(--dim);font-size:13px;text-align:center;margin-bottom:4px}
+/* ランダム生成 */
+.gen{text-align:center}
+.genh1{font-family:"RocknRoll One",sans-serif;font-size:clamp(23px,5.6vw,32px);color:#fff;margin:4px 0 14px}
+.slot{background:rgba(255,255,255,.07);border:2px solid rgba(247,190,70,.45);border-radius:16px;min-height:96px;display:flex;align-items:center;justify-content:center;padding:12px;margin-bottom:14px}
+.slot.spinning{border-color:rgba(255,125,176,.75)}
+.slot-idle{color:#a294c4;font-size:15px}
+.slot-run{font-family:"RocknRoll One",sans-serif;font-size:clamp(24px,6vw,34px);color:#cbbde6;opacity:.75}
+.slot-hit{font-family:"RocknRoll One",sans-serif;font-size:clamp(28px,7.5vw,44px);color:var(--gold);text-shadow:0 3px 0 rgba(106,58,18,.85)}
+.spin{width:100%;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-family:inherit;font-weight:700;font-size:19px;border:none;padding:17px;border-radius:15px;box-shadow:0 6px 0 #b23a6e;cursor:pointer}
+.spin:active{transform:translateY(3px);box-shadow:0 3px 0 #b23a6e}
+.spin:disabled{filter:grayscale(.6);opacity:.6;cursor:not-allowed}
+.opt{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0 6px}
+.gsel2{padding:9px 10px;border-radius:10px;border:1.5px solid rgba(255,255,255,.22);background:#2c1e52;color:#fff;font-size:13.5px;font-family:inherit}
+.hit{color:var(--dim);font-size:12.5px;margin:2px 0 12px}
+.out{display:grid;gap:9px}
+.rcard{display:block;background:var(--washi);color:var(--sumi);border-radius:13px;padding:13px 15px;text-decoration:none;text-align:left}
+.rcard b{color:#453058;font-size:18px}
+.rcard span{display:block;font-size:12.5px;color:#8a7d72;margin-top:2px}
+.acts{display:flex;gap:9px;justify-content:center;margin-top:14px}
+.mini{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.24);color:var(--ink);font-family:inherit;font-size:13.5px;padding:9px 16px;border-radius:10px;text-decoration:none;cursor:pointer}
 /* 上部CTA */
 .cta-top{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:15.5px;text-decoration:none;padding:12px 16px;border-radius:13px;margin:0 0 16px;box-shadow:0 5px 0 #b23a6e}
 .cta-top small{display:block;font-weight:500;font-size:12px;opacity:.92;margin-top:2px}
@@ -91,7 +111,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%82%B8%E3%83%A3%E3%82%BA%E5%90%8D%E7%9B%A4%20%E3%82%AC%E3%82%A4%E3%83%89%E6%9C%AC&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>ジャズ名盤 ガイド本</b><span>マイルスから聴く順番がわかる</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%82%B8%E3%83%A3%E3%82%BA%E5%96%AB%E8%8C%B6%20%E5%85%A8%E5%9B%BD%E3%82%AC%E3%82%A4%E3%83%89&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>ジャズ喫茶 全国ガイド</b><span>名店の音響で聴く教科書的名盤</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=Bluetooth%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AB%E3%83%BC%20%E9%AB%98%E9%9F%B3%E8%B3%AA&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>Bluetoothスピーカー 高音質</b><span>自宅をジャズ喫茶化する第一歩</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=NlSKBiVwOkI" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/NlSKBiVwOkI/mqdefault.jpg" alt="ジャズ演奏を始めよう～６つのやるべきこと、ネットでジャズ入門しにくい３つの理由～"><span>ジャズ演奏を始めよう～６つのやるべきこと、ネットでジャズ入門しにくい３つの理由～</span></a><a class="vid" href="https://www.youtube.com/watch?v=Kao4xu6b3b4" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/Kao4xu6b3b4/mqdefault.jpg" alt="【㊗️45万回再生】ジャズは構造が分かればもっと楽しくなる！アドリブの仕組み徹底解説！"><span>【㊗️45万回再生】ジャズは構造が分かればもっと楽しくなる！アドリブの仕組み徹底解説！</span></a><a class="vid" href="https://www.youtube.com/watch?v=W7fpO-Qu-Gs" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/W7fpO-Qu-Gs/mqdefault.jpg" alt="【甘えるんじゃねぇ】ジャズ初心者は何から始めるべき？(その質問はアウトぉぉぉ！) ～ゆうこのジャズ説教部屋～ 【#2】"><span>【甘えるんじゃねぇ】ジャズ初心者は何から始めるべき？(その質問はアウトぉぉぉ！) ～ゆうこのジャズ説教部屋～ 【#2】</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=StM6blsh-Xg" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/StM6blsh-Xg/mqdefault.jpg" alt="ジャズ音楽の解説 - 初心者のためのジャズ音楽の演奏、鑑賞、楽しみ方！"><span>ジャズ音楽の解説 - 初心者のためのジャズ音楽の演奏、鑑賞、楽しみ方！</span></a><a class="vid" href="https://www.youtube.com/watch?v=gZA2zDDPVF4" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/gZA2zDDPVF4/mqdefault.jpg" alt="【ジャズの聴き方教えます】&quot;とにかくジャズを聴いてみよう！&quot; kingのTalking Blues Vol.66"><span>【ジャズの聴き方教えます】&quot;とにかくジャズを聴いてみよう！&quot; kingのTalking Blues Vol.66</span></a><a class="vid" href="https://www.youtube.com/watch?v=BXP-6nG7D5M" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/BXP-6nG7D5M/mqdefault.jpg" alt="これからジャズギターを始めたい人は見てください【ジャズギター入門#1】"><span>これからジャズギターを始めたい人は見てください【ジャズギター入門#1】</span></a></div>
 <h2>相性のいい趣味</h2>
 <div class="mates"><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/6.html">星空観察</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/299.html">プラネタリウム巡り</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/425.html">樹木観察</a></div>
 <a class="cta" href="https://doushimasho.github.io/shuminator/">あなたに眠る趣味を診断する<small>質問に答えるだけ・3分・全1000種から神様が見抜きます</small></a>

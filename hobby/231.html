@@ -66,6 +66,26 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 .item{display:block;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--ink);font-size:14px;border:1px solid rgba(255,255,255,.09)}
 .item:hover{background:rgba(255,255,255,.14)}
 .count{color:var(--dim);font-size:13px;text-align:center;margin-bottom:4px}
+/* ランダム生成 */
+.gen{text-align:center}
+.genh1{font-family:"RocknRoll One",sans-serif;font-size:clamp(23px,5.6vw,32px);color:#fff;margin:4px 0 14px}
+.slot{background:rgba(255,255,255,.07);border:2px solid rgba(247,190,70,.45);border-radius:16px;min-height:96px;display:flex;align-items:center;justify-content:center;padding:12px;margin-bottom:14px}
+.slot.spinning{border-color:rgba(255,125,176,.75)}
+.slot-idle{color:#a294c4;font-size:15px}
+.slot-run{font-family:"RocknRoll One",sans-serif;font-size:clamp(24px,6vw,34px);color:#cbbde6;opacity:.75}
+.slot-hit{font-family:"RocknRoll One",sans-serif;font-size:clamp(28px,7.5vw,44px);color:var(--gold);text-shadow:0 3px 0 rgba(106,58,18,.85)}
+.spin{width:100%;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-family:inherit;font-weight:700;font-size:19px;border:none;padding:17px;border-radius:15px;box-shadow:0 6px 0 #b23a6e;cursor:pointer}
+.spin:active{transform:translateY(3px);box-shadow:0 3px 0 #b23a6e}
+.spin:disabled{filter:grayscale(.6);opacity:.6;cursor:not-allowed}
+.opt{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0 6px}
+.gsel2{padding:9px 10px;border-radius:10px;border:1.5px solid rgba(255,255,255,.22);background:#2c1e52;color:#fff;font-size:13.5px;font-family:inherit}
+.hit{color:var(--dim);font-size:12.5px;margin:2px 0 12px}
+.out{display:grid;gap:9px}
+.rcard{display:block;background:var(--washi);color:var(--sumi);border-radius:13px;padding:13px 15px;text-decoration:none;text-align:left}
+.rcard b{color:#453058;font-size:18px}
+.rcard span{display:block;font-size:12.5px;color:#8a7d72;margin-top:2px}
+.acts{display:flex;gap:9px;justify-content:center;margin-top:14px}
+.mini{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.24);color:var(--ink);font-family:inherit;font-size:13.5px;padding:9px 16px;border-radius:10px;text-decoration:none;cursor:pointer}
 /* 上部CTA */
 .cta-top{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:15.5px;text-decoration:none;padding:12px 16px;border-radius:13px;margin:0 0 16px;box-shadow:0 5px 0 #b23a6e}
 .cta-top small{display:block;font-weight:500;font-size:12px;opacity:.92;margin-top:2px}
@@ -91,7 +111,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E8%A8%98%E6%86%B6%E8%A1%93%E3%81%AE%E6%9C%AC&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>記憶術の本</b><span>場所法という古代からの技術を解説</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%83%88%E3%83%A9%E3%83%B3%E3%83%97%202%E7%B5%84&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>トランプ 2組</b><span>シャッフル暗記の練習道具</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%82%B9%E3%83%88%E3%83%83%E3%83%97%E3%82%A6%E3%82%A9%E3%83%83%E3%83%81&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>ストップウォッチ</b><span>記録の伸びが見えると練習が続く</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=qq5QrS3yeSU" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/qq5QrS3yeSU/mqdefault.jpg" alt="【2024年最新版】メモリースポーツの始め方"><span>【2024年最新版】メモリースポーツの始め方</span></a><a class="vid" href="https://www.youtube.com/watch?v=hT4w61Fftvk" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/hT4w61Fftvk/mqdefault.jpg" alt="【入門者必見！】メモリースポーツの始め方！"><span>【入門者必見！】メモリースポーツの始め方！</span></a><a class="vid" href="https://www.youtube.com/watch?v=LnedEQZ4mGo" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/LnedEQZ4mGo/mqdefault.jpg" alt="元世界１位が語る記憶力競技「メモリースポーツ」の魅力｜好き語り"><span>元世界１位が語る記憶力競技「メモリースポーツ」の魅力｜好き語り</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=hT4w61Fftvk" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/hT4w61Fftvk/mqdefault.jpg" alt="【入門者必見！】メモリースポーツの始め方！"><span>【入門者必見！】メモリースポーツの始め方！</span></a><a class="vid" href="https://www.youtube.com/watch?v=qq5QrS3yeSU" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/qq5QrS3yeSU/mqdefault.jpg" alt="【2024年最新版】メモリースポーツの始め方"><span>【2024年最新版】メモリースポーツの始め方</span></a><a class="vid" href="https://www.youtube.com/watch?v=LnedEQZ4mGo" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/LnedEQZ4mGo/mqdefault.jpg" alt="元世界１位が語る記憶力競技「メモリースポーツ」の魅力｜好き語り"><span>元世界１位が語る記憶力競技「メモリースポーツ」の魅力｜好き語り</span></a></div>
 <h2>相性のいい趣味</h2>
 <div class="mates"><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/230.html">ルービックキューブ</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/145.html">スピードラン(RTA)</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/312.html">ビリヤード</a></div>
 <a class="cta" href="https://doushimasho.github.io/shuminator/">あなたに眠る趣味を診断する<small>質問に答えるだけ・3分・全1000種から神様が見抜きます</small></a>

@@ -66,6 +66,26 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 .item{display:block;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--ink);font-size:14px;border:1px solid rgba(255,255,255,.09)}
 .item:hover{background:rgba(255,255,255,.14)}
 .count{color:var(--dim);font-size:13px;text-align:center;margin-bottom:4px}
+/* ランダム生成 */
+.gen{text-align:center}
+.genh1{font-family:"RocknRoll One",sans-serif;font-size:clamp(23px,5.6vw,32px);color:#fff;margin:4px 0 14px}
+.slot{background:rgba(255,255,255,.07);border:2px solid rgba(247,190,70,.45);border-radius:16px;min-height:96px;display:flex;align-items:center;justify-content:center;padding:12px;margin-bottom:14px}
+.slot.spinning{border-color:rgba(255,125,176,.75)}
+.slot-idle{color:#a294c4;font-size:15px}
+.slot-run{font-family:"RocknRoll One",sans-serif;font-size:clamp(24px,6vw,34px);color:#cbbde6;opacity:.75}
+.slot-hit{font-family:"RocknRoll One",sans-serif;font-size:clamp(28px,7.5vw,44px);color:var(--gold);text-shadow:0 3px 0 rgba(106,58,18,.85)}
+.spin{width:100%;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-family:inherit;font-weight:700;font-size:19px;border:none;padding:17px;border-radius:15px;box-shadow:0 6px 0 #b23a6e;cursor:pointer}
+.spin:active{transform:translateY(3px);box-shadow:0 3px 0 #b23a6e}
+.spin:disabled{filter:grayscale(.6);opacity:.6;cursor:not-allowed}
+.opt{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0 6px}
+.gsel2{padding:9px 10px;border-radius:10px;border:1.5px solid rgba(255,255,255,.22);background:#2c1e52;color:#fff;font-size:13.5px;font-family:inherit}
+.hit{color:var(--dim);font-size:12.5px;margin:2px 0 12px}
+.out{display:grid;gap:9px}
+.rcard{display:block;background:var(--washi);color:var(--sumi);border-radius:13px;padding:13px 15px;text-decoration:none;text-align:left}
+.rcard b{color:#453058;font-size:18px}
+.rcard span{display:block;font-size:12.5px;color:#8a7d72;margin-top:2px}
+.acts{display:flex;gap:9px;justify-content:center;margin-top:14px}
+.mini{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.24);color:var(--ink);font-family:inherit;font-size:13.5px;padding:9px 16px;border-radius:10px;text-decoration:none;cursor:pointer}
 /* 上部CTA */
 .cta-top{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:15.5px;text-decoration:none;padding:12px 16px;border-radius:13px;margin:0 0 16px;box-shadow:0 5px 0 #b23a6e}
 .cta-top small{display:block;font-weight:500;font-size:12px;opacity:.92;margin-top:2px}
@@ -90,6 +110,8 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <dl class="spec"><dt>のこるもの</dt><dd>体験が残る</dd><dt>時間の単位</dt><dd>半日〜1日</dd><dt>上達の道のり</dt><dd>ほどよく練習</dd><dt>文化の色</dt><dd>国を問わない</dd><dt>外でやる度</dt><dd><span class="meter">●●●●●</span> がっつり屋外</dd><dt>はじめる費用</dt><dd><span class="meter">●●<i>●</i><i>●</i><i>●</i></span> 数千円から</dd><dt>めずらしさ</dt><dd><span class="meter">●●●●●</span> とても珍しい</dd></dl>
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E7%A7%BB%E6%A4%8D%E3%81%94%E3%81%A6&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>移植ごて</b><span>発掘の基本道具</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E8%86%9D%E5%BD%93%E3%81%A6&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>膝当て</b><span>一日中しゃがむ作業</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E8%80%83%E5%8F%A4%E5%AD%A6%20%E6%9C%AC&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>考古学 本</b><span>何が出るか予習すると楽しい</span></a></div>
+<h2>まず観てみる</h2>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=Y0lv4pF8VEo" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/Y0lv4pF8VEo/mqdefault.jpg" alt="発掘調査の手順　遺跡発掘の方法を解説　竪穴住居を掘る"><span>発掘調査の手順　遺跡発掘の方法を解説　竪穴住居を掘る</span></a><a class="vid" href="https://www.youtube.com/watch?v=wqnlZM_1L9M" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/wqnlZM_1L9M/mqdefault.jpg" alt="発掘調査の手順　遺跡発掘の方法を解説　①遺構検出のやり方"><span>発掘調査の手順　遺跡発掘の方法を解説　①遺構検出のやり方</span></a><a class="vid" href="https://www.youtube.com/watch?v=9chy7ChvgPU" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/9chy7ChvgPU/mqdefault.jpg" alt="岡崎市（公式）/なぜなに？遺跡の発掘調査"><span>岡崎市（公式）/なぜなに？遺跡の発掘調査</span></a></div>
 <h2>相性のいい趣味</h2>
 <div class="mates"><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/279.html">化石発掘</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/965.html">家庭でできる科学実験</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/252.html">山菜採り</a></div>
 <a class="cta" href="https://doushimasho.github.io/shuminator/">あなたに眠る趣味を診断する<small>質問に答えるだけ・3分・全1000種から神様が見抜きます</small></a>
