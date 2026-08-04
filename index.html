@@ -292,6 +292,31 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
 .toplink:hover{background:rgba(255,255,255,.18)}
 .hidden{display:none!important}
 .center{text-align:center}
+
+/* ===== 埋め込み表示(PLiCy等のiframe内)専用 =====
+   外側のページがスクロールできない環境でも、内側の .wrap を
+   スクロール領域にすることで全体を見られるようにする。
+   あわせて余白・キャラ・ボタンを詰めて、1画面に収まる量を増やす。 */
+html.embed,body.embed{height:100%;max-height:100%;overflow:hidden}
+body.embed .wrap{
+  height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:6px 12px 28px;scrollbar-width:thin;
+}
+body.embed .wrap::-webkit-scrollbar{width:8px}
+body.embed .wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28);border-radius:4px}
+body.embed header{margin:2px 0 6px}
+body.embed .god{width:132px;height:156px;margin-bottom:-32px}
+body.embed h1{font-size:clamp(26px,7vw,38px)}
+body.embed .qcard{padding:16px 14px 12px}
+body.embed .qtext{font-size:17.5px;line-height:1.6;min-height:0}
+body.embed .mutter{min-height:0;margin-bottom:2px}
+body.embed .choice{gap:7px;margin-top:10px}
+body.embed .ans{min-height:48px;font-size:16px}
+body.embed footer{margin-top:14px;padding-bottom:8px}
+/* 埋め込み時は「全画面で開く」案内を出す */
+body.embed #embed-note{display:block}
+#embed-note{display:none;text-align:center;font-size:12px;margin:8px 0 0}
+#embed-note a{color:#ffb7c5;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -467,6 +492,7 @@ footer{margin-top:auto;padding:22px 0 30px;text-align:center;color:var(--ink-dim
   </section>
 </div>
 
+<p id="embed-note"><a href="https://doushimasho.github.io/shuminator/?p=401" target="_blank" rel="noopener">画面が窮屈なときは、別タブで開くと快適に遊べます →</a></p>
 <footer>
   <button class="toplink" onclick="if(confirm('最初からやり直しますか?'))location.reload()">↑ トップに戻る</button>
   <div>案内人:どうしましょう</div>
@@ -1337,6 +1363,19 @@ function godSVG(state){
     <path d="${f.m}" stroke="#3a2402" stroke-width="4" fill="none" stroke-linecap="round"/>
   </svg>`;
 }
+/* iframe内(PLiCy等)で開かれているかを判定し、専用レイアウトに切り替える */
+(function(){
+  try{
+    if(window.self!==window.top){
+      document.documentElement.classList.add("embed");
+      document.body.classList.add("embed");
+    }
+  }catch(e){
+    /* クロスオリジンで参照できない場合も埋め込みとみなす */
+    document.documentElement.classList.add("embed");
+    document.body.classList.add("embed");
+  }
+})();
 function togglePolicy(on){
   document.getElementById("policy-modal").classList.toggle("hidden",!on);
 }
