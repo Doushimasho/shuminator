@@ -481,6 +481,10 @@ const urls = [
   [`${SITE}/hobby-finder.html`, '0.8'],
   [`${SITE}/solo-hobbies.html`, '0.7'],
   [`${SITE}/indoor-hobbies.html`, '0.7'],
+  [`${SITE}/money-free-hobbies.html`, '0.7'],
+  [`${SITE}/easy-hobbies.html`, '0.7'],
+  [`${SITE}/lifelong-hobbies.html`, '0.7'],
+  [`${SITE}/japanese-hobbies.html`, '0.7'],
   ...HOBBIES.map((h, i) => [`${SITE}/hobby/${i + 1}.html`, '0.6'])
 ];
 fs.writeFileSync('sitemap.xml',
