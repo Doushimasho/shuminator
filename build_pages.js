@@ -134,6 +134,8 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 .rcard b{color:#453058;font-size:18px}
 .rcard span{display:block;font-size:12.5px;color:#8a7d72;margin-top:2px}
 .acts{display:flex;gap:9px;justify-content:center;margin-top:14px}
+.faq2 dt{font-weight:700;color:#7a4a86;margin-top:15px;font-size:14.5px}
+.faq2 dd{margin:4px 0 0;font-size:14px;color:#5c5148}
 .mini{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.24);color:var(--ink);font-family:inherit;font-size:13.5px;padding:9px 16px;border-radius:10px;text-decoration:none;cursor:pointer}
 /* 上部CTA */
 .cta-top{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:15.5px;text-decoration:none;padding:12px 16px;border-radius:13px;margin:0 0 16px;box-shadow:0 5px 0 #b23a6e}
@@ -324,10 +326,17 @@ function randomPage() {
     "inLanguage": "ja", "url": url
   })}</script>`;
 
+  const faqld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"趣味をランダムに決めるメリットは?","acceptedAnswer":{"@type":"Answer","text":"選択肢が多すぎると人はかえって選べなくなります。ランダムに決めてしまうと、迷う時間がなくなり、自分では選ばなかったものに出会えます。合わなければやめていいので、気軽に試せます。"}},
+      {"@type":"Question","name":"やることがなくて暇なとき、何をすればいいですか?","acceptedAnswer":{"@type":"Answer","text":"何をするか決められないときは、条件だけ決めて残りを運に任せるのが有効です。予算0円・室内・すきま時間といった条件で絞り、出てきたものをその日は試してみる、という決め方ができます。"}},
+      {"@type":"Question","name":"お金をかけずにできる趣味はありますか?","acceptedAnswer":{"@type":"Answer","text":"あります。予算を「ほぼ0円から」に設定すると、道具をほとんど必要としない趣味だけが表示されます。散歩系・観察系・言葉遊び系などが該当します。"}},
+      {"@type":"Question","name":"配信や動画で使ってもいいですか?","acceptedAnswer":{"@type":"Answer","text":"自由にお使いいただけます。許可や連絡は不要です。出た趣味について話す、実際にやってみる、といった企画にそのまま使えます。"}}
+    ]})}</script>`;
   let s2 = head(
-    `ランダム趣味ジェネレーター｜全${HOBBIES.length}種からランダムに趣味を1つ選ぶ`,
-    `ボタンを押すだけで、全${HOBBIES.length}種の趣味からランダムに1つ選びます。予算・屋内屋外・かかる時間で絞り込み可能。暇なとき、配信のネタ決め、創作のお題出しに。登録不要・無料。`,
-    url, jsonld);
+    `ランダム趣味ジェネレーター｜やることが決まらない日に、${HOBBIES.length}種から趣味を1つ引く`,
+    `暇なのに何をするか決められないとき、ボタンひとつで${HOBBIES.length}種の趣味からランダムに1つ選びます。予算・室内屋外・かかる時間で絞り込み可能。休日の予定決め、配信のネタ決め、創作のお題出しにも。登録不要・無料。`,
+    url, jsonld + faqld);
 
   s2 += `\n<p class="crumb">全${HOBBIES.length}種からランダムに1つ選びます・登録不要・無料</p>`;
   s2 += `
@@ -352,6 +361,13 @@ function randomPage() {
 </div>
 
 <div class="card" style="margin-top:22px">
+<h2>やることが決まらない日に</h2>
+<p style="font-size:14.5px">
+休みなのに、何をするか決められない。時間はあるのに、気づいたら夕方になっている。<br><br>
+そういう日は、やる気がないのではなく、<b>選択肢が多すぎて選べなくなっている</b>だけなのかもしれません。人は選べる数が増えるほど、かえって決められなくなると言われています。<br><br>
+そんなときは、<b>条件だけ決めて、残りは運に任せてしまう</b>のもひとつの方法です。「今日は0円で、家の中で、すきま時間にできるもの」——それだけ決めて引いてしまえば、迷っている時間はゼロになります。<br><br>
+出たものが合わなければ、やめてかまいません。<b>一生の趣味を探すのではなく、今日の数十分を決めるだけ</b>と思うと、気楽に引けます。
+</p>
 <h2>こんなときに</h2>
 <p style="font-size:14.5px">
 <b>休みの日、何をするか決まらないとき。</b>選択肢が多すぎると人は選べなくなります。いっそ運に任せてしまうと、案外すんなり動き出せることがあります。<br><br>
@@ -361,6 +377,21 @@ function randomPage() {
 </p>
 <h2>使い方</h2>
 <p style="font-size:14.5px">ボタンを押すだけです。条件を絞りたいときは、ジャンル・予算・場所・時間・難度から選んでください。出てきた趣味の名前をタップすると、その趣味の図鑑ページ（道具・費用・始め方の動画・相性のいい趣味）が開きます。</p>
+<h2>よくある質問</h2>
+<dl class="faq2">
+<dt>趣味をランダムに決めて、意味があるの?</dt>
+<dd>自分で選ぶと、どうしても知っているものの中から選んでしまいます。ランダムなら、自分では絶対に選ばなかったものに当たります。合わなければやめていいので、試す回数を増やせるのが利点です。</dd>
+<dt>お金をかけずにできる趣味を探したい</dt>
+<dd>予算を「ほぼ0円から」にして引いてみてください。道具をほとんど必要としない趣味だけが出てきます。散歩系・観察系・言葉遊び系などが該当します。</dd>
+<dt>家の中でできるものだけ出したい</dt>
+<dd>場所を「室内でできる」にしてください。天気や季節に関係なく、家の中で完結する趣味だけに絞られます。</dd>
+<dt>すぐ楽しめるものがいい／じっくり極めたい</dt>
+<dd>難度から選べます。「初日から楽しめる」は始めたその日から面白いもの、「じっくり極める」は上達に時間がかかるぶん長く付き合えるものが出ます。</dd>
+<dt>配信や動画で使ってもいい?</dt>
+<dd>自由にお使いください。許可も連絡も不要です。出た趣味について話す、実際にやってみる、リスナーさんと一緒に引く——そのまま企画にしていただけます。</dd>
+<dt>もっとちゃんと自分に合うものを知りたい</dt>
+<dd>質問に答えていく<a href="${SITE}/?p=315">趣味診断</a>のほうが向いています。3分ほどで、${HOBBIES.length}種の中からあなたに合う一つを見抜きます。全部を眺めたい方は<a href="${SITE}/zukan.html">趣味図鑑</a>へどうぞ。</dd>
+</dl>
 </div>
 
 <a class="cta" href="${SITE}/?p=311">▶ ランダムじゃなく、自分に合う趣味を知りたい方はこちら<small>質問に答えるだけ・3分・神様が${HOBBIES.length}種から見抜きます</small></a>
