@@ -317,11 +317,15 @@ body.embed footer{margin-top:14px;padding-bottom:8px}
 body.embed #embed-note{display:block}
 #embed-note{display:none;text-align:center;font-size:12px;margin:8px 0 0}
 #embed-note a{color:#ffb7c5;text-decoration:underline}
-.why{background:rgba(255,255,255,.07);border-left:3px solid rgba(247,190,70,.6);border-radius:10px;padding:12px 14px;margin:12px 0 4px;text-align:left}
-.why p{margin:0 0 7px;font-size:13.5px;line-height:1.85;color:#e6dff2}
-.why p:last-child{margin-bottom:0}
-.why b{color:#ffd45e}
-.why .rare{color:#ffb7c5;font-weight:700}
+.why{background:rgba(255,255,255,.06);border-radius:12px;padding:11px 13px;margin:10px 0 4px;text-align:left}
+.wlead{margin:0 0 8px;font-size:13px;line-height:1.7;color:#ffd45e;font-weight:700}
+.wrow{display:flex;gap:10px;align-items:baseline;padding:3px 0}
+.wk{font-size:11.5px;color:#b0a3c9;white-space:nowrap;min-width:76px}
+.wv{font-size:13.5px;color:#ece9f4;font-weight:700}
+.startbox{background:rgba(255,255,255,.06);border-radius:12px;padding:12px 13px;margin:12px 0 0;text-align:left}
+.sttl{margin:0 0 8px;font-size:12px;color:#ffb7c5;font-weight:700;letter-spacing:.06em}
+.stbtn{display:block;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.22);color:#ece9f4;text-decoration:none;font-size:14px;font-weight:700;padding:11px 13px;border-radius:10px;margin-bottom:7px}
+.snote{margin:4px 0 0;font-size:11.5px;color:#b0a3c9}
 </style>
 </head>
 <body>
@@ -493,6 +497,7 @@ body.embed #embed-note{display:block}
     </div>
     <p id="share-hint" style="text-align:center;font-size:12px;color:var(--ink-dim);min-height:16px;margin:6px 0 0"></p>
     <p style="text-align:center;margin:10px 0 0"><a id="zukan-link" href="zukan.html" style="color:#ffb7c5;font-size:13.5px;text-decoration:underline">▶ この趣味の図鑑ページを読む(道具・動画・相性)</a></p>
+    <div id="r-start" class="startbox"></div>
     <p style="text-align:center;margin:14px 0 0"><button class="toplink" onclick="notThisOne()">ピンとこない… 別の候補を見る</button></p>
     <button class="more" onclick="searchMore()">この趣味は確定!ほかの趣味も探す</button>
     <button class="ghost" onclick="location.reload()">最初からやり直す</button>
@@ -1099,9 +1104,9 @@ function ytThemes(h){ return [[h[0]+" 始め方","始め方"],[h[0]+" 魅力 面
 
 /* ---- 結果 ---- */
 /* ---- 「なぜこの趣味が出たのか」を言語化する ---- */
-const GAIN_W=["やった時間そのものを味わうこと","からだが変わっていくこと","できることが増えていくこと","積み重なって集まっていくこと","かたちに残るものが生まれること"];
-const SPAN_W=["すきま時間でできること","1〜2時間で完結すること","半日かけて浸れること","数日がかりで取り組むこと","何年もかけて育てていくこと"];
-const CURVE_W=["始めたその日から楽しめること","わりとすぐ楽しくなること","ほどよく練習が要ること","じっくり練習を重ねること","極めるほど深くなること"];
+const GAIN_W=["体験が残る","からだが変わる","技が身につく","記録が集まる","かたちに残る"];
+const SPAN_W=["すきま時間から","1〜2時間ずつ","半日つかって","数日がかりで","何年もかけて"];
+const CURVE_W=["初日から楽しい","わりとすぐ楽しい","ほどよく練習","じっくり練習","極めるほど深い"];
 const CULT_W=["日本の伝統につながるもの","アジアやエスニックの空気を持つもの","西洋の文化に根ざしたもの","国を問わず楽しまれているもの"];
 
 function buildLead(topCores){
@@ -1114,33 +1119,18 @@ function buildWhy(i, topCores){
   const h=HOBBIES[i];
   const yours=new Set(answers.filter(x=>x.q.kind==="core"&&x.a>=0.75).map(x=>x.q.core));
   const hit=topCores.filter(c=>yours.has(c));
-  const lines=[];
-
-  // 1. 価値観の重なり
-  if(hit.length>=2)      lines.push("あなたは<b>「"+hit[0]+"」</b>と<b>「"+hit[1]+"」</b>に強く反応しました。この趣味の核と、そのまま重なります。");
-  else if(hit.length===1) lines.push("あなたは<b>「"+hit[0]+"」</b>に強く反応しました。それが、この趣味のいちばんの魅力でもあります。");
-  else                    lines.push("いくつもの答えを重ねた先に、この趣味が残りました。");
-
-  // 2. かたち(4層のうち特徴的なもの)
-  const g=h[11]!==undefined?h[11]:2, sp=h[12]!==undefined?h[12]:1,
-        cv=h[13]!==undefined?h[13]:2, cl=h[14]!==undefined?h[14]:3;
-  const feats=[];
-  if(sp===4||sp===0) feats.push(SPAN_W[sp]);
-  if(cv===4||cv===0) feats.push(CURVE_W[cv]);
-  if(g===4||g===0)   feats.push(GAIN_W[g]);
-  if(cl!==3)         feats.push(CULT_W[cl]);
-  if(feats.length) lines.push("あなたの答えは、"+feats.slice(0,2).join("、")+"を求めていました。");
-
-  // 3. ひとりか、人とか(魅力の核から判定:気質軸より信頼できる)
-  const tsunagaru=(h[3]["繋がる"]||0), seion=(h[3]["静穏"]||0);
-  if(seion>=3 && tsunagaru<=1)      lines.push("そして、ひとりで静かに向き合う時間を選びました。");
-  else if(tsunagaru>=3)             lines.push("そして、人とつながっていく時間を選びました。");
-
-  // 4. レア度(最もレアな枠のときだけ)
-  const pop=(h[10]!==undefined?h[10]:2);
-  if(pop===0) lines.push("<span class='rare'>この趣味は、1000種の中でも、とりわけ知られていない部類です。出会えたこと自体が、少し特別かもしれません。</span>");
-
-  return lines.map(t=>"<p>"+t+"</p>").join("");
+  const g=h[11]!==undefined?h[11]:2, sp=h[12]!==undefined?h[12]:1, cv=h[13]!==undefined?h[13]:2;
+  // 1行の理由(核チップと重複しないよう、"あなたの答え"の側だけを短く)
+  const lead = hit.length
+    ? "あなたの答えは、この趣味の芯とまっすぐ重なりました。"
+    : "たくさんの答えの先に、この趣味が残りました。";
+  // 核では分からない「かたち」を3点だけ
+  const spec = [
+    ["向き合う時間", SPAN_W[sp]],
+    ["上達の道のり", CURVE_W[cv]],
+    ["のこるもの",   GAIN_W[g]]
+  ].map(x=>'<div class="wrow"><span class="wk">'+x[0]+'</span><span class="wv">'+x[1]+'</span></div>').join("");
+  return '<p class="wlead">'+lead+'</p>'+spec;
 }
 
 /* ---- 「ピンとこない」:この結果を除外して次の候補へ ---- */
@@ -1171,6 +1161,14 @@ function showResult(i){
   // 理由演出:あなたの断言核 ∩ この趣味の強い核
   document.getElementById("r-reason").textContent = buildLead(topCores);
   document.getElementById("r-why").innerHTML = buildWhy(i, topCores);
+  {
+    const hbn=HOBBIES[i][0].split(/[・(【]/)[0];
+    document.getElementById("r-start").innerHTML =
+      '<p class="sttl">はじめかた</p>'
+      + '<a class="stbtn" href="https://www.google.com/search?q='+encodeURIComponent(hbn+" 体験 教室 初心者")+'" target="_blank" rel="noopener nofollow">① 体験・教室をさがす</a>'
+      + '<a class="stbtn" href="https://www.google.com/search?q='+encodeURIComponent(hbn+" 始め方 初心者")+'" target="_blank" rel="noopener nofollow">② 始め方をしらべる</a>'
+      + '<p class="snote">下の動画と道具から入るのもおすすめです。</p>';
+  }
   document.getElementById("r-desc").textContent=h[5];
   // 道具(Amazon:趣味名を文脈に前置)
   const tools=document.getElementById("r-tools"); tools.innerHTML="";
