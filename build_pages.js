@@ -47,6 +47,66 @@ const OUT   = ['完全に室内','ほぼ室内','室内でも外でも','外が�
 const COST  = ['ほぼ0円から','数千円から','1万円前後から','数万円から','しっかり投資'];
 const RARE  = ['とても珍しい','珍しい','ほどよく知られている','よく知られている','定番中の定番'];
 
+// ---------- 文章生成用の語彙 ----------
+const CORE_TXT = {
+  '上達':'できなかったことが少しずつできるようになる手応え',
+  '攻略':'仕組みを読み解いて攻略していく面白さ',
+  '達成':'やり遂げたときの充実感',
+  '競う':'誰かと競り合う緊張感',
+  '組む':'手を動かして組み上げていく時間',
+  '表現':'自分の内側にあるものを外に出す感覚',
+  '模倣':'お手本をなぞって型を身につける過程',
+  '発見':'知らなかったものに出会う驚き',
+  '深掘':'一つのことをどこまでも掘り下げる没入',
+  '繋がる':'同じものを好きな人とつながる楽しさ',
+  '披露':'誰かに見てもらう手ごたえ',
+  '育てる':'手をかけたぶんだけ育っていく実感',
+  '推す':'好きなものを応援する熱',
+  '収集':'少しずつ集まっていく満足感',
+  '愛でる':'ただ眺めているだけで満たされる時間',
+  '記録':'続けた分だけ積み上がっていく記録',
+  '高揚':'胸が高鳴る瞬間',
+  '静穏':'静かに心が整っていく時間',
+  '躍動':'体を動かす爽快感',
+  '物語':'物語に浸り込む感覚'
+};
+const COST_TXT = [
+  '道具をほとんど必要としないので、思い立った日に始められます。',
+  '数千円あれば一通り揃うので、試しに始めてみるハードルは低めです。',
+  '入門用の道具で1万円前後を見ておくと、無理なく始められます。',
+  '数万円ほどの初期投資が必要になりますが、そのぶん長く使える道具が手に入ります。',
+  'それなりの投資が必要な世界です。まずは体験やレンタルから入る方法もあります。'
+];
+const SPAN_TXT = [
+  '5分10分のすきま時間でも成立するので、忙しい時期でも続けやすいのが特徴です。',
+  '1〜2時間あればひと区切りつくので、平日の夜にも組み込みやすい趣味です。',
+  '半日ほどまとまった時間を取ると、じっくり楽しめます。休日向きの趣味です。',
+  '数日がかりで取り組むタイプなので、連休や旅程に組み込むと満喫できます。',
+  '年単位で育てていくタイプです。すぐに結果は出ませんが、そのぶん長く付き合えます。'
+];
+const CURVE_TXT = [
+  '特別な技術は要らず、始めたその日から楽しめます。',
+  '簡単なコツを覚えれば、わりとすぐに面白さがわかってきます。',
+  'ほどよく練習が要りますが、上達の実感を得やすい部類です。',
+  '形になるまでにある程度の練習が必要です。そのぶん、できたときの喜びは大きいものになります。',
+  '極めようとすると果てしない世界です。長く付き合う覚悟がある人ほど深く楽しめます。'
+];
+const OUT_TXT = [
+  '完全に室内で完結するので、天気や季節に左右されません。',
+  'ほぼ室内でできるので、気候を気にせず続けられます。',
+  '室内でも屋外でも楽しめるので、その日の気分や天気で選べます。',
+  '屋外が主役になる趣味です。外に出るきっかけとしても機能します。',
+  'しっかり外に出る趣味です。自然や街の中で過ごす時間そのものが目的になります。'
+];
+const GAIN_TXT = [
+  'あとに形は残りませんが、その時間の体験そのものが目的になる趣味です。',
+  '続けるうちに体の状態が変わっていくのを実感できます。',
+  '身につけた技術が自分のものとして残ります。',
+  '続けた記録やコレクションが少しずつ積み上がっていきます。',
+  '手を動かした結果が、形のあるものとして残ります。'
+];
+const CULT_TXT = ['日本の伝統や文化に根ざした趣味です。','アジアやエスニックの文化圏から生まれた趣味です。','欧米の文化圏から広まった趣味です。',''];
+
 // ---------- 相性のいい趣味(エンジンと同じ考え方) ----------
 function coreVec(h) { return CORES.map(c => (h[3][c] || 0) / 4); }
 function coreDist(a, b) { let d = 0; for (let k = 0; k < 20; k++) { const x = a[k] - b[k]; d += x * x; } return Math.sqrt(d); }
@@ -86,6 +146,8 @@ h2{font-size:14px;color:#7a4a86;letter-spacing:.06em;margin:24px 0 10px;padding-
 .chip{background:#7a4a86;color:#fff;border-radius:999px;padding:6px 15px;font-size:13.5px;font-weight:700}
 .spec{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:14px}
 .spec dt{color:#8a7d72;white-space:nowrap}
+.qa dt{font-weight:700;color:#7a4a86;margin-top:14px;font-size:14.5px}
+.qa dd{margin:4px 0 0;font-size:14px;color:#5c5148;line-height:1.85}
 .spec dd{margin:0;font-weight:700;color:#453058}
 .meter{display:inline-block;letter-spacing:2px;color:#f0b64e}
 .meter i{color:#ded3bd;font-style:normal}
@@ -97,6 +159,11 @@ h2{font-size:14px;color:#7a4a86;letter-spacing:.06em;margin:24px 0 10px;padding-
 .vid{display:block;text-decoration:none;color:var(--sumi)}
 .vid img{width:100%;border-radius:10px;display:block;background:#ded3bd}
 .vid span{display:block;font-size:12px;margin-top:5px;line-height:1.5}
+.deep{list-style:none;margin:0;padding:0;counter-reset:d}
+.deep li{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px dashed #e5d9bd}
+.deep li:last-child{border-bottom:none}
+.dnum{flex:0 0 26px;height:26px;border-radius:50%;background:#7a4a86;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.dtxt{font-size:14px;line-height:1.85;color:#4c443c}
 .mates{display:flex;flex-wrap:wrap;gap:9px}
 .mate{background:#fff;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:14px;text-decoration:none;color:#7a4a86;font-weight:700}
 .cta{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:17px;text-decoration:none;padding:15px;border-radius:14px;margin:24px 0 6px;box-shadow:0 6px 0 #b23a6e}
@@ -206,6 +273,12 @@ function hobbyPage(h, i) {
   const cl = h[14] !== undefined ? h[14] : 3;
   const desc = `${h[0]}とは——${h[5]} 「${cores.slice(0,3).join('・')}」に惹かれる人に向いています。始め方・道具・相性のいい趣味も紹介。`;
 
+  const faqJson = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":`${h[0]}はお金がかかりますか?`,"acceptedAnswer":{"@type":"Answer","text":COST_TXT[h[8]]}},
+      {"@type":"Question","name":`${h[0]}は一人でもできますか?`,"acceptedAnswer":{"@type":"Answer","text":(h[9][1]>=1&&h[9][0]<=0)?"ひとりで完結する趣味なので、一人でも問題なく楽しめます。":"一人でも、誰かと一緒でも楽しめます。"}},
+      {"@type":"Question","name":`${h[0]}は初心者でも始められますか?`,"acceptedAnswer":{"@type":"Answer","text":CURVE_TXT[(h[13]!==undefined?h[13]:2)]}}
+    ]})}</script>`;
   const jsonld = `<script type="application/ld+json">${JSON.stringify({
     "@context": "https://schema.org", "@type": "Article",
     "headline": `${h[0]}｜趣味図鑑`,
@@ -216,7 +289,7 @@ function hobbyPage(h, i) {
     "inLanguage": "ja", "mainEntityOfPage": url
   })}</script>`;
 
-  let s = head(`${h[0]}とは｜趣味図鑑｜シュミネーター`, desc, url, jsonld);
+  let s = head(`${h[0]}とは｜趣味図鑑｜シュミネーター`, desc, url, jsonld + faqJson);
   s += `\n<p class="crumb"><a href="${SITE}/zukan.html">趣味図鑑</a> › ${esc(h[1])} › ${esc(h[2])}</p>`;
   s += `\n<a class="cta-top" href="${SITE}/?p=303">▶ あなたに眠る趣味を診断してもらう<small>質問に答えるだけ・3分・無料・全1000種から</small></a>`;
   s += `\n<div class="card">`;
@@ -253,11 +326,63 @@ function hobbyPage(h, i) {
     s += `</div>`;
   }
 
+  const deep = h[15];
+  if (deep && deep.length === 3) {
+    s += `\n<h2>この趣味は、こう深くなっていきます</h2>\n<ol class="deep">`;
+    deep.forEach((d, k) => { s += `<li><span class="dnum">${k + 1}</span><span class="dtxt">${esc(d)}</span></li>`; });
+    s += `</ol>`;
+  }
+
   if (mt.length) {
     s += `\n<h2>相性のいい趣味</h2>\n<div class="mates">`;
     mt.forEach(j => { s += `<a class="mate" href="${SITE}/hobby/${j + 1}.html">${esc(HOBBIES[j][0])}</a>`; });
     s += `</div>`;
   }
+
+  // ===== ページ固有の解説文(データから生成) =====
+  const c1 = cores[0], c2 = cores[1] || cores[0];
+  const solo = h[9][1];   // 単独志向
+  const soc  = h[9][0];   // 対人
+  let intro = `${h[0]}は、${CORE_TXT[c1] || 'その趣味ならではの手応え'}を求める人に向いている趣味です。`;
+  if (c2 !== c1) intro += `あわせて${CORE_TXT[c2] || ''}も味わえるので、そのあたりに心が動く人ほど相性が良さそうです。`;
+  const style = (solo >= 1 && soc <= 0) ? 'ひとりの時間に向いていて、自分のペースで進められます。'
+              : (soc >= 1) ? '人と一緒に楽しむ場面が多く、仲間ができやすい趣味でもあります。'
+              : 'ひとりでも、誰かと一緒でも成立します。';
+  const body = [
+    intro,
+    style,
+    CURVE_TXT[cv],
+    COST_TXT[h[8]],
+    SPAN_TXT[sp],
+    OUT_TXT[h[7]],
+    GAIN_TXT[g],
+    CULT_TXT[cl]
+  ].filter(Boolean).join('');
+
+  s += `\n<h2>${esc(h[0])}はどんな趣味か</h2>\n<p class="desc" style="margin-bottom:6px">${esc(body)}</p>`;
+
+  // ===== 似た趣味との違い =====
+  if (mt.length) {
+    const m0 = HOBBIES[mt[0]];
+    const diff = (m0[8] !== h[8])
+      ? `${esc(m0[0])}は${COST_TXT[m0[8]].replace('。','')}という点が違います。`
+      : (m0[13] !== cv)
+        ? `${esc(m0[0])}は${CURVE_TXT[m0[13]].replace('。','')}という違いがあります。`
+        : `${esc(m0[0])}は${esc(m0[1])}の分野なので、雰囲気が少し変わります。`;
+    s += `\n<p class="desc" style="font-size:14px">${esc(h[0])}に惹かれる人は、<a href="${SITE}/hobby/${mt[0]+1}.html">${esc(m0[0])}</a>も候補になりやすい趣味です。ただし${diff}</p>`;
+  }
+
+  // ===== よくある質問(ページ固有) =====
+  const q1a = COST_TXT[h[8]] + (h[6] && h[6].length ? `まずは「${esc(h[6][0][0])}」から揃えるのが一般的です。` : '');
+  const q2a = (solo >= 1 && soc <= 0) ? `ひとりで完結する趣味なので、一人でも問題なく楽しめます。むしろ一人の時間に向いています。`
+            : (soc >= 1) ? `人と関わる場面が多い趣味ですが、一人で始めてから輪に入っていく人も少なくありません。`
+            : `一人でも、誰かと一緒でも楽しめます。`;
+  const q3a = CURVE_TXT[cv] + SPAN_TXT[sp];
+  s += `\n<h2>よくある質問</h2>\n<dl class="qa">
+<dt>${esc(h[0])}はお金がかかりますか?</dt><dd>${esc(q1a)}</dd>
+<dt>${esc(h[0])}は一人でもできますか?</dt><dd>${esc(q2a)}</dd>
+<dt>${esc(h[0])}は初心者でも始められますか?</dt><dd>${esc(q3a)}</dd>
+</dl>`;
 
   s += `\n<a class="cta" href="${SITE}/">あなたに眠る趣味を診断する<small>質問に答えるだけ・3分・全1000種から神様が見抜きます</small></a>`;
   s += `\n</div>`;
