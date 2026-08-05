@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"気象観測｜趣味図鑑","about":"気象観測","description":"百葉箱は自作できる。気圧計と温度計で天気を先読みし、予報が当たった朝の小さな全能感を味わう。","author":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント"},"publisher":{"@type":"Organization","name":"シュミネーター"},"inLanguage":"ja","mainEntityOfPage":"https://doushimasho.github.io/shuminator/hobby/426.html"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"気象観測｜趣味図鑑","about":"気象観測","description":"百葉箱は自作できる。気圧計と温度計で天気を先読みし、予報が当たった朝の小さな全能感を味わう。","author":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント"},"publisher":{"@type":"Organization","name":"シュミネーター"},"inLanguage":"ja","mainEntityOfPage":"https://doushimasho.github.io/shuminator/hobby/426.html"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"気象観測はお金がかかりますか?","acceptedAnswer":{"@type":"Answer","text":"数千円あれば一通り揃うので、試しに始めてみるハードルは低めです。"}},{"@type":"Question","name":"気象観測は一人でもできますか?","acceptedAnswer":{"@type":"Answer","text":"ひとりで完結する趣味なので、一人でも問題なく楽しめます。"}},{"@type":"Question","name":"気象観測は初心者でも始められますか?","acceptedAnswer":{"@type":"Answer","text":"ほどよく練習が要りますが、上達の実感を得やすい部類です。"}}]}</script>
 <style>
 :root{--gold:#f7be46;--ink:#ece9f4;--sakura:#ffb7c5;--washi:#faf4e6;--sumi:#37302a;--dim:#b7a6d6}
 *{box-sizing:border-box}
@@ -37,6 +37,8 @@ h2{font-size:14px;color:#7a4a86;letter-spacing:.06em;margin:24px 0 10px;padding-
 .chip{background:#7a4a86;color:#fff;border-radius:999px;padding:6px 15px;font-size:13.5px;font-weight:700}
 .spec{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:14px}
 .spec dt{color:#8a7d72;white-space:nowrap}
+.qa dt{font-weight:700;color:#7a4a86;margin-top:14px;font-size:14.5px}
+.qa dd{margin:4px 0 0;font-size:14px;color:#5c5148;line-height:1.85}
 .spec dd{margin:0;font-weight:700;color:#453058}
 .meter{display:inline-block;letter-spacing:2px;color:#f0b64e}
 .meter i{color:#ded3bd;font-style:normal}
@@ -48,6 +50,11 @@ h2{font-size:14px;color:#7a4a86;letter-spacing:.06em;margin:24px 0 10px;padding-
 .vid{display:block;text-decoration:none;color:var(--sumi)}
 .vid img{width:100%;border-radius:10px;display:block;background:#ded3bd}
 .vid span{display:block;font-size:12px;margin-top:5px;line-height:1.5}
+.deep{list-style:none;margin:0;padding:0;counter-reset:d}
+.deep li{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px dashed #e5d9bd}
+.deep li:last-child{border-bottom:none}
+.dnum{flex:0 0 26px;height:26px;border-radius:50%;background:#7a4a86;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.dtxt{font-size:14px;line-height:1.85;color:#4c443c}
 .mates{display:flex;flex-wrap:wrap;gap:9px}
 .mate{background:#fff;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:14px;text-decoration:none;color:#7a4a86;font-weight:700}
 .cta{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:17px;text-decoration:none;padding:15px;border-radius:14px;margin:24px 0 6px;box-shadow:0 6px 0 #b23a6e}
@@ -128,8 +135,19 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E6%B0%97%E8%B1%A1%E8%A6%B3%E6%B8%AC%20%E6%B8%A9%E6%B9%BF%E5%BA%A6%E8%A8%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>気象観測 温湿度計</b><span>マイ観測所の第一歩</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E6%B0%97%E8%B1%A1%20%E6%9C%AC%20%E5%A4%A9%E6%B0%97%E5%9B%B3&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>気象 本 天気図</b><span>天気図が読めると空が物語になる</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E6%B0%97%E5%9C%A7%E8%A8%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>気圧計</b><span>下り坂を最初に知る道具</span></a></div>
 <h2>まず観てみる</h2>
 <div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=N8rUZ6P7wrs" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/N8rUZ6P7wrs/mqdefault.jpg" alt="中学2年　天気とその変化　第1章　気象観測と雲のでき方②　「気象観測」"><span>中学2年　天気とその変化　第1章　気象観測と雲のでき方②　「気象観測」</span></a><a class="vid" href="https://www.youtube.com/watch?v=Jvz7ghgl9dA" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/Jvz7ghgl9dA/mqdefault.jpg" alt="気象観測ってどうやってるの？気になる測器の内部も公開！"><span>気象観測ってどうやってるの？気になる測器の内部も公開！</span></a><a class="vid" href="https://www.youtube.com/watch?v=uBIjoJev50Q" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/uBIjoJev50Q/mqdefault.jpg" alt="【中学理科】気象観測の仕方～基礎知識の確認～ 4-1【中２理科】"><span>【中学理科】気象観測の仕方～基礎知識の確認～ 4-1【中２理科】</span></a></div>
+<h2>この趣味は、こう深くなっていきます</h2>
+<ol class="deep"><li><span class="dnum">1</span><span class="dtxt">自分の観測で天気が読める快感。</span></li><li><span class="dnum">2</span><span class="dtxt">気圧と雲の関係が分かってくる。</span></li><li><span class="dnum">3</span><span class="dtxt">予報が当たる朝が来る。空が読み物になる。</span></li></ol>
 <h2>相性のいい趣味</h2>
 <div class="mates"><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/357.html">快眠研究</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/420.html">夢日記・明晰夢</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/921.html">腸活</a></div>
+<h2>気象観測はどんな趣味か</h2>
+<p class="desc" style="margin-bottom:6px">気象観測は、続けた分だけ積み上がっていく記録を求める人に向いている趣味です。あわせて一つのことをどこまでも掘り下げる没入も味わえるので、そのあたりに心が動く人ほど相性が良さそうです。ひとりの時間に向いていて、自分のペースで進められます。ほどよく練習が要りますが、上達の実感を得やすい部類です。数千円あれば一通り揃うので、試しに始めてみるハードルは低めです。半日ほどまとまった時間を取ると、じっくり楽しめます。休日向きの趣味です。屋外が主役になる趣味です。外に出るきっかけとしても機能します。続けた記録やコレクションが少しずつ積み上がっていきます。</p>
+<p class="desc" style="font-size:14px">気象観測に惹かれる人は、<a href="https://doushimasho.github.io/shuminator/hobby/357.html">快眠研究</a>も候補になりやすい趣味です。ただし快眠研究は入門用の道具で1万円前後を見ておくと、無理なく始められますという点が違います。</p>
+<h2>よくある質問</h2>
+<dl class="qa">
+<dt>気象観測はお金がかかりますか?</dt><dd>数千円あれば一通り揃うので、試しに始めてみるハードルは低めです。まずは「気象観測 温湿度計」から揃えるのが一般的です。</dd>
+<dt>気象観測は一人でもできますか?</dt><dd>ひとりで完結する趣味なので、一人でも問題なく楽しめます。むしろ一人の時間に向いています。</dd>
+<dt>気象観測は初心者でも始められますか?</dt><dd>ほどよく練習が要りますが、上達の実感を得やすい部類です。半日ほどまとまった時間を取ると、じっくり楽しめます。休日向きの趣味です。</dd>
+</dl>
 <a class="cta" href="https://doushimasho.github.io/shuminator/">あなたに眠る趣味を診断する<small>質問に答えるだけ・3分・全1000種から神様が見抜きます</small></a>
 </div>
 <div class="nav"><a href="https://doushimasho.github.io/shuminator/hobby/425.html">← 樹木観察</a><a class="next" href="https://doushimasho.github.io/shuminator/hobby/427.html">水石・盆石 →</a></div>

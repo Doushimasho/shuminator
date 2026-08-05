@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"自作キーボード｜趣味図鑑","about":"自作キーボード","description":"キーの配列も打鍵感も自分仕様に。はんだ付けから沼への入口が開く。","author":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント"},"publisher":{"@type":"Organization","name":"シュミネーター"},"inLanguage":"ja","mainEntityOfPage":"https://doushimasho.github.io/shuminator/hobby/108.html"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"自作キーボード｜趣味図鑑","about":"自作キーボード","description":"キーの配列も打鍵感も自分仕様に。はんだ付けから沼への入口が開く。","author":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント"},"publisher":{"@type":"Organization","name":"シュミネーター"},"inLanguage":"ja","mainEntityOfPage":"https://doushimasho.github.io/shuminator/hobby/108.html"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"自作キーボードはお金がかかりますか?","acceptedAnswer":{"@type":"Answer","text":"数万円ほどの初期投資が必要になりますが、そのぶん長く使える道具が手に入ります。"}},{"@type":"Question","name":"自作キーボードは一人でもできますか?","acceptedAnswer":{"@type":"Answer","text":"一人でも、誰かと一緒でも楽しめます。"}},{"@type":"Question","name":"自作キーボードは初心者でも始められますか?","acceptedAnswer":{"@type":"Answer","text":"形になるまでにある程度の練習が必要です。そのぶん、できたときの喜びは大きいものになります。"}}]}</script>
 <style>
 :root{--gold:#f7be46;--ink:#ece9f4;--sakura:#ffb7c5;--washi:#faf4e6;--sumi:#37302a;--dim:#b7a6d6}
 *{box-sizing:border-box}
@@ -37,6 +37,8 @@ h2{font-size:14px;color:#7a4a86;letter-spacing:.06em;margin:24px 0 10px;padding-
 .chip{background:#7a4a86;color:#fff;border-radius:999px;padding:6px 15px;font-size:13.5px;font-weight:700}
 .spec{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:14px}
 .spec dt{color:#8a7d72;white-space:nowrap}
+.qa dt{font-weight:700;color:#7a4a86;margin-top:14px;font-size:14.5px}
+.qa dd{margin:4px 0 0;font-size:14px;color:#5c5148;line-height:1.85}
 .spec dd{margin:0;font-weight:700;color:#453058}
 .meter{display:inline-block;letter-spacing:2px;color:#f0b64e}
 .meter i{color:#ded3bd;font-style:normal}
@@ -48,6 +50,11 @@ h2{font-size:14px;color:#7a4a86;letter-spacing:.06em;margin:24px 0 10px;padding-
 .vid{display:block;text-decoration:none;color:var(--sumi)}
 .vid img{width:100%;border-radius:10px;display:block;background:#ded3bd}
 .vid span{display:block;font-size:12px;margin-top:5px;line-height:1.5}
+.deep{list-style:none;margin:0;padding:0;counter-reset:d}
+.deep li{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px dashed #e5d9bd}
+.deep li:last-child{border-bottom:none}
+.dnum{flex:0 0 26px;height:26px;border-radius:50%;background:#7a4a86;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.dtxt{font-size:14px;line-height:1.85;color:#4c443c}
 .mates{display:flex;flex-wrap:wrap;gap:9px}
 .mate{background:#fff;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:14px;text-decoration:none;color:#7a4a86;font-weight:700}
 .cta{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:17px;text-decoration:none;padding:15px;border-radius:14px;margin:24px 0 6px;box-shadow:0 6px 0 #b23a6e}
@@ -127,9 +134,20 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E8%87%AA%E4%BD%9C%E3%82%AD%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89%20%E3%82%AD%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>自作キーボード キット</b><span>基板・ケースが揃う組み立てキット</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%81%AF%E3%82%93%E3%81%A0%E3%81%94%E3%81%A6%20%E3%82%BB%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>はんだごて セット</b><span>温度調整付きが失敗しにくい</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%82%AD%E3%83%BC%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%20%E3%83%86%E3%82%B9%E3%82%BF%E3%83%BC&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>キースイッチ テスター</b><span>押し心地を買う前に試せるお試し盤</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=5H03Z5QVafE" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/5H03Z5QVafE/mqdefault.jpg" alt="【自作キーボード】文系だけど、1からキーボード作ってみた。"><span>【自作キーボード】文系だけど、1からキーボード作ってみた。</span></a><a class="vid" href="https://www.youtube.com/watch?v=fC3O1fkmAZc" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/fC3O1fkmAZc/mqdefault.jpg" alt="【Keyball39】電子工作ガチ初心者でもできる！自作キーボードの始め方"><span>【Keyball39】電子工作ガチ初心者でもできる！自作キーボードの始め方</span></a><a class="vid" href="https://www.youtube.com/watch?v=xp3ZpQygogw" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/xp3ZpQygogw/mqdefault.jpg" alt="【自作キーボード】60から始めるレトロでシンプルな自作キーボード！"><span>【自作キーボード】60から始めるレトロでシンプルな自作キーボード！</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=5H03Z5QVafE" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/5H03Z5QVafE/mqdefault.jpg" alt="【自作キーボード】文系だけど、1からキーボード作ってみた。"><span>【自作キーボード】文系だけど、1からキーボード作ってみた。</span></a><a class="vid" href="https://www.youtube.com/watch?v=fC3O1fkmAZc" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/fC3O1fkmAZc/mqdefault.jpg" alt="【Keyball39】電子工作ガチ初心者でもできる！自作キーボードの始め方"><span>【Keyball39】電子工作ガチ初心者でもできる！自作キーボードの始め方</span></a><a class="vid" href="https://www.youtube.com/watch?v=vvEX2FNAGiY" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/vvEX2FNAGiY/mqdefault.jpg" alt="【完全自作キーボード #1】基板から始めるキーボードの作り方！はんだ付け・組み立て編"><span>【完全自作キーボード #1】基板から始めるキーボードの作り方！はんだ付け・組み立て編</span></a></div>
+<h2>この趣味は、こう深くなっていきます</h2>
+<ol class="deep"><li><span class="dnum">1</span><span class="dtxt">自分で組んだ一台で打つ快感。</span></li><li><span class="dnum">2</span><span class="dtxt">軸とレイアウトが分かってくる。</span></li><li><span class="dnum">3</span><span class="dtxt">配列を設計しはじめる。指に合わせて道具を作る。</span></li></ol>
 <h2>相性のいい趣味</h2>
 <div class="mates"><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/433.html">チャイ研究</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/127.html">シティビルダー</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/488.html">ミニチュアウォーゲーム</a></div>
+<h2>自作キーボードはどんな趣味か</h2>
+<p class="desc" style="margin-bottom:6px">自作キーボードは、手を動かして組み上げていく時間を求める人に向いている趣味です。あわせて仕組みを読み解いて攻略していく面白さも味わえるので、そのあたりに心が動く人ほど相性が良さそうです。ひとりでも、誰かと一緒でも成立します。形になるまでにある程度の練習が必要です。そのぶん、できたときの喜びは大きいものになります。数万円ほどの初期投資が必要になりますが、そのぶん長く使える道具が手に入ります。半日ほどまとまった時間を取ると、じっくり楽しめます。休日向きの趣味です。完全に室内で完結するので、天気や季節に左右されません。手を動かした結果が、形のあるものとして残ります。</p>
+<p class="desc" style="font-size:14px">自作キーボードに惹かれる人は、<a href="https://doushimasho.github.io/shuminator/hobby/433.html">チャイ研究</a>も候補になりやすい趣味です。ただしチャイ研究は数千円あれば一通り揃うので、試しに始めてみるハードルは低めですという点が違います。</p>
+<h2>よくある質問</h2>
+<dl class="qa">
+<dt>自作キーボードはお金がかかりますか?</dt><dd>数万円ほどの初期投資が必要になりますが、そのぶん長く使える道具が手に入ります。まずは「自作キーボード キット」から揃えるのが一般的です。</dd>
+<dt>自作キーボードは一人でもできますか?</dt><dd>一人でも、誰かと一緒でも楽しめます。</dd>
+<dt>自作キーボードは初心者でも始められますか?</dt><dd>形になるまでにある程度の練習が必要です。そのぶん、できたときの喜びは大きいものになります。半日ほどまとまった時間を取ると、じっくり楽しめます。休日向きの趣味です。</dd>
+</dl>
 <a class="cta" href="https://doushimasho.github.io/shuminator/">あなたに眠る趣味を診断する<small>質問に答えるだけ・3分・全1000種から神様が見抜きます</small></a>
 </div>
 <div class="nav"><a href="https://doushimasho.github.io/shuminator/hobby/107.html">← ドット絵制作</a><a class="next" href="https://doushimasho.github.io/shuminator/hobby/109.html">レトロゲーム収集 →</a></div>

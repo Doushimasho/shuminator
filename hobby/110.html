@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"ラズパイ電子工作｜趣味図鑑","about":"ラズパイ電子工作","description":"小さなコンピュータで自作ガジェットを作る。「動いた!」の感動はクセになる。","author":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント"},"publisher":{"@type":"Organization","name":"シュミネーター"},"inLanguage":"ja","mainEntityOfPage":"https://doushimasho.github.io/shuminator/hobby/110.html"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"ラズパイ電子工作｜趣味図鑑","about":"ラズパイ電子工作","description":"小さなコンピュータで自作ガジェットを作る。「動いた!」の感動はクセになる。","author":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント"},"publisher":{"@type":"Organization","name":"シュミネーター"},"inLanguage":"ja","mainEntityOfPage":"https://doushimasho.github.io/shuminator/hobby/110.html"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"ラズパイ電子工作はお金がかかりますか?","acceptedAnswer":{"@type":"Answer","text":"入門用の道具で1万円前後を見ておくと、無理なく始められます。"}},{"@type":"Question","name":"ラズパイ電子工作は一人でもできますか?","acceptedAnswer":{"@type":"Answer","text":"一人でも、誰かと一緒でも楽しめます。"}},{"@type":"Question","name":"ラズパイ電子工作は初心者でも始められますか?","acceptedAnswer":{"@type":"Answer","text":"形になるまでにある程度の練習が必要です。そのぶん、できたときの喜びは大きいものになります。"}}]}</script>
 <style>
 :root{--gold:#f7be46;--ink:#ece9f4;--sakura:#ffb7c5;--washi:#faf4e6;--sumi:#37302a;--dim:#b7a6d6}
 *{box-sizing:border-box}
@@ -37,6 +37,8 @@ h2{font-size:14px;color:#7a4a86;letter-spacing:.06em;margin:24px 0 10px;padding-
 .chip{background:#7a4a86;color:#fff;border-radius:999px;padding:6px 15px;font-size:13.5px;font-weight:700}
 .spec{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:14px}
 .spec dt{color:#8a7d72;white-space:nowrap}
+.qa dt{font-weight:700;color:#7a4a86;margin-top:14px;font-size:14.5px}
+.qa dd{margin:4px 0 0;font-size:14px;color:#5c5148;line-height:1.85}
 .spec dd{margin:0;font-weight:700;color:#453058}
 .meter{display:inline-block;letter-spacing:2px;color:#f0b64e}
 .meter i{color:#ded3bd;font-style:normal}
@@ -48,6 +50,11 @@ h2{font-size:14px;color:#7a4a86;letter-spacing:.06em;margin:24px 0 10px;padding-
 .vid{display:block;text-decoration:none;color:var(--sumi)}
 .vid img{width:100%;border-radius:10px;display:block;background:#ded3bd}
 .vid span{display:block;font-size:12px;margin-top:5px;line-height:1.5}
+.deep{list-style:none;margin:0;padding:0;counter-reset:d}
+.deep li{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px dashed #e5d9bd}
+.deep li:last-child{border-bottom:none}
+.dnum{flex:0 0 26px;height:26px;border-radius:50%;background:#7a4a86;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.dtxt{font-size:14px;line-height:1.85;color:#4c443c}
 .mates{display:flex;flex-wrap:wrap;gap:9px}
 .mate{background:#fff;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:14px;text-decoration:none;color:#7a4a86;font-weight:700}
 .cta{display:block;text-align:center;background:linear-gradient(180deg,#ff7db0,#e0568a);color:#fff;font-weight:700;font-size:17px;text-decoration:none;padding:15px;border-radius:14px;margin:24px 0 6px;box-shadow:0 6px 0 #b23a6e}
@@ -128,8 +135,19 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=Raspberry%20Pi%20%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%BF%E3%83%BC%E3%82%AD%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>Raspberry Pi スターターキット</b><span>本体・電源・ケースの一式</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E9%9B%BB%E5%AD%90%E5%B7%A5%E4%BD%9C%20%E5%85%A5%E9%96%80%E3%82%AD%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>電子工作 入門キット</b><span>LEDやセンサーの詰め合わせ教材</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%91%E3%83%BC%E3%83%AF%E3%82%A4%E3%83%A4%20%E3%82%BB%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>ジャンパーワイヤ セット</b><span>部品をつなぐ配線。何本あってもいい</span></a></div>
 <h2>まず観てみる</h2>
 <div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=aDlCzYu2Hlo" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/aDlCzYu2Hlo/mqdefault.jpg" alt="【初心者向け】電子工作のはじめ方と必要なものを解説します | How to start electronics and what item is needed."><span>【初心者向け】電子工作のはじめ方と必要なものを解説します | How to start electronics and what item is needed.</span></a><a class="vid" href="https://www.youtube.com/watch?v=Uj1dpVAREhc" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/Uj1dpVAREhc/mqdefault.jpg" alt="ラズパイを使った電子工作はこんなことができるよ"><span>ラズパイを使った電子工作はこんなことができるよ</span></a><a class="vid" href="https://www.youtube.com/watch?v=mPJG8UlVIuU" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/mPJG8UlVIuU/mqdefault.jpg" alt="【Raspberry Pi 入門】プログラミングと電子工作で遊ぼう！ラズパイ初心者向け"><span>【Raspberry Pi 入門】プログラミングと電子工作で遊ぼう！ラズパイ初心者向け</span></a></div>
+<h2>この趣味は、こう深くなっていきます</h2>
+<ol class="deep"><li><span class="dnum">1</span><span class="dtxt">小さな基板でLEDが光った瞬間の嬉しさ。</span></li><li><span class="dnum">2</span><span class="dtxt">配線とコードが分かってくる。</span></li><li><span class="dnum">3</span><span class="dtxt">家の中を自動化しはじめる。日常が実験場になる。</span></li></ol>
 <h2>相性のいい趣味</h2>
 <div class="mates"><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/840.html">サバイバルクラフトゲーム</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/141.html">経営シミュレーション</a><a class="mate" href="https://doushimasho.github.io/shuminator/hobby/127.html">シティビルダー</a></div>
+<h2>ラズパイ電子工作はどんな趣味か</h2>
+<p class="desc" style="margin-bottom:6px">ラズパイ電子工作は、手を動かして組み上げていく時間を求める人に向いている趣味です。あわせて仕組みを読み解いて攻略していく面白さも味わえるので、そのあたりに心が動く人ほど相性が良さそうです。ひとりでも、誰かと一緒でも成立します。形になるまでにある程度の練習が必要です。そのぶん、できたときの喜びは大きいものになります。入門用の道具で1万円前後を見ておくと、無理なく始められます。半日ほどまとまった時間を取ると、じっくり楽しめます。休日向きの趣味です。完全に室内で完結するので、天気や季節に左右されません。手を動かした結果が、形のあるものとして残ります。</p>
+<p class="desc" style="font-size:14px">ラズパイ電子工作に惹かれる人は、<a href="https://doushimasho.github.io/shuminator/hobby/840.html">サバイバルクラフトゲーム</a>も候補になりやすい趣味です。ただしサバイバルクラフトゲームはゲームの分野なので、雰囲気が少し変わります。</p>
+<h2>よくある質問</h2>
+<dl class="qa">
+<dt>ラズパイ電子工作はお金がかかりますか?</dt><dd>入門用の道具で1万円前後を見ておくと、無理なく始められます。まずは「Raspberry Pi スターターキット」から揃えるのが一般的です。</dd>
+<dt>ラズパイ電子工作は一人でもできますか?</dt><dd>一人でも、誰かと一緒でも楽しめます。</dd>
+<dt>ラズパイ電子工作は初心者でも始められますか?</dt><dd>形になるまでにある程度の練習が必要です。そのぶん、できたときの喜びは大きいものになります。半日ほどまとまった時間を取ると、じっくり楽しめます。休日向きの趣味です。</dd>
+</dl>
 <a class="cta" href="https://doushimasho.github.io/shuminator/">あなたに眠る趣味を診断する<small>質問に答えるだけ・3分・全1000種から神様が見抜きます</small></a>
 </div>
 <div class="nav"><a href="https://doushimasho.github.io/shuminator/hobby/109.html">← レトロゲーム収集</a><a class="next" href="https://doushimasho.github.io/shuminator/hobby/111.html">3Dプリンタ造形 →</a></div>
