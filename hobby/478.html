@@ -105,6 +105,12 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
   .rspec:last-child{grid-column:auto}
   .rdesc{font-size:13px}
 }
+.gensub{color:#c9bce0;font-size:13.5px;margin:-8px 0 14px}
+.rdeep{margin-top:11px;border-top:1px solid #e5d9bd;padding-top:10px}
+.rdt{margin:0 0 6px;font-size:11.5px;color:#b9557d;font-weight:700}
+.rdeep ol{margin:0;padding:0;list-style:none;counter-reset:rd}
+.rdeep li{position:relative;padding:5px 0 5px 26px;font-size:12.5px;line-height:1.75;color:#5c5148}
+.rdeep li::before{counter-increment:rd;content:counter(rd);position:absolute;left:0;top:7px;width:18px;height:18px;border-radius:50%;background:#b9a3c4;color:#fff;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .acts{display:flex;gap:9px;justify-content:center;margin-top:14px}
 .faq2 dt{font-weight:700;color:#7a4a86;margin-top:15px;font-size:14.5px}
 .faq2 dd{margin:4px 0 0;font-size:14px;color:#5c5148}
@@ -134,7 +140,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E8%87%AA%E4%BD%9CPC%20%E6%9C%AC%20%E5%85%A5%E9%96%80&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>自作PC 本 入門</b><span>パーツ選びの地図になる</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%83%97%E3%83%A9%E3%82%B9%E3%83%89%E3%83%A9%E3%82%A4%E3%83%90%E3%83%BC%20%E3%82%BB%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>プラスドライバー セット</b><span>組立の基本工具</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E9%9D%99%E9%9B%BB%E6%B0%97%E9%98%B2%E6%AD%A2%20%E6%89%8B%E8%A2%8B&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>静電気防止 手袋</b><span>大切なパーツを守る作法</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=soZf4ebp3ww" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/soZf4ebp3ww/mqdefault.jpg" alt="初心者必見！自作パソコン組み立て方マニュアル【AMD/MSI縛りゲーミングPC#03】"><span>初心者必見！自作パソコン組み立て方マニュアル【AMD/MSI縛りゲーミングPC#03】</span></a><a class="vid" href="https://www.youtube.com/watch?v=cc4k6JTIsxI" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/cc4k6JTIsxI/mqdefault.jpg" alt="【よくある間違い】初めてでもできる世界1簡単な自作PC/ゲーミングPCの作り方講座"><span>【よくある間違い】初めてでもできる世界1簡単な自作PC/ゲーミングPCの作り方講座</span></a><a class="vid" href="https://www.youtube.com/watch?v=ADeBgqSPEdY" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/ADeBgqSPEdY/mqdefault.jpg" alt="知識ゼロからの自作PC、パーツの選び方、仕組みが解るとゲーミングPCから編集用PCまで組めるようになる"><span>知識ゼロからの自作PC、パーツの選び方、仕組みが解るとゲーミングPCから編集用PCまで組めるようになる</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=soZf4ebp3ww" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/soZf4ebp3ww/mqdefault.jpg" alt="初心者必見！自作パソコン組み立て方マニュアル【AMD/MSI縛りゲーミングPC#03】"><span>初心者必見！自作パソコン組み立て方マニュアル【AMD/MSI縛りゲーミングPC#03】</span></a><a class="vid" href="https://www.youtube.com/watch?v=cc4k6JTIsxI" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/cc4k6JTIsxI/mqdefault.jpg" alt="【よくある間違い】初めてでもできる世界1簡単な自作PC/ゲーミングPCの作り方講座"><span>【よくある間違い】初めてでもできる世界1簡単な自作PC/ゲーミングPCの作り方講座</span></a><a class="vid" href="https://www.youtube.com/watch?v=lF9pByukAG0" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/lF9pByukAG0/mqdefault.jpg" alt="自作PCを組み終えたらやるべき事！初心者向けHow To動画【完全版】"><span>自作PCを組み終えたらやるべき事！初心者向けHow To動画【完全版】</span></a></div>
 <h2>この趣味は、こう深くなっていきます</h2>
 <ol class="deep"><li><span class="dnum">1</span><span class="dtxt">電源ボタンを押して画面がついた瞬間、自分で組んだという実感が来る。</span></li><li><span class="dnum">2</span><span class="dtxt">パーツの役割と相性がわかってくる。次は何を強化すべきかを、自分で判断できるようになる。</span></li><li><span class="dnum">3</span><span class="dtxt">誰かのPCを組んであげるようになる。用途を聞いて構成を考える時間が、いちばん楽しかったりする。</span></li></ol>
 <h2>相性のいい趣味</h2>
