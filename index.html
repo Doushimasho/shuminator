@@ -322,6 +322,10 @@ body.embed #embed-note{display:block}
 .wrow{display:flex;gap:10px;align-items:baseline;padding:3px 0}
 .wk{font-size:11.5px;color:#b0a3c9;white-space:nowrap;min-width:76px}
 .wv{font-size:13.5px;color:#ece9f4;font-weight:700}
+.deep{list-style:none;margin:0;padding:0;counter-reset:d}
+.deep li{position:relative;padding:9px 0 9px 30px;font-size:14px;line-height:1.85;color:var(--sumi);border-bottom:1px dashed #e5d9bd}
+.deep li:last-child{border-bottom:none}
+.deep li::before{counter-increment:d;content:counter(d);position:absolute;left:0;top:11px;width:21px;height:21px;border-radius:50%;background:#7a4a86;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .startbox{background:rgba(255,255,255,.06);border-radius:12px;padding:12px 13px;margin:12px 0 0;text-align:left}
 .sttl{margin:0 0 8px;font-size:12px;color:#ffb7c5;font-weight:700;letter-spacing:.06em}
 .stbtn{display:block;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.22);color:#ece9f4;text-decoration:none;font-size:14px;font-weight:700;padding:11px 13px;border-radius:10px;margin-bottom:7px}
@@ -472,19 +476,25 @@ body.embed #embed-note{display:block}
     <div class="god"></div>
     <div class="qcard">
       <p class="center" style="color:#b0691f;font-size:13px;font-weight:700" id="r-label">あなたに眠っていた趣味</p>
-      <p class="r-reason" id="r-reason"></p>
-    <div id="r-why" class="why"></div>
       <h2 class="hobby-name" id="r-name"></h2>
       <div class="core-wrap" id="r-core"></div>
       <p class="hobby-desc" id="r-desc"></p>
+      <div class="tools" id="r-deep-box">
+        <h3>▼ この趣味は、こう深くなっていきます</h3>
+        <ol class="deep" id="r-deep"></ol>
+      </div>
+      <div class="tools">
+        <h3>▼ まずは動画で、その世界を覗いてみる</h3>
+        <div id="r-videos"></div>
+      </div>
       <div class="tools">
         <h3>▼ 最初にそろえる道具は、この3つです</h3>
         <div id="r-tools"></div>
         <p class="small">リンク先で価格や口コミを確かめてみてください</p>
       </div>
       <div class="tools">
-        <h3>▼ まずは動画で、その世界を覗いてみる</h3>
-        <div id="r-videos"></div>
+        <h3>▼ 実際に始めてみるなら</h3>
+        <div id="r-start"></div>
       </div>
       <div class="tools">
         <h3>▼ この趣味の人は、こんな趣味とも相性がいい</h3>
@@ -497,7 +507,6 @@ body.embed #embed-note{display:block}
     </div>
     <p id="share-hint" style="text-align:center;font-size:12px;color:var(--ink-dim);min-height:16px;margin:6px 0 0"></p>
     <p style="text-align:center;margin:10px 0 0"><a id="zukan-link" href="zukan.html" style="color:#ffb7c5;font-size:13.5px;text-decoration:underline">▶ この趣味の図鑑ページを読む(道具・動画・相性)</a></p>
-    <div id="r-start" class="startbox"></div>
     <p style="text-align:center;margin:14px 0 0"><button class="toplink" onclick="notThisOne()">ピンとこない… 別の候補を見る</button></p>
     <button class="more" onclick="searchMore()">この趣味は確定!ほかの趣味も探す</button>
     <button class="ghost" onclick="location.reload()">最初からやり直す</button>
@@ -1104,34 +1113,6 @@ function ytThemes(h){ return [[h[0]+" 始め方","始め方"],[h[0]+" 魅力 面
 
 /* ---- 結果 ---- */
 /* ---- 「なぜこの趣味が出たのか」を言語化する ---- */
-const GAIN_W=["体験が残る","からだが変わる","技が身につく","記録が集まる","かたちに残る"];
-const SPAN_W=["すきま時間から","1〜2時間ずつ","半日つかって","数日がかりで","何年もかけて"];
-const CURVE_W=["初日から楽しい","わりとすぐ楽しい","ほどよく練習","じっくり練習","極めるほど深い"];
-const CULT_W=["日本の伝統につながるもの","アジアやエスニックの空気を持つもの","西洋の文化に根ざしたもの","国を問わず楽しまれているもの"];
-
-function buildLead(topCores){
-  const yours=new Set(answers.filter(x=>x.q.kind==="core"&&x.a===1).map(x=>x.q.core));
-  const rs=topCores.filter(c=>yours.has(c)).slice(0,2).map(c=>CORE_READ[c]).filter(Boolean);
-  return rs.length ? rs.join("。")+"。——そんなあなたに、視えたのは" : "";
-}
-
-function buildWhy(i, topCores){
-  const h=HOBBIES[i];
-  const yours=new Set(answers.filter(x=>x.q.kind==="core"&&x.a>=0.75).map(x=>x.q.core));
-  const hit=topCores.filter(c=>yours.has(c));
-  const g=h[11]!==undefined?h[11]:2, sp=h[12]!==undefined?h[12]:1, cv=h[13]!==undefined?h[13]:2;
-  // 1行の理由(核チップと重複しないよう、"あなたの答え"の側だけを短く)
-  const lead = hit.length
-    ? "あなたの答えは、この趣味の芯とまっすぐ重なりました。"
-    : "たくさんの答えの先に、この趣味が残りました。";
-  // 核では分からない「かたち」を3点だけ
-  const spec = [
-    ["向き合う時間", SPAN_W[sp]],
-    ["上達の道のり", CURVE_W[cv]],
-    ["のこるもの",   GAIN_W[g]]
-  ].map(x=>'<div class="wrow"><span class="wk">'+x[0]+'</span><span class="wv">'+x[1]+'</span></div>').join("");
-  return '<p class="wlead">'+lead+'</p>'+spec;
-}
 
 /* ---- 「ピンとこない」:この結果を除外して次の候補へ ---- */
 function notThisOne(){
@@ -1159,13 +1140,18 @@ function showResult(i){
   const topCores=Object.entries(h[3]).filter(([c,v])=>v>=3).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([c])=>c);
   document.getElementById("r-core").innerHTML="<span style='color:#b9a;font-size:12px'>この趣味の魅力の核:</span>"+topCores.map(c=>"<span class='core'>"+c+"</span>").join("");
   // 理由演出:あなたの断言核 ∩ この趣味の強い核
-  document.getElementById("r-reason").textContent = buildLead(topCores);
-  document.getElementById("r-why").innerHTML = buildWhy(i, topCores);
+  {
+    const dbox=document.getElementById("r-deep-box"), dl=document.getElementById("r-deep");
+    const dp=h[15];
+    if(dp && dp.length===3){
+      dl.innerHTML = dp.map(t=>"<li>"+t+"</li>").join("");
+      dbox.style.display="";
+    }else{ dbox.style.display="none"; }
+  }
   {
     const hbn=HOBBIES[i][0].split(/[・(【]/)[0];
     document.getElementById("r-start").innerHTML =
-      '<p class="sttl">はじめかた</p>'
-      + '<a class="stbtn" href="https://www.google.com/search?q='+encodeURIComponent(hbn+" 体験 教室 初心者")+'" target="_blank" rel="noopener nofollow">① 体験・教室をさがす</a>'
+      '<a class="stbtn" href="https://www.google.com/search?q='+encodeURIComponent(hbn+" 体験 教室 初心者")+'" target="_blank" rel="noopener nofollow">① 体験・教室をさがす</a>'
       + '<a class="stbtn" href="https://www.google.com/search?q='+encodeURIComponent(hbn+" 始め方 初心者")+'" target="_blank" rel="noopener nofollow">② 始め方をしらべる</a>'
       + '<p class="snote">下の動画と道具から入るのもおすすめです。</p>';
   }
