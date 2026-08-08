@@ -194,11 +194,11 @@ body.playing .logo{font-size:22px;-webkit-text-stroke:1px #6a3a12;filter:drop-sh
 }
 .more:hover{background:#fff4e8;transform:translateY(-1px)}
 .r-reason{text-align:center;color:var(--sumi);font-size:14px;line-height:1.9;margin:8px 0 2px;font-weight:700}
-.core-wrap{margin:10px 0 2px;text-align:center}
+.core-wrap{margin:14px 0 4px;text-align:center}
 .yt{display:block;background:#fff;border:1.5px solid #e2d6b8;border-radius:12px;padding:11px 14px;margin-bottom:9px;color:#c4302b;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 2px 0 #e2d6b8}
 .yt:hover{border-color:#c4302b}
 .yt img{width:100%;border-radius:8px;margin-bottom:6px;display:block}
-.core{display:inline-block;background:var(--night);color:var(--gold);font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 12px;margin:3px}
+.core{display:inline-block;background:linear-gradient(180deg,#5b3f78,#40295c);color:#ffd45e;font-size:14px;font-weight:700;border-radius:999px;padding:8px 17px;margin:4px;letter-spacing:.03em;border:1.5px solid rgba(255,212,94,.45);box-shadow:0 3px 8px rgba(0,0,0,.28)}
 /* 第二幕:夜明け前の空へ */
 .opt{
   background:#fff;border:2px solid #e2d6b8;color:var(--sumi);
@@ -328,8 +328,9 @@ body.embed #embed-note{display:block}
 .deep li::before{counter-increment:d;content:counter(d);position:absolute;left:0;top:11px;width:21px;height:21px;border-radius:50%;background:#7a4a86;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .startbox{background:rgba(255,255,255,.06);border-radius:12px;padding:12px 13px;margin:12px 0 0;text-align:left}
 .sttl{margin:0 0 8px;font-size:12px;color:#ffb7c5;font-weight:700;letter-spacing:.06em}
-.stbtn{display:block;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.22);color:#ece9f4;text-decoration:none;font-size:14px;font-weight:700;padding:11px 13px;border-radius:10px;margin-bottom:7px}
-.snote{margin:4px 0 0;font-size:11.5px;color:#b0a3c9}
+.stbtn{display:block;background:#fff;border:2px solid #d9c9a5;color:#7a4a86;text-decoration:none;font-size:15px;font-weight:700;padding:13px;border-radius:11px;margin-bottom:9px;text-align:center;box-shadow:0 3px 0 #d9c9a5}
+.stbtn:active{transform:translateY(2px);box-shadow:0 1px 0 #d9c9a5}
+.snote{margin:0 0 10px;font-size:13px;color:var(--sumi);line-height:1.7}
 </style>
 </head>
 <body>
@@ -1151,9 +1152,9 @@ function showResult(i){
   {
     const hbn=HOBBIES[i][0].split(/[・(【]/)[0];
     document.getElementById("r-start").innerHTML =
-      '<a class="stbtn" href="https://www.google.com/search?q='+encodeURIComponent(hbn+" 体験 教室 初心者")+'" target="_blank" rel="noopener nofollow">① 体験・教室をさがす</a>'
-      + '<a class="stbtn" href="https://www.google.com/search?q='+encodeURIComponent(hbn+" 始め方 初心者")+'" target="_blank" rel="noopener nofollow">② 始め方をしらべる</a>'
-      + '<p class="snote">下の動画と道具から入るのもおすすめです。</p>';
+      '<p class="snote">気になったら、まず一歩だけ踏み出してみましょう。</p>'
+      + '<a class="stbtn" href="https://www.google.com/search?q='+encodeURIComponent(hbn+" 体験 教室 初心者")+'" target="_blank" rel="noopener nofollow">体験・教室をさがす</a>'
+      + '<a class="stbtn" href="https://www.google.com/search?q='+encodeURIComponent(hbn+" 始め方 初心者")+'" target="_blank" rel="noopener nofollow">始め方をしらべる</a>';
   }
   document.getElementById("r-desc").textContent=h[5];
   // 道具(Amazon:趣味名を文脈に前置)
