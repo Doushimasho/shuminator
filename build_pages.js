@@ -214,6 +214,15 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
   .rspec:last-child{grid-column:auto}
   .rdesc{font-size:13px}
 }
+.picks{display:flex;flex-wrap:wrap;gap:7px}
+.picks a{background:#f2ebda;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:13.5px;text-decoration:none;color:#7a4a86;font-weight:700}
+.llist{display:grid;gap:10px}
+.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:13px 15px;text-decoration:none;color:var(--sumi)}
+.litem b{font-size:16.5px;color:#453058;display:block}
+.lchips{display:block;margin:5px 0 6px}
+.lchips i{display:inline-block;background:#7a4a86;color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:4px}
+.ldesc{display:block;font-size:13.5px;line-height:1.8;color:#5c5148}
+.ldeep{display:block;margin-top:7px;font-size:12.5px;color:#b9557d;border-top:1px dashed #ddd0b4;padding-top:7px}
 .gensub{color:#c9bce0;font-size:13.5px;margin:-8px 0 14px}
 .rdeep{margin-top:11px;border-top:1px solid #e5d9bd;padding-top:10px}
 .rdt{margin:0 0 6px;font-size:11.5px;color:#b9557d;font-weight:700}
@@ -413,12 +422,22 @@ function zukanPage() {
     `世の中の趣味を${HOBBIES.length}種、20ジャンルに分類した図鑑。それぞれの始め方・道具・相性のいい趣味がわかります。`,
     url);
   s += `\n<p class="crumb">全${HOBBIES.length}種・20ジャンルの趣味図鑑</p>`;
+  s += `\n<div class="card" style="margin-bottom:16px"><h2 style="margin-top:4px">目的から探す</h2><div class="picks">`
+    + [["indoor-list","室内でできる"],["outdoor-list","外でやる"],["solo-list","一人で"],["social-list","仲間と"],
+       ["collect-list","集める"],["create-list","作る"],["grow-list","育てる"],["quiet-list","静かに"],
+       ["short-time-list","すきま時間"],["cheap-list","お金をかけない"],["easy-hobbies","すぐ始められる"],
+       ["lifelong-hobbies","一生続けられる"],["japanese-hobbies","和のもの"]]
+      .map(x=>`<a href="${SITE}/${x[0]}.html">${x[1]}</a>`).join("")
+    + `</div></div>`;
   s += `\n<a class="cta-top" href="${SITE}/?p=305">▶ あなたに眠る趣味を診断してもらう<small>どれが自分に合うか、神様に見抜いてもらえます(無料・3分)</small></a>`;
   s += `\n<div class="tools-bar"><input id="q" type="search" placeholder="趣味名で検索（例：苔、ボード、和）" aria-label="趣味名で検索">
 <select class="gsel" id="gsel"><option value="">すべてのジャンル</option>${Object.keys(byGenre).map(g => `<option>${esc(g)}</option>`).join('')}</select></div>`;
   s += `\n<p class="count" id="cnt"></p>`;
   Object.entries(byGenre).forEach(([g, arr]) => {
-    s += `\n<section data-genre="${esc(g)}"><h3 class="genre">${esc(g)}<span style="color:#b7a6d6;font-size:13px;font-weight:400"> ${arr.length}種</span></h3><div class="list">`;
+    const gp = LIST_PAGES.find(p => p.genre === g);
+    s += `\n<section data-genre="${esc(g)}"><h3 class="genre">${esc(g)}<span style="color:#b7a6d6;font-size:13px;font-weight:400"> ${arr.length}種</span>`
+      + (gp ? `<a href="${SITE}/${gp.slug}.html" style="float:right;font-size:12.5px;color:var(--sakura);font-weight:400">解説を読む →</a>` : "")
+      + `</h3><div class="list">`;
     arr.forEach(([n, id]) => { s += `<a class="item" href="${SITE}/hobby/${id}.html">${esc(n)}</a>`; });
     s += `</div></section>`;
   });
@@ -638,6 +657,166 @@ var DATA=${JSON.stringify(data)};
   return s2;
 }
 
+// ---------- 一覧ページ(ジャンル別・条件別) ----------
+/* 各ページに固有の導入文とテーマを持たせる。中身の薄い量産ページにしないため、
+   説明文・見出し・並び順をページごとに変える。 */
+const LIST_PAGES = [
+  // --- ジャンル別 ---
+  {slug:"active-hobbies", genre:"体を動かす", title:"体を動かす趣味96選", h1:"体を動かす趣味96選｜運動不足の解消から本格競技まで",
+   kw:"体を動かす趣味", lead:"体を動かしたいけれど、何から始めればいいか分からない——そんな人へ。ジムやランニング以外にも、身体を使う趣味は驚くほどたくさんあります。",
+   intro:"「運動しなきゃ」と思っても続かないのは、<b>その運動が面白くないから</b>かもしれません。目的が「健康」だけだと、やる理由が義務になってしまう。<br><br>ここで紹介するのは、<b>楽しいから続いてしまう</b>身体の使い方です。競技として本気で戦うものから、笑いながら汗をかくもの、静かに体を整えるものまで。運動が苦手な人でも勝てる競技もあります。"},
+  {slug:"food-hobbies", genre:"食", title:"食に関する趣味83選", h1:"食の趣味83選｜作る・味わう・探しにいく",
+   kw:"食 趣味", lead:"毎日必ずすることだからこそ、深く潜れる。作る趣味、味わう趣味、探しに行く趣味を集めました。",
+   intro:"食は、誰でも毎日していることです。だからこそ<b>少し掘るだけで、日常がまるごと変わります</b>。<br><br>作る側に回るのか、味の違いを知る側に回るのか、あるいは食べに行く旅をするのか。同じ「食が好き」でも、向かう方向はまったく違います。"},
+  {slug:"nature-hobbies", genre:"自然", title:"自然を楽しむ趣味82選", h1:"自然の趣味82選｜観察・採集・育てる",
+   kw:"自然 趣味", lead:"外に出るだけが自然の趣味ではありません。観察する、集める、育てる——関わり方はいくつもあります。",
+   intro:"自然の趣味の面白さは、<b>相手が自分の思い通りにならない</b>ことです。天気も、生き物も、季節も、こちらの都合では動かない。<br><br>だからこそ、うまくいった日の喜びが濃い。そして続けるうちに、<b>自然の側のリズムが体に入ってきます</b>。"},
+  {slug:"making-hobbies", genre:"ものづくり", title:"ものづくりの趣味72選", h1:"ものづくりの趣味72選｜手を動かして、かたちに残す",
+   kw:"ものづくり 趣味", lead:"手を動かして何かを作りたい人へ。木、布、金属、紙、ガラス——素材ごとに世界が違います。",
+   intro:"ものづくりの最大の特徴は、<b>終わったあとに「もの」が残る</b>ことです。時間が形になって手元にある。この手応えは、他の趣味では得にくいものです。<br><br>そしてもう一つ。作っている最中は<b>他のことを考えられません</b>。手が忙しいと、頭が静かになる。無心になれる時間を求めている人にも向いています。"},
+  {slug:"watching-hobbies", genre:"観る", title:"観る趣味59選", h1:"観る趣味59選｜スポーツ・舞台・映像・美",
+   kw:"観る 趣味", lead:"自分でやらなくても、観るだけで十分に深い趣味があります。",
+   intro:"「観るだけ」と言われることがありますが、<b>観ることにも技術があります</b>。ルールを知り、背景を知り、系譜を辿ると、同じものがまったく違って見えてくる。<br><br>体力も道具も要らないので、<b>いつからでも始められて、いつまでも続けられる</b>のも強みです。"},
+  {slug:"music-hobbies", genre:"音楽", title:"音楽の趣味57選", h1:"音楽の趣味57選｜奏でる・うたう・聴く・つくる",
+   kw:"音楽 趣味", lead:"楽器を弾く、歌う、聴き込む、作る。音楽との関わり方は一つではありません。",
+   intro:"楽器は難しそう、と思われがちですが、<b>数日で一曲吹ける楽器もあります</b>。逆に、音が出るまで一週間かかる楽器もある。どちらが良いという話ではなく、<b>いまの自分がどちらを求めているか</b>です。<br><br>演奏しない選択肢もあります。聴き込む、集める、通う。それも立派な音楽の趣味です。"},
+  {slug:"travel-hobbies", genre:"旅・まち", title:"旅・まち歩きの趣味51選", h1:"旅とまち歩きの趣味51選｜遠くへも、近所にも",
+   kw:"旅 趣味", lead:"遠くに行かなくても、旅の趣味は成立します。近所を歩くだけで始まるものもあります。",
+   intro:"旅の趣味には<b>「目的を持つと面白くなる」</b>という法則があります。ただ歩くより、何かを探しながら歩くほうが、街は情報量を増やして返してくれる。<br><br>坂を探す、看板を探す、印を集める。<b>目的が一つあるだけで、通い慣れた道が別の場所になります</b>。"},
+  {slug:"home-hobbies", genre:"暮らし", title:"暮らしまわりの趣味49選", h1:"暮らしの趣味49選｜毎日を少しずつ良くする",
+   kw:"暮らし 趣味", lead:"特別なことをしなくても、毎日の中に趣味は作れます。",
+   intro:"暮らしの趣味の良さは、<b>やらなければいけないことが、楽しみに変わる</b>点です。掃除も洗濯も料理も、極めはじめると別のものになる。<br><br>しかも<b>成果が生活に直接返ってきます</b>。趣味の時間が、そのまま暮らしの質になる。"},
+  {slug:"game-hobbies", genre:"ゲーム", title:"ゲームの趣味48選", h1:"ゲームの趣味48選｜ジャンルで選ぶ",
+   kw:"ゲーム 趣味", lead:"ひとくちにゲームと言っても、ジャンルによって面白さの種類がまったく違います。",
+   intro:"「ゲームが好き」と言っても、<b>対戦で競うのが好きな人と、静かに世界に浸りたい人は別</b>です。集めるのが好きな人、組み立てるのが好きな人、物語に泣きたい人。<br><br>合わないジャンルで「自分はゲームが下手だ」と思っている人ほど、<b>別のジャンルを試す価値があります</b>。"},
+  {slug:"learning-hobbies", genre:"知・学び", title:"学びの趣味46選", h1:"学びの趣味46選｜大人になってからの勉強は面白い",
+   kw:"学び 趣味", lead:"テストのない勉強は、こんなに面白かったのかと気づきます。",
+   intro:"大人の学びが楽しいのは、<b>役に立たなくていいから</b>です。評価されないし、締切もない。純粋に知りたいから知る。<br><br>そして知識が増えると、<b>同じニュースも同じ景色も、違って見えはじめます</b>。世界の解像度が上がる感覚は、他では得にくいものです。"},
+  {slug:"tabletop-hobbies", genre:"盤上・卓上", title:"盤上・卓上の趣味41選", h1:"盤上・卓上の趣味41選｜机の上で深く潜る",
+   kw:"ボードゲーム 趣味", lead:"机ひとつあれば始まる、思考と駆け引きの世界です。",
+   intro:"卓上の趣味の魅力は、<b>ルールは単純なのに底が見えない</b>ことです。覚えるのに数分、極めるのに一生かかるものが揃っています。<br><br>一人で解くものもあれば、人と囲むものもある。<b>同じ卓上でも、求めているものが正反対</b>だったりします。"},
+  {slug:"art-hobbies", genre:"アート・美", title:"アート・美の趣味39選", h1:"アートの趣味39選｜描く・撮る・味わう",
+   kw:"アート 趣味", lead:"絵が下手でも大丈夫。表現の方法は一つではありません。",
+   intro:"「絵心がないから」と諦める人は多いのですが、<b>アートの趣味は描くだけではありません</b>。撮る、彫る、切る、貼る、そして観る。<br><br>それに、上手さを競わない表現もあります。<b>無心になるために描く</b>という選び方も、立派な入り口です。"},
+  {slug:"words-hobbies", genre:"言葉・物語", title:"言葉と物語の趣味37選", h1:"言葉の趣味37選｜読む・書く・遊ぶ",
+   kw:"読書 趣味", lead:"読むだけでなく、書く、遊ぶ、集める。言葉との付き合い方はいろいろあります。",
+   intro:"言葉の趣味は<b>元手がほとんどかかりません</b>。紙とペン、あるいは本が一冊あれば始まる。<br><br>そして書くという行為には、<b>自分が何を考えていたかを発見する</b>という副産物があります。読むだけでなく書く側に回ると、見える景色が変わります。"},
+  {slug:"fashion-hobbies", genre:"装う", title:"装う趣味36選", h1:"装いの趣味36選｜服・小物・身だしなみ",
+   kw:"ファッション 趣味", lead:"毎日必ず着るものだからこそ、こだわると日常が変わります。",
+   intro:"装いの趣味の面白さは、<b>効果がその日のうちに出る</b>ことです。一枚変えるだけで、鏡の中の印象が変わる。<br><br>そして掘っていくと、<b>服の背景にある文化や歴史</b>に辿り着きます。機能から生まれた形、時代が求めた形。ただの服が資料になります。"},
+  {slug:"tech-hobbies", genre:"テック", title:"技術系の趣味35選", h1:"テックの趣味35選｜つくる・組む・動かす",
+   kw:"技術 趣味", lead:"プログラミングだけではありません。組む、飛ばす、光らせる、鳴らす。",
+   intro:"技術系の趣味の魅力は、<b>自分が作ったものが動く</b>という一点に尽きます。画面の中でも、机の上でも、空の上でも。<br><br>そして<b>作れるものが年々増えています</b>。数年前なら専門知識が要ったことが、いまは初日からできる。始めるなら今が最も楽な時期かもしれません。"},
+  {slug:"stage-hobbies", genre:"舞台・演芸", title:"舞台・演芸の趣味35選", h1:"舞台・演芸の趣味35選｜演じる・踊る・語る",
+   kw:"演劇 趣味", lead:"人前に立つのは特別な人だけ、ということはありません。",
+   intro:"舞台の趣味には<b>日常では絶対に得られない体験</b>があります。拍手を浴びる、別人になる、大勢と呼吸を合わせる。<br><br>そして意外なことに、<b>始めるハードルは思ったより低い</b>。市民劇団も、社会人チームも、初心者を歓迎しているところが多くあります。"},
+  {slug:"wellness-hobbies", genre:"整える", title:"心と体を整える趣味34選", h1:"整える趣味34選｜疲れを抜く・調子を上げる",
+   kw:"リラックス 趣味", lead:"何もしないだけが休息ではありません。整えるための方法はいくつもあります。",
+   intro:"休日に寝て過ごしても疲れが取れない——そんな経験はないでしょうか。<b>休むことにも技術があります</b>。<br><br>体を温める、呼吸を整える、何もしない練習をする。そして意外にも、<b>何かに取り組むこと自体が回復になる</b>という考え方もあります。"},
+  {slug:"vehicle-hobbies", genre:"乗り物", title:"乗り物の趣味34選", h1:"乗り物の趣味34選｜乗る・眺める・整備する",
+   kw:"乗り物 趣味", lead:"運転しなくても、乗り物の趣味は成立します。",
+   intro:"乗り物の趣味には<b>三つの入り口</b>があります。自分で操る、乗って旅する、そして眺める・調べる。<br><br>免許も車も要らないものが多く、<b>駅や空港や港に行くだけで始まる</b>ものもあります。"},
+  {slug:"community-hobbies", genre:"人・まち・貢献", title:"人と関わる趣味34選", h1:"人と関わる趣味34選｜つながる・支える・伝える",
+   kw:"ボランティア 趣味", lead:"誰かの役に立つことが、自分の楽しみにもなる。そういう趣味があります。",
+   intro:"この分野の趣味には<b>「ありがとう」が返ってくる</b>という特徴があります。趣味でありながら、誰かの助けになっている。<br><br>そして続けるうちに<b>顔なじみが増えます</b>。地域に居場所ができることが、実は一番の効果かもしれません。"},
+  {slug:"mystery-hobbies", genre:"ふしぎ", title:"ふしぎを楽しむ趣味32選", h1:"ふしぎの趣味32選｜占い・伝承・謎",
+   kw:"占い 趣味", lead:"答えが出ないからこそ、面白い。そういう世界があります。",
+   intro:"この分野の趣味は<b>「信じるかどうか」を保留したまま楽しめます</b>。信じる人も、体系として面白がる人も、歴史として辿る人もいる。<br><br>共通しているのは、<b>人が何を信じ、何を怖れてきたか</b>という問いに触れられることです。"},
+];
+
+// 条件で絞るページ
+const COND_PAGES = [
+  {slug:"indoor-list", title:"室内でできる趣味40選", h1:"室内でできる趣味40選｜天気に左右されない",
+   kw:"室内 趣味", lead:"雨の日も、寒い日も、外に出たくない日も。家の中で完結する趣味を集めました。",
+   intro:"室内の趣味の強みは<b>続けやすさ</b>です。天気にも季節にも予定にも左右されないので、習慣にしやすい。<br><br>移動時間もゼロなので、<b>思い立った瞬間に始められる</b>のも大きな利点です。",
+   filter:(h)=>h[7]<=1, sort:(a,b)=>(b[3]["静穏"]||0)-(a[3]["静穏"]||0), n:40},
+  {slug:"outdoor-list", title:"外でやる趣味40選", h1:"外でやる趣味40選｜自然と街へ出かける",
+   kw:"アウトドア 趣味", lead:"外に出る理由が欲しい人へ。目的があると、出かけるのが楽しみになります。",
+   intro:"外の趣味には<b>「行く理由ができる」</b>という効果があります。散歩そのものより、何かを探しながら歩くほうが足が向く。<br><br>そして<b>季節と天気が味方になります</b>。同じ場所が、時期によってまったく違う顔を見せる。",
+   filter:(h)=>h[7]>=3, sort:(a,b)=>(b[3]["発見"]||0)-(a[3]["発見"]||0), n:40},
+  {slug:"solo-list", title:"一人で楽しむ趣味40選", h1:"一人で楽しめる趣味40選｜誰にも気を遣わない時間",
+   kw:"一人 趣味", lead:"誰かを誘わなくても始められて、自分のペースで続けられる趣味です。",
+   intro:"一人の趣味の良さは<b>スケジュールが自分だけで決まる</b>ことです。誘う手間も、合わせる気遣いもいらない。<br><br>そして<b>やめるのも自由</b>です。合わなければ静かに離れられる。この気軽さが、実は続けやすさにつながります。",
+   filter:(h)=>(h[3]["繋がる"]||0)<=1 && (h[3]["静穏"]||0)>=2, sort:(a,b)=>(b[3]["静穏"]||0)-(a[3]["静穏"]||0), n:40},
+  {slug:"social-list", title:"仲間とやる趣味30選", h1:"仲間とできる趣味30選｜人とつながる時間",
+   kw:"仲間 趣味", lead:"社会人になってから友達を作るのは難しい——その解決策のひとつが趣味です。",
+   intro:"大人になると、<b>共通の目的がないと関係が生まれにくく</b>なります。趣味はその目的になります。<br><br>しかも<b>年齢も職業も関係ありません</b>。同じものを面白がっているという一点だけで、話が通じてしまう。",
+   filter:(h)=>(h[3]["繋がる"]||0)>=3, sort:(a,b)=>(b[3]["繋がる"]||0)-(a[3]["繋がる"]||0), n:30},
+  {slug:"collect-list", title:"集める趣味30選", h1:"集める趣味30選｜コレクションの世界",
+   kw:"集める 趣味", lead:"並べたときの満足感は、集めた人にしか分かりません。",
+   intro:"集める趣味には<b>終わりがありません</b>。それが欠点ではなく、最大の魅力です。<br><br>そして集めるうちに<b>目利きになります</b>。最初は違いが分からなかったものが、少しずつ見分けられるようになる。この成長が楽しい。",
+   filter:(h)=>(h[3]["収集"]||0)>=3, sort:(a,b)=>(b[3]["収集"]||0)-(a[3]["収集"]||0), n:30},
+  {slug:"create-list", title:"作る趣味30選", h1:"作る趣味30選｜手を動かして形にする",
+   kw:"作る 趣味", lead:"完成したものが手元に残る。それだけで、時間の使い方に納得できます。",
+   intro:"作る趣味の魅力は<b>「終わったあとに残る」</b>ことです。使った時間が、目に見える形になる。<br><br>そしてもう一つ。<b>手が忙しいと、頭が静かになります</b>。考えごとから離れたい人にも向いています。",
+   filter:(h)=>(h[3]["組む"]||0)>=3, sort:(a,b)=>(b[3]["組む"]||0)-(a[3]["組む"]||0), n:30},
+  {slug:"grow-list", title:"育てる趣味30選", h1:"育てる趣味30選｜植物・生き物と暮らす",
+   kw:"育てる 趣味", lead:"毎日少しずつ変わっていくものが、生活の中にある心地よさ。",
+   intro:"育てる趣味の特徴は<b>時間が味方になる</b>ことです。昨日と今日で少しだけ違う。その小さな変化が、飽きを防いでくれます。<br><br>そして<b>世話をする対象があると、生活にリズムが生まれます</b>。水をやる時間、様子を見る時間が、一日の句読点になる。",
+   filter:(h)=>(h[3]["育てる"]||0)>=3, sort:(a,b)=>(b[3]["育てる"]||0)-(a[3]["育てる"]||0), n:30},
+  {slug:"quiet-list", title:"静かに楽しむ趣味30選", h1:"静かにできる趣味30選｜無心になれる時間",
+   kw:"静か 趣味", lead:"賑やかなものが苦手な人へ。ひとりで静かに没頭できる趣味を集めました。",
+   intro:"静かな趣味には<b>頭の中が静まる</b>という共通点があります。手や目を使っていると、考えごとが止まる。<br><br>瞑想が苦手な人でも、<b>何かに集中しているうちに勝手に無心になれる</b>——そういう入り口です。",
+   filter:(h)=>(h[3]["静穏"]||0)>=3, sort:(a,b)=>(b[3]["静穏"]||0)-(a[3]["静穏"]||0), n:30},
+  {slug:"short-time-list", title:"すきま時間の趣味30選", h1:"すきま時間でできる趣味30選｜5分から始められる",
+   kw:"すきま時間 趣味", lead:"まとまった時間が取れなくても、始められる趣味はあります。",
+   intro:"忙しい人が趣味を諦める理由の多くは<b>「時間がない」</b>です。でも実際には、5分10分でできるものもたくさんあります。<br><br>そして<b>短い時間の趣味は習慣になりやすい</b>。毎日少しずつのほうが、月に一度の大きな時間より続きます。",
+   filter:(h)=>h[12]<=1 && h[8]<=2, sort:(a,b)=>a[12]-b[12], n:30},
+  {slug:"cheap-list", title:"お金をかけない趣味30選", h1:"お金がかからない趣味30選｜0円から始める",
+   kw:"お金かからない 趣味", lead:"道具をほとんど必要としない趣味を集めました。",
+   intro:"お金をかけない趣味には<b>「やめやすい」</b>という隠れた利点があります。高い道具を買うと「元を取らなきゃ」という義務感が生まれますが、0円で始めたものは楽しいから続く。<br><br><b>まず0円で試して、面白かったらお金をかける</b>。この順番が最も失敗しにくいと思います。",
+   filter:(h)=>h[8]===0, sort:(a,b)=>(b[3]["発見"]||0)-(a[3]["発見"]||0), n:30},
+];
+
+function listPage(cfg, items) {
+  const url = `${SITE}/${cfg.slug}.html`;
+  const faq = [
+    [`${cfg.kw}にはどんなものがありますか?`, `${items.length}種類を紹介しています。全${HOBBIES.length}種の趣味データベースから、${cfg.kw}に該当するものを選びました。それぞれに始め方と「どう深くなっていくか」も掲載しています。`],
+    ["初心者でも始められますか?", "はい。それぞれの趣味ページに、必要な道具・だいたいの費用・始め方の動画を載せています。初日から楽しめるものも多く含まれています。"],
+    ["自分に合うものが分かりません", "質問に答えるだけの趣味診断があります。全1000種の中から、あなたに合う一つを3分ほどで見抜きます。無料・登録不要です。"]
+  ];
+  const faqld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"FAQPage","mainEntity":faq.map(q=>({"@type":"Question","name":q[0],"acceptedAnswer":{"@type":"Answer","text":q[1]}}))})}</script>`;
+  const artld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"Article","headline":cfg.h1,
+    "author":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント"},
+    "publisher":{"@type":"Organization","name":"シュミネーター"},
+    "description":cfg.lead,"inLanguage":"ja","mainEntityOfPage":url})}</script>`;
+
+  let s = head(`${cfg.title}｜シュミネーター`,
+    `${cfg.lead} 全${HOBBIES.length}種の趣味データベースから厳選。それぞれの始め方・道具・費用・どう深くなっていくかも紹介します。`,
+    url, artld + faqld);
+  s += `\n<p class="crumb"><a href="${SITE}/zukan.html">趣味図鑑</a> › ${esc(cfg.title)}</p>`;
+  s += `\n<a class="cta-top" href="${SITE}/?p=330">▶ どれが自分に合うか、診断してもらう<small>質問に答えるだけ・3分・無料・全${HOBBIES.length}種から</small></a>`;
+  s += `\n<div class="card">`;
+  s += `\n<h1>${esc(cfg.h1)}</h1>`;
+  s += `\n<div class="rule"></div>`;
+  s += `\n<p class="desc">${cfg.lead}</p>`;
+  s += `\n<p style="font-size:14.5px">${cfg.intro}</p>`;
+  s += `\n<h2>${esc(cfg.title)}</h2>`;
+  s += `\n<div class="llist">`;
+  items.forEach((h) => {
+    const i = HOBBIES.indexOf(h);
+    const cores = Object.entries(h[3]).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
+    s += `<a class="litem" href="${SITE}/hobby/${i+1}.html?p=331">`
+      + `<b>${esc(h[0])}</b>`
+      + `<span class="lchips">${cores.map(c=>`<i>${esc(c)}</i>`).join("")}</span>`
+      + `<span class="ldesc">${esc(h[5])}</span>`
+      + (h[15] ? `<span class="ldeep">▸ ${esc(h[15][2])}</span>` : "")
+      + `</a>`;
+  });
+  s += `</div>`;
+  s += `\n<h2>よくある質問</h2>\n<dl class="faq2">`;
+  faq.forEach(q => { s += `<dt>${esc(q[0])}</dt><dd>${esc(q[1])}</dd>`; });
+  s += `</dl>`;
+  s += `\n</div>`;
+  s += `\n<a class="cta" href="${SITE}/?p=332">▶ あなたに眠っている趣味を診断する<small>全${HOBBIES.length}種から、神様が見抜きます(無料・3分)</small></a>`;
+  s += `\n<p style="text-align:center;margin:10px 0 0"><a href="${SITE}/random.html?p=333" style="color:var(--sakura);font-size:14px">🎲 ランダムに1つ引いてみる</a> ・ <a href="${SITE}/zukan.html" style="color:var(--sakura);font-size:14px">趣味図鑑(全${HOBBIES.length}種)</a></p>`;
+  s += `\n<footer>監修:導師真ショウ(国家資格キャリアコンサルタント)<br><a href="${SITE}/">シュミネーター</a>は、全${HOBBIES.length}種からあなたに眠る趣味を見抜く無料の診断ゲームです。</footer>`;
+  s += `\n</div><a class="fab" href="${SITE}/?p=334">🔮 趣味を診断する</a></body></html>`;
+  return s;
+}
+
 // ---------- 出力 ----------`;
 fs.mkdirSync('hobby', { recursive: true });
 HOBBIES.forEach((h, i) => {
@@ -646,10 +825,26 @@ HOBBIES.forEach((h, i) => {
 fs.writeFileSync('zukan.html', zukanPage());
 fs.writeFileSync('random.html', randomPage());
 
+// 一覧ページ(ジャンル別 + 条件別)
+const listUrls = [];
+LIST_PAGES.forEach(cfg => {
+  const items = HOBBIES.filter(h => h[1] === cfg.genre)
+    .sort((a,b) => (b[10]!==undefined?b[10]:2) - (a[10]!==undefined?a[10]:2));
+  fs.writeFileSync(cfg.slug + '.html', listPage(cfg, items));
+  listUrls.push(cfg.slug + '.html');
+});
+COND_PAGES.forEach(cfg => {
+  const items = HOBBIES.filter(cfg.filter).sort(cfg.sort).slice(0, cfg.n);
+  fs.writeFileSync(cfg.slug + '.html', listPage(cfg, items));
+  listUrls.push(cfg.slug + '.html');
+});
+console.log('一覧ページ:', listUrls.length, '枚');
+
 const urls = [
   [`${SITE}/`, '1.0'],
   [`${SITE}/zukan.html`, '0.9'],
   [`${SITE}/random.html`, '0.9'],
+  ...listUrls.map(u => [`${SITE}/${u}`, '0.8']),
   [`${SITE}/hobby-finder.html`, '0.8'],
   [`${SITE}/solo-hobbies.html`, '0.7'],
   [`${SITE}/indoor-hobbies.html`, '0.7'],
