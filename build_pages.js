@@ -214,14 +214,29 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
   .rspec:last-child{grid-column:auto}
   .rdesc{font-size:13px}
 }
+.zpicks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin:10px 0 6px}
+.zpick{display:block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:11px;overflow:hidden;text-decoration:none;color:var(--ink)}
+.zpick img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#2c1e52}
+.zpn{display:block;font-size:13.5px;font-weight:700;padding:7px 9px 2px;color:var(--gold)}
+.zpd{display:block;font-size:11.5px;line-height:1.6;padding:0 9px 9px;color:#c2b5dc}
 .picks{display:flex;flex-wrap:wrap;gap:7px}
 .picks a{background:#f2ebda;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:13.5px;text-decoration:none;color:#7a4a86;font-weight:700}
 .llist{display:grid;gap:10px}
-.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:13px 15px;text-decoration:none;color:var(--sumi)}
-.litem b{font-size:16.5px;color:#453058;display:block}
-.lchips{display:block;margin:5px 0 6px}
+.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:12px 13px;text-decoration:none;color:var(--sumi)}
+.lrow{display:flex;gap:11px;align-items:flex-start}
+.lthumb{width:112px;height:63px;flex:0 0 112px;border-radius:8px;object-fit:cover;background:#ded3bd;display:block}
+.lnoimg{display:flex;align-items:center;justify-content:center;font-size:24px;color:#b9a3c4}
+.lbody{min-width:0;flex:1}
+.litem b{font-size:16px;color:#453058;display:block;line-height:1.4}
+.lchips{display:block;margin:4px 0 5px}
 .lchips i{display:inline-block;background:#7a4a86;color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:4px}
-.ldesc{display:block;font-size:13.5px;line-height:1.8;color:#5c5148}
+.ldesc{display:block;font-size:13px;line-height:1.75;color:#5c5148}
+@media(max-width:420px){
+  .lthumb{width:88px;height:50px;flex:0 0 88px}
+  .litem b{font-size:15px}
+  .ldesc{font-size:12.5px}
+  .lchips i{font-size:10.5px;padding:2px 7px}
+}
 .ldeep{display:block;margin-top:7px;font-size:12.5px;color:#b9557d;border-top:1px dashed #ddd0b4;padding-top:7px}
 .gensub{color:#c9bce0;font-size:13.5px;margin:-8px 0 14px}
 .rdeep{margin-top:11px;border-top:1px solid #e5d9bd;padding-top:10px}
@@ -439,7 +454,22 @@ function zukanPage() {
       + (gp ? `<a href="${SITE}/${gp.slug}.html" style="float:right;font-size:12.5px;color:var(--sakura);font-weight:400">解説を読む →</a>` : "")
       + `</h3><div class="list">`;
     arr.forEach(([n, id]) => { s += `<a class="item" href="${SITE}/hobby/${id}.html">${esc(n)}</a>`; });
-    s += `</div></section>`;
+    s += `</div>`;
+    // ジャンルの代表3件はサムネイル付きで見せる(眺めて楽しいページにするため)
+    const picks = arr.slice(0, 3).map(([n, id]) => ({ n, id, h: HOBBIES[id - 1] }))
+      .filter(x => VIDEOS[x.n] && VIDEOS[x.n].v && VIDEOS[x.n].v[0]);
+    if (picks.length) {
+      s += `<div class="zpicks">`;
+      picks.forEach(x => {
+        s += `<a class="zpick" href="${SITE}/hobby/${x.id}.html">`
+          + `<img loading="lazy" src="https://i.ytimg.com/vi/${esc(VIDEOS[x.n].v[0].id)}/mqdefault.jpg" alt="${esc(x.n)}">`
+          + `<span class="zpn">${esc(x.n)}</span>`
+          + `<span class="zpd">${esc(x.h[5].slice(0, 34))}…</span>`
+          + `</a>`;
+      });
+      s += `</div>`;
+    }
+    s += `</section>`;
   });
   s += `\n<a class="cta" href="${SITE}/">この中から、あなたの趣味を見抜いてもらう<small>質問に答えるだけ・3分・無料</small></a>`;
   s += `\n<footer><a href="${SITE}/hobby-finder.html">趣味の見つけ方</a> ・ <a href="${SITE}/solo-hobbies.html">一人でできる趣味</a> ・ <a href="${SITE}/indoor-hobbies.html">インドアの趣味</a><br>監修:導師真ショウ(国家資格キャリアコンサルタント)</footer>`;
@@ -798,10 +828,15 @@ function listPage(cfg, items) {
   items.forEach((h) => {
     const i = HOBBIES.indexOf(h);
     const cores = Object.entries(h[3]).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
+    const vd = (VIDEOS[h[0]] && VIDEOS[h[0]].v && VIDEOS[h[0]].v[0]) ? VIDEOS[h[0]].v[0] : null;
     s += `<a class="litem" href="${SITE}/hobby/${i+1}.html?p=331">`
+      + `<div class="lrow">`
+      + (vd ? `<img class="lthumb" loading="lazy" src="https://i.ytimg.com/vi/${esc(vd.id)}/mqdefault.jpg" alt="${esc(h[0])}の動画">` : `<div class="lthumb lnoimg">🔮</div>`)
+      + `<div class="lbody">`
       + `<b>${esc(h[0])}</b>`
       + `<span class="lchips">${cores.map(c=>`<i>${esc(c)}</i>`).join("")}</span>`
       + `<span class="ldesc">${esc(h[5])}</span>`
+      + `</div></div>`
       + (h[15] ? `<span class="ldeep">▸ ${esc(h[15][2])}</span>` : "")
       + `</a>`;
   });
