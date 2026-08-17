@@ -105,14 +105,29 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
   .rspec:last-child{grid-column:auto}
   .rdesc{font-size:13px}
 }
+.zpicks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin:10px 0 6px}
+.zpick{display:block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:11px;overflow:hidden;text-decoration:none;color:var(--ink)}
+.zpick img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#2c1e52}
+.zpn{display:block;font-size:13.5px;font-weight:700;padding:7px 9px 2px;color:var(--gold)}
+.zpd{display:block;font-size:11.5px;line-height:1.6;padding:0 9px 9px;color:#c2b5dc}
 .picks{display:flex;flex-wrap:wrap;gap:7px}
 .picks a{background:#f2ebda;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:13.5px;text-decoration:none;color:#7a4a86;font-weight:700}
 .llist{display:grid;gap:10px}
-.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:13px 15px;text-decoration:none;color:var(--sumi)}
-.litem b{font-size:16.5px;color:#453058;display:block}
-.lchips{display:block;margin:5px 0 6px}
+.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:12px 13px;text-decoration:none;color:var(--sumi)}
+.lrow{display:flex;gap:11px;align-items:flex-start}
+.lthumb{width:112px;height:63px;flex:0 0 112px;border-radius:8px;object-fit:cover;background:#ded3bd;display:block}
+.lnoimg{display:flex;align-items:center;justify-content:center;font-size:24px;color:#b9a3c4}
+.lbody{min-width:0;flex:1}
+.litem b{font-size:16px;color:#453058;display:block;line-height:1.4}
+.lchips{display:block;margin:4px 0 5px}
 .lchips i{display:inline-block;background:#7a4a86;color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:4px}
-.ldesc{display:block;font-size:13.5px;line-height:1.8;color:#5c5148}
+.ldesc{display:block;font-size:13px;line-height:1.75;color:#5c5148}
+@media(max-width:420px){
+  .lthumb{width:88px;height:50px;flex:0 0 88px}
+  .litem b{font-size:15px}
+  .ldesc{font-size:12.5px}
+  .lchips i{font-size:10.5px;padding:2px 7px}
+}
 .ldeep{display:block;margin-top:7px;font-size:12.5px;color:#b9557d;border-top:1px dashed #ddd0b4;padding-top:7px}
 .gensub{color:#c9bce0;font-size:13.5px;margin:-8px 0 14px}
 .rdeep{margin-top:11px;border-top:1px solid #e5d9bd;padding-top:10px}
@@ -149,7 +164,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=MIDI%E3%82%AD%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89%2025%E9%8D%B5&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>MIDIキーボード 25鍵</b><span>打ち込みが一気に速くなる入力装置</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=DTM%20%E5%85%A5%E9%96%80%E6%9C%AC&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>DTM 入門本</b><span>無料ソフトで始める作曲の手引き</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%83%A2%E3%83%8B%E3%82%BF%E3%83%BC%E3%83%98%E3%83%83%E3%83%89%E3%83%9B%E3%83%B3&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>モニターヘッドホン</b><span>音の細部が見える制作用ヘッドホン</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=xQem0vcgRgg" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/xQem0vcgRgg/mqdefault.jpg" alt="DTMで作曲したい人が最初に観る動画【超初心者向け】"><span>DTMで作曲したい人が最初に観る動画【超初心者向け】</span></a><a class="vid" href="https://www.youtube.com/watch?v=qr_EHRfZ-uU" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/qr_EHRfZ-uU/mqdefault.jpg" alt="【 何から始める ? 】 作曲の方法と順序を解説する動画  【 初心者向け DTM入門 】"><span>【 何から始める ? 】 作曲の方法と順序を解説する動画  【 初心者向け DTM入門 】</span></a><a class="vid" href="https://www.youtube.com/watch?v=yQJy2SXfTq0" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/yQJy2SXfTq0/mqdefault.jpg" alt="【DTM初心者】永久保存版！最短最速で作曲上達するための学習ロードマップ【勉強のやり方】"><span>【DTM初心者】永久保存版！最短最速で作曲上達するための学習ロードマップ【勉強のやり方】</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=xQem0vcgRgg" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/xQem0vcgRgg/mqdefault.jpg" alt="DTMで作曲したい人が最初に観る動画【超初心者向け】"><span>DTMで作曲したい人が最初に観る動画【超初心者向け】</span></a><a class="vid" href="https://www.youtube.com/watch?v=G3_jXFWR5-I" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/G3_jXFWR5-I/mqdefault.jpg" alt="【🔰超初心者向け】DTMが気になったら最初に見る動画【DTM・作曲入門講座】"><span>【🔰超初心者向け】DTMが気になったら最初に見る動画【DTM・作曲入門講座】</span></a><a class="vid" href="https://www.youtube.com/watch?v=PHmY77Bucu4" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/PHmY77Bucu4/mqdefault.jpg" alt="【初心者～中級者】DTM　何から始める？　作曲上達へのロードマップを作ってみた！　#dtm  #作曲　#杜琴オン"><span>【初心者～中級者】DTM　何から始める？　作曲上達へのロードマップを作ってみた！　#dtm  #作曲　#杜琴オン</span></a></div>
 <h2>この趣味は、こう深くなっていきます</h2>
 <ol class="deep"><li><span class="dnum">1</span><span class="dtxt">自分の頭の中の音が鳴った瞬間の興奮。</span></li><li><span class="dnum">2</span><span class="dtxt">構成とミックスが分かってくる。曲として成立する。</span></li><li><span class="dnum">3</span><span class="dtxt">自分の音の癖が見えてくる。作風というものが生まれる。</span></li></ol>
 <h2>相性のいい趣味</h2>

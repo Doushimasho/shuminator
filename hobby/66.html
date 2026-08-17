@@ -105,14 +105,29 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
   .rspec:last-child{grid-column:auto}
   .rdesc{font-size:13px}
 }
+.zpicks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin:10px 0 6px}
+.zpick{display:block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:11px;overflow:hidden;text-decoration:none;color:var(--ink)}
+.zpick img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#2c1e52}
+.zpn{display:block;font-size:13.5px;font-weight:700;padding:7px 9px 2px;color:var(--gold)}
+.zpd{display:block;font-size:11.5px;line-height:1.6;padding:0 9px 9px;color:#c2b5dc}
 .picks{display:flex;flex-wrap:wrap;gap:7px}
 .picks a{background:#f2ebda;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:13.5px;text-decoration:none;color:#7a4a86;font-weight:700}
 .llist{display:grid;gap:10px}
-.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:13px 15px;text-decoration:none;color:var(--sumi)}
-.litem b{font-size:16.5px;color:#453058;display:block}
-.lchips{display:block;margin:5px 0 6px}
+.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:12px 13px;text-decoration:none;color:var(--sumi)}
+.lrow{display:flex;gap:11px;align-items:flex-start}
+.lthumb{width:112px;height:63px;flex:0 0 112px;border-radius:8px;object-fit:cover;background:#ded3bd;display:block}
+.lnoimg{display:flex;align-items:center;justify-content:center;font-size:24px;color:#b9a3c4}
+.lbody{min-width:0;flex:1}
+.litem b{font-size:16px;color:#453058;display:block;line-height:1.4}
+.lchips{display:block;margin:4px 0 5px}
 .lchips i{display:inline-block;background:#7a4a86;color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:4px}
-.ldesc{display:block;font-size:13.5px;line-height:1.8;color:#5c5148}
+.ldesc{display:block;font-size:13px;line-height:1.75;color:#5c5148}
+@media(max-width:420px){
+  .lthumb{width:88px;height:50px;flex:0 0 88px}
+  .litem b{font-size:15px}
+  .ldesc{font-size:12.5px}
+  .lchips i{font-size:10.5px;padding:2px 7px}
+}
 .ldeep{display:block;margin-top:7px;font-size:12.5px;color:#b9557d;border-top:1px dashed #ddd0b4;padding-top:7px}
 .gensub{color:#c9bce0;font-size:13.5px;margin:-8px 0 14px}
 .rdeep{margin-top:11px;border-top:1px solid #e5d9bd;padding-top:10px}
@@ -149,7 +164,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E5%B0%8F%E5%9E%8B%E7%87%BB%E8%A3%BD%E5%99%A8&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>小型燻製器</b><span>卓上サイズでベランダ燻製が叶う</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%82%B9%E3%83%A2%E3%83%BC%E3%82%AF%E3%83%81%E3%83%83%E3%83%97%20%E3%82%BB%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>スモークチップ セット</b><span>桜・ヒッコリー等の香り比べが楽しい</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E7%87%BB%E8%A3%BD%E3%83%AC%E3%82%B7%E3%83%94%E6%9C%AC&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>燻製レシピ本</b><span>食材ごとの塩加減と燻し時間の教科書</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=sU0LG6ugu4A" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/sU0LG6ugu4A/mqdefault.jpg" alt="燻製の作り方｜プロが教える！簡単・自宅でできるスモーク・燻製調理【初心者でも安心♪準備から片付けまで解説】"><span>燻製の作り方｜プロが教える！簡単・自宅でできるスモーク・燻製調理【初心者でも安心♪準備から片付けまで解説】</span></a><a class="vid" href="https://www.youtube.com/watch?v=kFS6l_hQsH8" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/kFS6l_hQsH8/mqdefault.jpg" alt="燻製の作り方、準備から片付けまで【超初心者向け】"><span>燻製の作り方、準備から片付けまで【超初心者向け】</span></a><a class="vid" href="https://www.youtube.com/watch?v=jvhRu49GdDs" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/jvhRu49GdDs/mqdefault.jpg" alt="【燻製】失敗しない！部屋が煙くならない！簡単おうち燻製の作り方☆"><span>【燻製】失敗しない！部屋が煙くならない！簡単おうち燻製の作り方☆</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=sU0LG6ugu4A" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/sU0LG6ugu4A/mqdefault.jpg" alt="燻製の作り方｜プロが教える！簡単・自宅でできるスモーク・燻製調理【初心者でも安心♪準備から片付けまで解説】"><span>燻製の作り方｜プロが教える！簡単・自宅でできるスモーク・燻製調理【初心者でも安心♪準備から片付けまで解説】</span></a><a class="vid" href="https://www.youtube.com/watch?v=kFS6l_hQsH8" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/kFS6l_hQsH8/mqdefault.jpg" alt="燻製の作り方、準備から片付けまで【超初心者向け】"><span>燻製の作り方、準備から片付けまで【超初心者向け】</span></a><a class="vid" href="https://www.youtube.com/watch?v=AylY0kudRSI" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/AylY0kudRSI/mqdefault.jpg" alt="燻製初心者でも簡単に楽しめる！DAISOの薫製用段ボール使用レビュー！"><span>燻製初心者でも簡単に楽しめる！DAISOの薫製用段ボール使用レビュー！</span></a></div>
 <h2>この趣味は、こう深くなっていきます</h2>
 <ol class="deep"><li><span class="dnum">1</span><span class="dtxt">煙の香りをまとった食材の旨さに驚く。</span></li><li><span class="dnum">2</span><span class="dtxt">チップと温度の関係が分かってくる。</span></li><li><span class="dnum">3</span><span class="dtxt">素材を広げはじめる。何でも燻してみたくなる。</span></li></ol>
 <h2>相性のいい趣味</h2>

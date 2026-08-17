@@ -105,14 +105,29 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
   .rspec:last-child{grid-column:auto}
   .rdesc{font-size:13px}
 }
+.zpicks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin:10px 0 6px}
+.zpick{display:block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:11px;overflow:hidden;text-decoration:none;color:var(--ink)}
+.zpick img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#2c1e52}
+.zpn{display:block;font-size:13.5px;font-weight:700;padding:7px 9px 2px;color:var(--gold)}
+.zpd{display:block;font-size:11.5px;line-height:1.6;padding:0 9px 9px;color:#c2b5dc}
 .picks{display:flex;flex-wrap:wrap;gap:7px}
 .picks a{background:#f2ebda;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:13.5px;text-decoration:none;color:#7a4a86;font-weight:700}
 .llist{display:grid;gap:10px}
-.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:13px 15px;text-decoration:none;color:var(--sumi)}
-.litem b{font-size:16.5px;color:#453058;display:block}
-.lchips{display:block;margin:5px 0 6px}
+.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:12px 13px;text-decoration:none;color:var(--sumi)}
+.lrow{display:flex;gap:11px;align-items:flex-start}
+.lthumb{width:112px;height:63px;flex:0 0 112px;border-radius:8px;object-fit:cover;background:#ded3bd;display:block}
+.lnoimg{display:flex;align-items:center;justify-content:center;font-size:24px;color:#b9a3c4}
+.lbody{min-width:0;flex:1}
+.litem b{font-size:16px;color:#453058;display:block;line-height:1.4}
+.lchips{display:block;margin:4px 0 5px}
 .lchips i{display:inline-block;background:#7a4a86;color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:4px}
-.ldesc{display:block;font-size:13.5px;line-height:1.8;color:#5c5148}
+.ldesc{display:block;font-size:13px;line-height:1.75;color:#5c5148}
+@media(max-width:420px){
+  .lthumb{width:88px;height:50px;flex:0 0 88px}
+  .litem b{font-size:15px}
+  .ldesc{font-size:12.5px}
+  .lchips i{font-size:10.5px;padding:2px 7px}
+}
 .ldeep{display:block;margin-top:7px;font-size:12.5px;color:#b9557d;border-top:1px dashed #ddd0b4;padding-top:7px}
 .gensub{color:#c9bce0;font-size:13.5px;margin:-8px 0 14px}
 .rdeep{margin-top:11px;border-top:1px solid #e5d9bd;padding-top:10px}
@@ -149,7 +164,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E5%9C%B0%E5%9F%9F%E7%8C%AB%20%E6%9C%AC&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>地域猫 本</b><span>TNRの考え方と実践がわかる</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%82%AD%E3%83%A3%E3%83%AA%E3%83%BC%E3%82%B1%E3%83%BC%E3%82%B9%20%E7%8C%AB&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>キャリーケース 猫</b><span>保護と通院の必需品</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%82%AB%E3%83%A1%E3%83%A9%20%E6%9C%9B%E9%81%A0&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>カメラ 望遠</b><span>見守り記録は活動の財産</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=4IfQi9MRl7w" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/4IfQi9MRl7w/mqdefault.jpg" alt="【TNR活動の始め方と注意点】保護猫活動を始めるにあたって、流れと注意すべきことを丁寧に解説！"><span>【TNR活動の始め方と注意点】保護猫活動を始めるにあたって、流れと注意すべきことを丁寧に解説！</span></a><a class="vid" href="https://www.youtube.com/watch?v=G_1xBMtNL0k" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/G_1xBMtNL0k/mqdefault.jpg" alt="意外と知らない地域猫活動（２）　～具体的に何したらいいの？～｜食品・生活衛生課｜群馬県"><span>意外と知らない地域猫活動（２）　～具体的に何したらいいの？～｜食品・生活衛生課｜群馬県</span></a><a class="vid" href="https://www.youtube.com/watch?v=LMKZXVp0IcM" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/LMKZXVp0IcM/mqdefault.jpg" alt="地域猫活動にルールを　ボランティアで猫の保護活動をしている人を取材　見えたのは「保護への呼びかけのハードル」"><span>地域猫活動にルールを　ボランティアで猫の保護活動をしている人を取材　見えたのは「保護への呼びかけのハードル」</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=4IfQi9MRl7w" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/4IfQi9MRl7w/mqdefault.jpg" alt="【TNR活動の始め方と注意点】保護猫活動を始めるにあたって、流れと注意すべきことを丁寧に解説！"><span>【TNR活動の始め方と注意点】保護猫活動を始めるにあたって、流れと注意すべきことを丁寧に解説！</span></a><a class="vid" href="https://www.youtube.com/watch?v=2Lainm5Lt6Y" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/2Lainm5Lt6Y/mqdefault.jpg" alt="【保護猫活動の目的と仕組みを知らない方へ】あらためて保護猫活動歴10年の柚本代表が保護猫活動のメリットについて詳しくお話しします。"><span>【保護猫活動の目的と仕組みを知らない方へ】あらためて保護猫活動歴10年の柚本代表が保護猫活動のメリットについて詳しくお話しします。</span></a><a class="vid" href="https://www.youtube.com/watch?v=G_1xBMtNL0k" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/G_1xBMtNL0k/mqdefault.jpg" alt="意外と知らない地域猫活動（２）　～具体的に何したらいいの？～｜食品・生活衛生課｜群馬県"><span>意外と知らない地域猫活動（２）　～具体的に何したらいいの？～｜食品・生活衛生課｜群馬県</span></a></div>
 <h2>この趣味は、こう深くなっていきます</h2>
 <ol class="deep"><li><span class="dnum">1</span><span class="dtxt">顔を覚えてもらえる嬉しさ。</span></li><li><span class="dnum">2</span><span class="dtxt">TNRの仕組みが分かってくる。</span></li><li><span class="dnum">3</span><span class="dtxt">地域と猫の共生を支える側になる。</span></li></ol>
 <h2>相性のいい趣味</h2>

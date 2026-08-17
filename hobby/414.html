@@ -105,14 +105,29 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
   .rspec:last-child{grid-column:auto}
   .rdesc{font-size:13px}
 }
+.zpicks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin:10px 0 6px}
+.zpick{display:block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:11px;overflow:hidden;text-decoration:none;color:var(--ink)}
+.zpick img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#2c1e52}
+.zpn{display:block;font-size:13.5px;font-weight:700;padding:7px 9px 2px;color:var(--gold)}
+.zpd{display:block;font-size:11.5px;line-height:1.6;padding:0 9px 9px;color:#c2b5dc}
 .picks{display:flex;flex-wrap:wrap;gap:7px}
 .picks a{background:#f2ebda;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:13.5px;text-decoration:none;color:#7a4a86;font-weight:700}
 .llist{display:grid;gap:10px}
-.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:13px 15px;text-decoration:none;color:var(--sumi)}
-.litem b{font-size:16.5px;color:#453058;display:block}
-.lchips{display:block;margin:5px 0 6px}
+.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:12px 13px;text-decoration:none;color:var(--sumi)}
+.lrow{display:flex;gap:11px;align-items:flex-start}
+.lthumb{width:112px;height:63px;flex:0 0 112px;border-radius:8px;object-fit:cover;background:#ded3bd;display:block}
+.lnoimg{display:flex;align-items:center;justify-content:center;font-size:24px;color:#b9a3c4}
+.lbody{min-width:0;flex:1}
+.litem b{font-size:16px;color:#453058;display:block;line-height:1.4}
+.lchips{display:block;margin:4px 0 5px}
 .lchips i{display:inline-block;background:#7a4a86;color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:4px}
-.ldesc{display:block;font-size:13.5px;line-height:1.8;color:#5c5148}
+.ldesc{display:block;font-size:13px;line-height:1.75;color:#5c5148}
+@media(max-width:420px){
+  .lthumb{width:88px;height:50px;flex:0 0 88px}
+  .litem b{font-size:15px}
+  .ldesc{font-size:12.5px}
+  .lchips i{font-size:10.5px;padding:2px 7px}
+}
 .ldeep{display:block;margin-top:7px;font-size:12.5px;color:#b9557d;border-top:1px dashed #ddd0b4;padding-top:7px}
 .gensub{color:#c9bce0;font-size:13.5px;margin:-8px 0 14px}
 .rdeep{margin-top:11px;border-top:1px solid #e5d9bd;padding-top:10px}
@@ -149,7 +164,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E9%83%BD%E5%B8%82%E4%BC%9D%E8%AA%AC%20%E6%9C%AC&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>都市伝説 本</b><span>定番から検証系まで読み比べ</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%83%8E%E3%83%BC%E3%83%88%20%E7%A0%94%E7%A9%B6%E7%94%A8&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>ノート 研究用</b><span>出典と variant の記録が研究の命</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E9%8C%B2%E9%9F%B3%E3%82%A2%E3%83%97%E3%83%AA%E5%AF%BE%E5%BF%9C%20%E3%83%9E%E3%82%A4%E3%82%AF&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>録音アプリ対応 マイク</b><span>聞き取り調査の相棒</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=XrZDXegBhmA" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/XrZDXegBhmA/mqdefault.jpg" alt="とんでもない事が起きます！(眠れるラジオ 都市伝説 作業用）安眠研究所 # 192"><span>とんでもない事が起きます！(眠れるラジオ 都市伝説 作業用）安眠研究所 # 192</span></a><a class="vid" href="https://www.youtube.com/watch?v=rJ3DDX-vmr4" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/rJ3DDX-vmr4/mqdefault.jpg" alt="【生配信】Mr.都市伝説 関暁夫の裏都市伝説vol.5！"><span>【生配信】Mr.都市伝説 関暁夫の裏都市伝説vol.5！</span></a><a class="vid" href="https://www.youtube.com/watch?v=teO3XSZ_8xo" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/teO3XSZ_8xo/mqdefault.jpg" alt="【日本の都市伝説のウソ・ホント】日本研究の第一人者がガチで回答！｜秘密結社・八咫烏｜日ユ同祖論｜秦氏｜賀茂氏｜竹内文書"><span>【日本の都市伝説のウソ・ホント】日本研究の第一人者がガチで回答！｜秘密結社・八咫烏｜日ユ同祖論｜秦氏｜賀茂氏｜竹内文書</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=teO3XSZ_8xo" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/teO3XSZ_8xo/mqdefault.jpg" alt="【日本の都市伝説のウソ・ホント】日本研究の第一人者がガチで回答！｜秘密結社・八咫烏｜日ユ同祖論｜秦氏｜賀茂氏｜竹内文書"><span>【日本の都市伝説のウソ・ホント】日本研究の第一人者がガチで回答！｜秘密結社・八咫烏｜日ユ同祖論｜秦氏｜賀茂氏｜竹内文書</span></a><a class="vid" href="https://www.youtube.com/watch?v=86ujyfYAgt0" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/86ujyfYAgt0/mqdefault.jpg" alt="【緊急】9月 150年に１度の異常気象とダブルで来る大災難/アナスタシアの予言(眠れるラジオ 都市伝説 作業用）安眠研究所 総集編15"><span>【緊急】9月 150年に１度の異常気象とダブルで来る大災難/アナスタシアの予言(眠れるラジオ 都市伝説 作業用）安眠研究所 総集編15</span></a><a class="vid" href="https://www.youtube.com/watch?v=RMv9ZJ8wELQ" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/RMv9ZJ8wELQ/mqdefault.jpg" alt="【都市伝説解体センター】ドパガキ解体センター【ネタバレ注意】＃1"><span>【都市伝説解体センター】ドパガキ解体センター【ネタバレ注意】＃1</span></a></div>
 <h2>この趣味は、こう深くなっていきます</h2>
 <ol class="deep"><li><span class="dnum">1</span><span class="dtxt">語られる話の奇妙さに惹かれる。</span></li><li><span class="dnum">2</span><span class="dtxt">伝播の仕方が見えてくる。</span></li><li><span class="dnum">3</span><span class="dtxt">時代背景と結びつけはじめる。噂が社会の鏡だと気づく。</span></li></ol>
 <h2>相性のいい趣味</h2>

@@ -105,14 +105,29 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
   .rspec:last-child{grid-column:auto}
   .rdesc{font-size:13px}
 }
+.zpicks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin:10px 0 6px}
+.zpick{display:block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:11px;overflow:hidden;text-decoration:none;color:var(--ink)}
+.zpick img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#2c1e52}
+.zpn{display:block;font-size:13.5px;font-weight:700;padding:7px 9px 2px;color:var(--gold)}
+.zpd{display:block;font-size:11.5px;line-height:1.6;padding:0 9px 9px;color:#c2b5dc}
 .picks{display:flex;flex-wrap:wrap;gap:7px}
 .picks a{background:#f2ebda;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:13.5px;text-decoration:none;color:#7a4a86;font-weight:700}
 .llist{display:grid;gap:10px}
-.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:13px 15px;text-decoration:none;color:var(--sumi)}
-.litem b{font-size:16.5px;color:#453058;display:block}
-.lchips{display:block;margin:5px 0 6px}
+.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:12px 13px;text-decoration:none;color:var(--sumi)}
+.lrow{display:flex;gap:11px;align-items:flex-start}
+.lthumb{width:112px;height:63px;flex:0 0 112px;border-radius:8px;object-fit:cover;background:#ded3bd;display:block}
+.lnoimg{display:flex;align-items:center;justify-content:center;font-size:24px;color:#b9a3c4}
+.lbody{min-width:0;flex:1}
+.litem b{font-size:16px;color:#453058;display:block;line-height:1.4}
+.lchips{display:block;margin:4px 0 5px}
 .lchips i{display:inline-block;background:#7a4a86;color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:4px}
-.ldesc{display:block;font-size:13.5px;line-height:1.8;color:#5c5148}
+.ldesc{display:block;font-size:13px;line-height:1.75;color:#5c5148}
+@media(max-width:420px){
+  .lthumb{width:88px;height:50px;flex:0 0 88px}
+  .litem b{font-size:15px}
+  .ldesc{font-size:12.5px}
+  .lchips i{font-size:10.5px;padding:2px 7px}
+}
 .ldeep{display:block;margin-top:7px;font-size:12.5px;color:#b9557d;border-top:1px dashed #ddd0b4;padding-top:7px}
 .gensub{color:#c9bce0;font-size:13.5px;margin:-8px 0 14px}
 .rdeep{margin-top:11px;border-top:1px solid #e5d9bd;padding-top:10px}
@@ -149,7 +164,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=%E6%9E%9C%E5%AE%9F%E9%85%92%E7%93%B6%204L&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>果実酒瓶 4L</b><span>梅酒・シロップづくりの標準サイズ</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E6%A2%85%E4%BB%95%E4%BA%8B%E3%81%AE%E6%9C%AC&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>梅仕事の本</b><span>梅干しから梅味噌まで網羅の手引き</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E7%AB%B9%E4%B8%B2&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>竹串</b><span>ヘタ取りに使う。この地味な作業が大事</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=vp1_iRDBX6A" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/vp1_iRDBX6A/mqdefault.jpg" alt="梅仕事のプロに聞いた「初めての梅仕事の前に知りたかったこと」"><span>梅仕事のプロに聞いた「初めての梅仕事の前に知りたかったこと」</span></a><a class="vid" href="https://www.youtube.com/watch?v=8fKW6sMvPzU" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/8fKW6sMvPzU/mqdefault.jpg" alt="【5分で梅仕事】簡単でおいしすぎる梅醤油の作り方。長期保存もできます"><span>【5分で梅仕事】簡単でおいしすぎる梅醤油の作り方。長期保存もできます</span></a><a class="vid" href="https://www.youtube.com/watch?v=sZdS0-RgBjE" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/sZdS0-RgBjE/mqdefault.jpg" alt="【農業を仕事に】０から梅農家になる方法を解説します"><span>【農業を仕事に】０から梅農家になる方法を解説します</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=8fKW6sMvPzU" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/8fKW6sMvPzU/mqdefault.jpg" alt="【5分で梅仕事】簡単でおいしすぎる梅醤油の作り方。長期保存もできます"><span>【5分で梅仕事】簡単でおいしすぎる梅醤油の作り方。長期保存もできます</span></a><a class="vid" href="https://www.youtube.com/watch?v=sZdS0-RgBjE" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/sZdS0-RgBjE/mqdefault.jpg" alt="【農業を仕事に】０から梅農家になる方法を解説します"><span>【農業を仕事に】０から梅農家になる方法を解説します</span></a><a class="vid" href="https://www.youtube.com/watch?v=vp1_iRDBX6A" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/vp1_iRDBX6A/mqdefault.jpg" alt="梅仕事のプロに聞いた「初めての梅仕事の前に知りたかったこと」"><span>梅仕事のプロに聞いた「初めての梅仕事の前に知りたかったこと」</span></a></div>
 <h2>この趣味は、こう深くなっていきます</h2>
 <ol class="deep"><li><span class="dnum">1</span><span class="dtxt">瓶の中で梅が変わっていくのを毎日眺める。</span></li><li><span class="dnum">2</span><span class="dtxt">塩分と天日のタイミングが掴めてくる。</span></li><li><span class="dnum">3</span><span class="dtxt">毎年の恒例になる。季節の巡りが暮らしに刻まれる。</span></li></ol>
 <h2>相性のいい趣味</h2>

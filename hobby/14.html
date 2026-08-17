@@ -105,14 +105,29 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
   .rspec:last-child{grid-column:auto}
   .rdesc{font-size:13px}
 }
+.zpicks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin:10px 0 6px}
+.zpick{display:block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:11px;overflow:hidden;text-decoration:none;color:var(--ink)}
+.zpick img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#2c1e52}
+.zpn{display:block;font-size:13.5px;font-weight:700;padding:7px 9px 2px;color:var(--gold)}
+.zpd{display:block;font-size:11.5px;line-height:1.6;padding:0 9px 9px;color:#c2b5dc}
 .picks{display:flex;flex-wrap:wrap;gap:7px}
 .picks a{background:#f2ebda;border:1.5px solid #e0d3b4;border-radius:999px;padding:7px 15px;font-size:13.5px;text-decoration:none;color:#7a4a86;font-weight:700}
 .llist{display:grid;gap:10px}
-.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:13px 15px;text-decoration:none;color:var(--sumi)}
-.litem b{font-size:16.5px;color:#453058;display:block}
-.lchips{display:block;margin:5px 0 6px}
+.litem{display:block;background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:12px 13px;text-decoration:none;color:var(--sumi)}
+.lrow{display:flex;gap:11px;align-items:flex-start}
+.lthumb{width:112px;height:63px;flex:0 0 112px;border-radius:8px;object-fit:cover;background:#ded3bd;display:block}
+.lnoimg{display:flex;align-items:center;justify-content:center;font-size:24px;color:#b9a3c4}
+.lbody{min-width:0;flex:1}
+.litem b{font-size:16px;color:#453058;display:block;line-height:1.4}
+.lchips{display:block;margin:4px 0 5px}
 .lchips i{display:inline-block;background:#7a4a86;color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:4px}
-.ldesc{display:block;font-size:13.5px;line-height:1.8;color:#5c5148}
+.ldesc{display:block;font-size:13px;line-height:1.75;color:#5c5148}
+@media(max-width:420px){
+  .lthumb{width:88px;height:50px;flex:0 0 88px}
+  .litem b{font-size:15px}
+  .ldesc{font-size:12.5px}
+  .lchips i{font-size:10.5px;padding:2px 7px}
+}
 .ldeep{display:block;margin-top:7px;font-size:12.5px;color:#b9557d;border-top:1px dashed #ddd0b4;padding-top:7px}
 .gensub{color:#c9bce0;font-size:13.5px;margin:-8px 0 14px}
 .rdeep{margin-top:11px;border-top:1px solid #e5d9bd;padding-top:10px}
@@ -149,7 +164,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;margin-top:26px;line-he
 <h2>はじめるための道具</h2>
 <div class="tools"><a class="tool" href="https://www.amazon.co.jp/s?k=30cm%E6%B0%B4%E6%A7%BD%20%E3%82%BB%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>30cm水槽 セット</b><span>ライト・フィルター込みの入門サイズ</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E6%B0%B4%E8%8D%89%20%E3%83%AC%E3%82%A4%E3%82%A2%E3%82%A6%E3%83%88%E3%82%BB%E3%83%83%E3%83%88&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>水草 レイアウトセット</b><span>前景・後景の定番種の詰め合わせ</span></a><a class="tool" href="https://www.amazon.co.jp/s?k=%E3%82%A2%E3%82%AF%E3%82%A2%E3%82%BD%E3%82%A4%E3%83%AB&tag=doushimasho44-22" target="_blank" rel="noopener nofollow"><b>アクアソイル</b><span>水草が育つ栄養入りの底床。土台が9割</span></a></div>
 <h2>まず観てみる</h2>
-<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=Ehwdeaw8ZzI" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/Ehwdeaw8ZzI/mqdefault.jpg" alt="【99%の人が知らない】絶対に水草が育つ2つ&quot;の水槽用品【初心者向け】"><span>【99%の人が知らない】絶対に水草が育つ2つ&quot;の水槽用品【初心者向け】</span></a><a class="vid" href="https://www.youtube.com/watch?v=tJD9K0kkc9Y" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/tJD9K0kkc9Y/mqdefault.jpg" alt="【水槽の作り方】水草水槽の初心者向け立ち上げ方法を紹介！【アクアリウムの始め方】"><span>【水槽の作り方】水草水槽の初心者向け立ち上げ方法を紹介！【アクアリウムの始め方】</span></a><a class="vid" href="https://www.youtube.com/watch?v=qIB5e9riXPo" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/qIB5e9riXPo/mqdefault.jpg" alt="【アクアリウム】ボトルアクアの作り方と維持&amp;管理方法について解説します。 Aquarium Kind #31 ボトルアクアリウム/初心者/レイアウト/水換え/立ち上げ/エビ/メダカ/アカヒレ"><span>【アクアリウム】ボトルアクアの作り方と維持&amp;管理方法について解説します。 Aquarium Kind #31 ボトルアクアリウム/初心者/レイアウト/水換え/立ち上げ/エビ/メダカ/アカヒレ</span></a></div>
+<div class="vids"><a class="vid" href="https://www.youtube.com/watch?v=ezGDEIhnhnc" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/ezGDEIhnhnc/mqdefault.jpg" alt="【初心者向け徹底解説】アクアリウム用語＆必要道具＆始め方【小型水槽でアクアリウムを始めよう！#２】"><span>【初心者向け徹底解説】アクアリウム用語＆必要道具＆始め方【小型水槽でアクアリウムを始めよう！#２】</span></a><a class="vid" href="https://www.youtube.com/watch?v=qIB5e9riXPo" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/qIB5e9riXPo/mqdefault.jpg" alt="【アクアリウム】ボトルアクアの作り方と維持&amp;管理方法について解説します。 Aquarium Kind #31 ボトルアクアリウム/初心者/レイアウト/水換え/立ち上げ/エビ/メダカ/アカヒレ"><span>【アクアリウム】ボトルアクアの作り方と維持&amp;管理方法について解説します。 Aquarium Kind #31 ボトルアクアリウム/初心者/レイアウト/水換え/立ち上げ/エビ/メダカ/アカヒレ</span></a><a class="vid" href="https://www.youtube.com/watch?v=tJD9K0kkc9Y" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/tJD9K0kkc9Y/mqdefault.jpg" alt="【水槽の作り方】水草水槽の初心者向け立ち上げ方法を紹介！【アクアリウムの始め方】"><span>【水槽の作り方】水草水槽の初心者向け立ち上げ方法を紹介！【アクアリウムの始め方】</span></a></div>
 <h2>この趣味は、こう深くなっていきます</h2>
 <ol class="deep"><li><span class="dnum">1</span><span class="dtxt">水槽に緑が茂るだけで部屋の空気が変わる。</span></li><li><span class="dnum">2</span><span class="dtxt">光と二酸化炭素の関係が分かってくる。</span></li><li><span class="dnum">3</span><span class="dtxt">レイアウトを設計しはじめる。水の中に風景を作る。</span></li></ol>
 <h2>相性のいい趣味</h2>
