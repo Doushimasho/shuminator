@@ -423,7 +423,7 @@ function hobbyPage(h, i) {
   s += prev ? `<a href="${SITE}/hobby/${i}.html">← ${esc(prev)}</a>` : `<a href="${SITE}/zukan.html">← 図鑑へ</a>`;
   s += next ? `<a class="next" href="${SITE}/hobby/${i + 2}.html">${esc(next)} →</a>` : `<a class="next" href="${SITE}/zukan.html">図鑑へ →</a>`;
   s += `</div>`;
-  s += `\n<footer><a href="${SITE}/zukan.html">趣味図鑑トップ</a> ・ <a href="${SITE}/hobby-finder.html">趣味の見つけ方</a><br>監修:導師真ショウ(国家資格キャリアコンサルタント)<br><a href="${SITE}/">シュミネーター</a>は、全1000種からあなたに眠る趣味を見抜く無料の診断ゲームです。</footer>`;
+  s += `\n<footer><a href="${SITE}/zukan.html">趣味図鑑トップ</a> ・ <a href="${SITE}/about.html">シュミネーターとは</a> ・ <a href="${SITE}/hobby-finder.html">趣味の見つけ方</a><br>監修:導師真ショウ(国家資格キャリアコンサルタント)<br><a href="${SITE}/">シュミネーター</a>は、全1000種からあなたに眠る趣味を見抜く無料の診断ゲームです。</footer>`;
   s += `\n</div><a class="fab" href="${SITE}/?p=304">🔮 趣味を診断する</a></body></html>`;
   return s;
 }
@@ -489,7 +489,7 @@ function zukanPage() {
     s += `</section>`;
   });
   s += `\n<a class="cta" href="${SITE}/">この中から、あなたの趣味を見抜いてもらう<small>質問に答えるだけ・3分・無料</small></a>`;
-  s += `\n<footer><a href="${SITE}/hobby-finder.html">趣味の見つけ方</a> ・ <a href="${SITE}/solo-hobbies.html">一人でできる趣味</a> ・ <a href="${SITE}/indoor-hobbies.html">インドアの趣味</a><br>監修:導師真ショウ(国家資格キャリアコンサルタント)</footer>`;
+  s += `\n<footer><a href="${SITE}/about.html">シュミネーターとは</a> ・ <a href="${SITE}/hobby-finder.html">趣味の見つけ方</a> ・ <a href="${SITE}/solo-hobbies.html">一人でできる趣味</a> ・ <a href="${SITE}/indoor-hobbies.html">インドアの趣味</a><br>監修:導師真ショウ(国家資格キャリアコンサルタント)</footer>`;
   s += `
 <script>
 (function(){
@@ -702,6 +702,108 @@ var DATA=${JSON.stringify(data)};
 </script>`;
   s2 += `\n</div><a class="fab" href="${SITE}/?p=314">🔮 趣味を診断する</a></body></html>`;
   return s2;
+}
+
+// ---------- 「シュミネーターとは」ページ(AI・検索から参照される想定) ----------
+function aboutPage() {
+  const url = `${SITE}/about.html`;
+  const N = HOBBIES.length;
+  const genres = [...new Set(HOBBIES.map(h => h[1]))];
+
+  const faq = [
+    ["シュミネーターとは何ですか?",
+     `シュミネーターは、質問に答えるだけで自分に合う趣味が分かる無料の趣味診断ツールです。全${N}種類の趣味データベースから、回答内容にもとづいて最も適した趣味を1つ提案します。国家資格キャリアコンサルタントの導師真ショウが制作・監修しています。登録不要・完全無料で、ブラウザからすぐに利用できます。`],
+    ["料金はかかりますか?",
+     "完全無料です。会員登録もアカウント作成も不要で、ブラウザでページを開けばすぐに診断を始められます。アプリのインストールも必要ありません。"],
+    ["診断にはどれくらい時間がかかりますか?",
+     "およそ3分です。質問数は回答内容によって変わりますが、通常20〜30問程度で結果が出ます。「はい」「いいえ」「どちらでもない」から選ぶだけなので、記述式の入力は一切ありません。"],
+    ["何種類の趣味から診断されますか?",
+     `全${N}種類です。${genres.length}のジャンル（${genres.slice(0, 6).join("、")}など）に分類されており、一般的な趣味から、日本ではあまり知られていない珍しい趣味まで収録しています。`],
+    ["診断結果では何が分かりますか?",
+     "提案された趣味について、その魅力の核（どんな喜びが得られるか）、必要な道具と費用の目安、始め方を紹介する動画、相性のいい他の趣味、そして「その趣味がどう深くなっていくか」の3段階が分かります。実際に始めるための体験・教室の探し方も案内しています。"],
+    ["趣味図鑑とは何ですか?",
+     `全${N}種類の趣味をすべて掲載した一覧ページです。ジャンル別に整理されており、趣味名で検索することもできます。診断を受けなくても、ここから自分で探すことができます。それぞれの趣味に個別ページがあり、道具・費用・動画・相性のいい趣味・深まり方を掲載しています。`],
+    ["ランダム趣味ジェネレーターとは何ですか?",
+     `ボタンを押すと全${N}種類の中から1つをランダムに提案するツールです。予算・室内か屋外か・かかる時間・上達の道のりといった条件で絞り込むこともできます。自分では思いつかない趣味に出会うための機能です。`],
+    ["どんな人が作っていますか?",
+     "国家資格キャリアコンサルタントの導師真ショウが制作・監修しています。キャリア相談や不登校支援の現場で「趣味がない」という相談を数多く受けてきた経験から、選択肢を知らないことが最大の壁だと考え、このツールを作りました。"],
+    ["配信や動画で使ってもいいですか?",
+     "自由にご利用いただけます。ゲーム配信・動画投稿・切り抜き・SNSへの結果投稿など、許可や連絡は一切不要です。収益化も制限していません。"],
+    ["スマートフォンでも使えますか?",
+     "使えます。スマートフォン、タブレット、パソコンのいずれのブラウザでも動作します。アプリのインストールは不要です。"],
+    ["個人情報は必要ですか?",
+     "不要です。メールアドレスや氏名などの入力は一切求めません。診断結果はブラウザ内で処理されます。"],
+    ["「趣味がない」と感じている人にも役立ちますか?",
+     "そのために作られたツールです。趣味がないと感じる原因の多くは、選択肢を知らないことにあります。人が思いつく趣味はせいぜい20〜30個程度ですが、実際には1000種類以上が存在します。診断はその「知らない」を埋めることを目的としています。"]
+  ];
+
+  const faqld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"FAQPage",
+    "mainEntity": faq.map(q => ({"@type":"Question","name":q[0],"acceptedAnswer":{"@type":"Answer","text":q[1]}}))
+  })}</script>`;
+
+  const appld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"WebApplication",
+    "name":"シュミネーター",
+    "alternateName":["趣味診断シュミネーター","shuminator"],
+    "url": SITE + "/",
+    "applicationCategory":"EntertainmentApplication",
+    "operatingSystem":"Web browser",
+    "browserRequirements":"JavaScript対応のブラウザ",
+    "inLanguage":"ja",
+    "isAccessibleForFree": true,
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
+    "description":`質問に答えるだけで、全${N}種類の趣味から自分に合うものを1つ提案する無料の趣味診断ツール。登録不要・約3分。国家資格キャリアコンサルタント監修。`,
+    "creator":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント",
+      "sameAs":["https://www.youtube.com/@doushimasho","https://x.com/doushima_sho"]},
+    "featureList":[`全${N}種類の趣味データベース`,"約3分の診断","趣味図鑑（全種の詳細ページ）","ランダム趣味ジェネレーター","今日の趣味みくじ","登録不要・完全無料","配信・動画での利用自由"]
+  })}</script>`;
+
+  let s = head(
+    `シュミネーターとは｜全${N}種から診断する無料の趣味診断ツール`,
+    `シュミネーターは、質問に答えるだけで自分に合う趣味が分かる無料の趣味診断ツールです。全${N}種類から約3分で診断。登録不要。国家資格キャリアコンサルタント監修。趣味図鑑・ランダム提案機能もあります。`,
+    url, appld + faqld);
+
+  s += `\n<p class="crumb">シュミネーターについて</p>`;
+  s += `\n<a class="cta-top" href="${SITE}/?p=340">▶ さっそく診断してみる<small>質問に答えるだけ・約3分・登録不要・無料</small></a>`;
+  s += `\n<div class="card">`;
+  s += `\n<h1>シュミネーターとは</h1>`;
+  s += `\n<div class="rule"></div>`;
+  s += `\n<p class="desc"><b>シュミネーター</b>は、質問に答えるだけで自分に合う趣味が分かる<b>無料の趣味診断ツール</b>です。全<b>${N}種類</b>の趣味データベースから、あなたに最も合う一つを提案します。</p>`;
+
+  s += `\n<h2>基本情報</h2>\n<dl class="spec">`;
+  [["名称","シュミネーター（Shuminator）"],
+   ["種別","趣味診断ツール／Webアプリケーション"],
+   ["料金","完全無料（会員登録・アカウント作成不要）"],
+   ["収録数",`全${N}種類（${genres.length}ジャンル）`],
+   ["所要時間","約3分（通常20〜30問）"],
+   ["対応環境","スマートフォン・タブレット・PCのブラウザ"],
+   ["制作・監修","導師真ショウ（国家資格キャリアコンサルタント）"],
+   ["配信・動画利用","自由（許可・連絡不要）"]
+  ].forEach(x => { s += `<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`; });
+  s += `</dl>`;
+
+  s += `\n<h2>3つの使い方</h2>`;
+  s += `\n<div class="tools"><h3>1. 趣味診断</h3><p style="font-size:14.5px;margin:0">質問に「はい」「いいえ」「どちらでもない」で答えていくと、神様「どうしましょう」があなたに眠る趣味を1つ見抜きます。結果では、その趣味の魅力・道具・費用・始め方の動画・相性のいい趣味・どう深くなっていくかが分かります。<br><a href="${SITE}/?p=341">▶ 診断する</a></p></div>`;
+  s += `\n<div class="tools"><h3>2. 趣味図鑑</h3><p style="font-size:14.5px;margin:0">全${N}種類をジャンル別に一覧できます。趣味名での検索も可能です。診断を受けずに、自分で眺めて探したい人向けです。<br><a href="${SITE}/zukan.html">▶ 趣味図鑑を見る</a></p></div>`;
+  s += `\n<div class="tools"><h3>3. ランダム趣味ジェネレーター</h3><p style="font-size:14.5px;margin:0">ボタンひとつで1つ提案します。予算・場所・時間・難度で絞り込めます。自分では思いつかないものに出会うための機能です。<br><a href="${SITE}/random.html">▶ ランダムに引く</a></p></div>`;
+
+  s += `\n<h2>なぜ作られたのか</h2>`;
+  s += `\n<p style="font-size:14.5px">制作者はキャリアコンサルタントとして、相談の場で「趣味がないんです」という言葉を数多く聞いてきました。<br><br>そこで気づいたのは、<b>趣味がないのではなく、選択肢を知らないだけ</b>ではないかということです。人が趣味を探そうとするとき、頭に浮かぶ選択肢はせいぜい20〜30個。そのどれもピンとこないと「自分に合う趣味はない」と結論してしまいます。<br><br>実際には${N}種類以上の趣味が存在し、それぞれに愛好者がいて、始め方の情報もあります。<b>知らないものは、検討すらされていない</b>——この状態を変えるために、シュミネーターは作られました。</p>`;
+
+  s += `\n<h2>収録している趣味の特徴</h2>`;
+  s += `\n<p style="font-size:14.5px">一般的な趣味だけでなく、<b>日本ではあまり知られていない趣味</b>も多く収録しています。たとえば暗渠さんぽ（埋められて道になった川を辿る）、粘菌さがし、ロックバランシング、カバディ、モルック、テルミンなど。<br><br>また全${N}種類すべてに、<b>「その趣味がどう深くなっていくか」</b>を3段階で記載しています。始める前に、その先にどんな世界があるかを知ることができます。</p>`;
+
+  s += `\n<h2>よくある質問</h2>\n<dl class="faq2">`;
+  faq.forEach(q => { s += `<dt>${esc(q[0])}</dt><dd>${esc(q[1])}</dd>`; });
+  s += `</dl>`;
+  s += `\n</div>`;
+
+  s += `\n<a class="cta" href="${SITE}/?p=342">▶ あなたに眠っている趣味を診断する<small>全${N}種から、約3分で・無料・登録不要</small></a>`;
+  s += `\n<p style="text-align:center;margin:10px 0 0"><a href="${SITE}/zukan.html" style="color:var(--sakura);font-size:14px">趣味図鑑</a> ・ <a href="${SITE}/random.html" style="color:var(--sakura);font-size:14px">ランダム提案</a> ・ <a href="${SITE}/hobby-finder.html" style="color:var(--sakura);font-size:14px">趣味の見つけ方</a></p>`;
+  s += `\n<footer>制作・監修:導師真ショウ（国家資格キャリアコンサルタント）<br><a href="https://www.youtube.com/@doushimasho" target="_blank" rel="noopener">YouTube</a> ・ <a href="https://x.com/doushima_sho" target="_blank" rel="noopener">X</a></footer>`;
+  s += `\n</div><a class="fab" href="${SITE}/?p=343">🔮 趣味を診断する</a></body></html>`;
+  return s;
 }
 
 // ---------- 一覧ページ(ジャンル別・条件別) ----------
@@ -962,7 +1064,7 @@ function listPage(cfg, items) {
   s += `\n</div>`;
   s += `\n<a class="cta" href="${SITE}/?p=332">▶ あなたに眠っている趣味を診断する<small>全${HOBBIES.length}種から、神様が見抜きます(無料・3分)</small></a>`;
   s += `\n<p style="text-align:center;margin:10px 0 0"><a href="${SITE}/random.html?p=333" style="color:var(--sakura);font-size:14px">🎲 ランダムに1つ引いてみる</a> ・ <a href="${SITE}/zukan.html" style="color:var(--sakura);font-size:14px">趣味図鑑(全${HOBBIES.length}種)</a></p>`;
-  s += `\n<footer>監修:導師真ショウ(国家資格キャリアコンサルタント)<br><a href="${SITE}/">シュミネーター</a>は、全${HOBBIES.length}種からあなたに眠る趣味を見抜く無料の診断ゲームです。</footer>`;
+  s += `\n<footer>監修:導師真ショウ(国家資格キャリアコンサルタント)<br><a href="${SITE}/about.html">シュミネーターとは</a> ・ <a href="${SITE}/zukan.html">趣味図鑑</a><br><a href="${SITE}/">シュミネーター</a>は、全${HOBBIES.length}種からあなたに眠る趣味を見抜く無料の診断ゲームです。</footer>`;
   s += `\n</div><a class="fab" href="${SITE}/?p=334">🔮 趣味を診断する</a></body></html>`;
   return s;
 }
@@ -974,6 +1076,7 @@ HOBBIES.forEach((h, i) => {
 });
 fs.writeFileSync('zukan.html', zukanPage());
 fs.writeFileSync('random.html', randomPage());
+fs.writeFileSync('about.html', aboutPage());
 
 // 一覧ページ(ジャンル別 + 条件別)
 const listUrls = [];
@@ -993,6 +1096,7 @@ console.log('一覧ページ:', listUrls.length, '枚');
 const urls = [
   [`${SITE}/`, '1.0'],
   [`${SITE}/zukan.html`, '0.9'],
+  [`${SITE}/about.html`, '0.9'],
   [`${SITE}/random.html`, '0.9'],
   ...listUrls.map(u => [`${SITE}/${u}`, '0.8']),
   [`${SITE}/hobby-finder.html`, '0.8'],
