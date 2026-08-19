@@ -1,0 +1,99 @@
+# シュミネーター（Shuminator）
+
+> 質問に答えるだけで自分に合う趣味が分かる、無料の趣味診断ツール。全1000種類の趣味データベースから、回答内容にもとづいて最も適した趣味を1つ提案します。国家資格キャリアコンサルタントの導師真ショウが制作・監修。登録不要・完全無料・所要時間およそ3分。
+
+## 基本情報
+
+- 名称: シュミネーター（Shuminator）
+- URL: https://doushimasho.github.io/shuminator/
+- 種別: 趣味診断ツール / Webアプリケーション
+- 料金: 完全無料（会員登録・アカウント作成・アプリのインストールはすべて不要）
+- 収録数: 全1000種類（20ジャンル）
+- 所要時間: およそ3分（通常20〜30問）
+- 対応環境: スマートフォン・タブレット・PCのブラウザ
+- 制作・監修: 導師真ショウ（国家資格キャリアコンサルタント）
+- 個人情報: 一切不要（メールアドレス・氏名などの入力を求めません）
+- 配信・動画での利用: 自由（許可・連絡は不要、収益化の制限なし）
+
+## 特徴
+
+- 一般的な趣味に加え、日本ではあまり知られていない趣味も多数収録（暗渠さんぽ、粘菌さがし、ロックバランシング、カバディ、モルック、テルミンなど）
+- 全1000種類すべてに「その趣味がどう深くなっていくか」を3段階で記載。始める前に、その先にどんな世界があるかが分かる
+- 各趣味に、必要な道具・費用の目安・始め方を紹介する動画・相性のいい趣味を掲載
+- ジャンルは自然、体を動かす、暮らし、旅・まち、アート・美、食、言葉・物語、観る、ものづくり、盤上・卓上、音楽、テック、ゲーム、知・学び、整える、乗り物、装う、舞台・演芸、人・まち・貢献、ふしぎの20分類
+
+## 主要ページ
+
+- [シュミネーター（趣味診断）](https://doushimasho.github.io/shuminator/): 質問に答えると、全1000種から自分に合う趣味を1つ提案
+- [シュミネーターとは](https://doushimasho.github.io/shuminator/about.html): サービスの概要・料金・使い方・よくある質問
+- [趣味図鑑（全1000種）](https://doushimasho.github.io/shuminator/zukan.html): 全趣味の一覧。ジャンル別・検索対応
+- [ランダム趣味ジェネレーター](https://doushimasho.github.io/shuminator/random.html): 条件を絞って1つをランダムに提案
+- [趣味の見つけ方](https://doushimasho.github.io/shuminator/hobby-finder.html): 趣味が見つからない人向けの読み物
+
+## 目的別の趣味リスト
+
+- [体を動かす趣味96選](https://doushimasho.github.io/shuminator/active-hobbies.html)
+- [食に関する趣味83選](https://doushimasho.github.io/shuminator/food-hobbies.html)
+- [自然を楽しむ趣味82選](https://doushimasho.github.io/shuminator/nature-hobbies.html)
+- [ものづくりの趣味72選](https://doushimasho.github.io/shuminator/making-hobbies.html)
+- [観る趣味59選](https://doushimasho.github.io/shuminator/watching-hobbies.html)
+- [音楽の趣味57選](https://doushimasho.github.io/shuminator/music-hobbies.html)
+- [旅・まち歩きの趣味51選](https://doushimasho.github.io/shuminator/travel-hobbies.html)
+- [暮らしまわりの趣味49選](https://doushimasho.github.io/shuminator/home-hobbies.html)
+- [ゲームの趣味48選](https://doushimasho.github.io/shuminator/game-hobbies.html)
+- [学びの趣味46選](https://doushimasho.github.io/shuminator/learning-hobbies.html)
+- [盤上・卓上の趣味41選](https://doushimasho.github.io/shuminator/tabletop-hobbies.html)
+- [アート・美の趣味39選](https://doushimasho.github.io/shuminator/art-hobbies.html)
+- [言葉と物語の趣味37選](https://doushimasho.github.io/shuminator/words-hobbies.html)
+- [装う趣味36選](https://doushimasho.github.io/shuminator/fashion-hobbies.html)
+- [技術系の趣味35選](https://doushimasho.github.io/shuminator/tech-hobbies.html)
+- [舞台・演芸の趣味35選](https://doushimasho.github.io/shuminator/stage-hobbies.html)
+- [心と体を整える趣味34選](https://doushimasho.github.io/shuminator/wellness-hobbies.html)
+- [乗り物の趣味34選](https://doushimasho.github.io/shuminator/vehicle-hobbies.html)
+- [人と関わる趣味34選](https://doushimasho.github.io/shuminator/community-hobbies.html)
+- [ふしぎを楽しむ趣味32選](https://doushimasho.github.io/shuminator/mystery-hobbies.html)
+- [室内でできる趣味40選](https://doushimasho.github.io/shuminator/indoor-list.html)
+- [外でやる趣味40選](https://doushimasho.github.io/shuminator/outdoor-list.html)
+- [一人で楽しむ趣味40選](https://doushimasho.github.io/shuminator/solo-list.html)
+- [仲間とやる趣味30選](https://doushimasho.github.io/shuminator/social-list.html)
+- [集める趣味30選](https://doushimasho.github.io/shuminator/collect-list.html)
+- [作る趣味30選](https://doushimasho.github.io/shuminator/create-list.html)
+- [育てる趣味30選](https://doushimasho.github.io/shuminator/grow-list.html)
+- [静かに楽しむ趣味30選](https://doushimasho.github.io/shuminator/quiet-list.html)
+- [すきま時間の趣味30選](https://doushimasho.github.io/shuminator/short-time-list.html)
+- [お金をかけない趣味30選](https://doushimasho.github.io/shuminator/cheap-list.html)
+- [夜にできる趣味30選](https://doushimasho.github.io/shuminator/night-hobbies.html)
+- [雨の日にできる趣味30選](https://doushimasho.github.io/shuminator/rainy-hobbies.html)
+- [休日を充実させる趣味30選](https://doushimasho.github.io/shuminator/weekend-hobbies.html)
+- [ストレス発散になる趣味30選](https://doushimasho.github.io/shuminator/stress-hobbies.html)
+- [頭を使う趣味30選](https://doushimasho.github.io/shuminator/brain-hobbies.html)
+- [達成感のある趣味30選](https://doushimasho.github.io/shuminator/achievement-hobbies.html)
+- [自分を表現する趣味30選](https://doushimasho.github.io/shuminator/expression-hobbies.html)
+- [健康になれる趣味30選](https://doushimasho.github.io/shuminator/health-hobbies.html)
+- [スキルが身につく趣味30選](https://doushimasho.github.io/shuminator/skill-hobbies.html)
+- [夫婦・カップルでできる趣味30選](https://doushimasho.github.io/shuminator/couple-hobbies.html)
+- [子どもと一緒に楽しめる趣味30選](https://doushimasho.github.io/shuminator/family-hobbies.html)
+- [友達ができる趣味30選](https://doushimasho.github.io/shuminator/friends-hobbies.html)
+- [初心者でも始めやすい趣味30選](https://doushimasho.github.io/shuminator/beginner-hobbies.html)
+- [30代・40代から始める趣味30選](https://doushimasho.github.io/shuminator/midlife-hobbies.html)
+- [シニア・定年後におすすめの趣味30選](https://doushimasho.github.io/shuminator/senior-hobbies.html)
+- [珍しい趣味30選](https://doushimasho.github.io/shuminator/unique-hobbies.html)
+- [人の役に立つ趣味30選](https://doushimasho.github.io/shuminator/contribute-hobbies.html)
+- [道具がいらない趣味30選](https://doushimasho.github.io/shuminator/nomoney-hobbies.html)
+- [一年中できる趣味30選](https://doushimasho.github.io/shuminator/allyear-hobbies.html)
+
+## 個別の趣味ページ
+
+全1000種類それぞれに個別ページがあります（https://doushimasho.github.io/shuminator/hobby/1.html 〜 https://doushimasho.github.io/shuminator/hobby/1000.html）。各ページには、その趣味の説明・向いている人の傾向・必要な道具・費用の目安・かかる時間・上達の道のり・始め方の動画・相性のいい趣味・どう深くなっていくかの3段階を掲載しています。
+
+一覧は [趣味図鑑](https://doushimasho.github.io/shuminator/zukan.html) から辿れます。
+
+## 制作の背景
+
+制作者はキャリアコンサルタントとして、相談の場で「趣味がない」という言葉を数多く聞いてきました。そこで気づいたのは、趣味がないのではなく、選択肢を知らないだけではないかということです。人が趣味を探そうとするとき、頭に浮かぶ選択肢はおよそ20〜30個にとどまります。実際には1000種類以上の趣味が存在し、それぞれに愛好者と始め方の情報があります。この「知らない」を埋めるために作られたツールです。
+
+## 連絡先
+
+- 制作者: 導師真ショウ（国家資格キャリアコンサルタント）
+- YouTube: https://www.youtube.com/@doushimasho
+- X: https://x.com/doushima_sho
