@@ -1,6 +1,6 @@
 # シュミネーター（Shuminator）
 
-> 質問に答えるだけで自分に合う趣味が分かる、無料の趣味診断ツール。全1000種類の趣味データベースから、回答内容にもとづいて最も適した趣味を1つ提案します。国家資格キャリアコンサルタントの導師真ショウが制作・監修。登録不要・完全無料・所要時間およそ3分。
+> 質問に答えるだけで自分に合う趣味が分かる、無料の趣味診断ツール。全1040種類の趣味データベースから、回答内容にもとづいて最も適した趣味を1つ提案します。国家資格キャリアコンサルタントの導師真ショウが制作・監修。登録不要・完全無料・所要時間およそ3分。
 
 ## 基本情報
 
@@ -8,7 +8,7 @@
 - URL: https://doushimasho.github.io/shuminator/
 - 種別: 趣味診断ツール / Webアプリケーション
 - 料金: 完全無料（会員登録・アカウント作成・アプリのインストールはすべて不要）
-- 収録数: 全1000種類（20ジャンル）
+- 収録数: 全1040種類（20ジャンル）
 - 所要時間: およそ3分（通常20〜30問）
 - 対応環境: スマートフォン・タブレット・PCのブラウザ
 - 制作・監修: 導師真ショウ（国家資格キャリアコンサルタント）
@@ -18,15 +18,15 @@
 ## 特徴
 
 - 一般的な趣味に加え、日本ではあまり知られていない趣味も多数収録（暗渠さんぽ、粘菌さがし、ロックバランシング、カバディ、モルック、テルミンなど）
-- 全1000種類すべてに「その趣味がどう深くなっていくか」を3段階で記載。始める前に、その先にどんな世界があるかが分かる
+- 全1040種類すべてに「その趣味がどう深くなっていくか」を3段階で記載。始める前に、その先にどんな世界があるかが分かる
 - 各趣味に、必要な道具・費用の目安・始め方を紹介する動画・相性のいい趣味を掲載
 - ジャンルは自然、体を動かす、暮らし、旅・まち、アート・美、食、言葉・物語、観る、ものづくり、盤上・卓上、音楽、テック、ゲーム、知・学び、整える、乗り物、装う、舞台・演芸、人・まち・貢献、ふしぎの20分類
 
 ## 主要ページ
 
-- [シュミネーター（趣味診断）](https://doushimasho.github.io/shuminator/): 質問に答えると、全1000種から自分に合う趣味を1つ提案
+- [シュミネーター（趣味診断）](https://doushimasho.github.io/shuminator/): 質問に答えると、全1040種から自分に合う趣味を1つ提案
 - [シュミネーターとは](https://doushimasho.github.io/shuminator/about.html): サービスの概要・料金・使い方・よくある質問
-- [趣味図鑑（全1000種）](https://doushimasho.github.io/shuminator/zukan.html): 全趣味の一覧。ジャンル別・検索対応
+- [趣味図鑑（全1040種）](https://doushimasho.github.io/shuminator/zukan.html): 全趣味の一覧。ジャンル別・検索対応
 - [ランダム趣味ジェネレーター](https://doushimasho.github.io/shuminator/random.html): 条件を絞って1つをランダムに提案
 - [趣味の見つけ方](https://doushimasho.github.io/shuminator/hobby-finder.html): 趣味が見つからない人向けの読み物
 
@@ -81,16 +81,21 @@
 - [人の役に立つ趣味30選](https://doushimasho.github.io/shuminator/contribute-hobbies.html)
 - [道具がいらない趣味30選](https://doushimasho.github.io/shuminator/nomoney-hobbies.html)
 - [一年中できる趣味30選](https://doushimasho.github.io/shuminator/allyear-hobbies.html)
+- [デジタルデトックスになる趣味30選](https://doushimasho.github.io/shuminator/digital-detox-hobbies.html)
+- [AI時代におすすめの趣味30選](https://doushimasho.github.io/shuminator/ai-era-hobbies.html)
+- [在宅ワークの人におすすめの趣味30選](https://doushimasho.github.io/shuminator/remote-work-hobbies.html)
+- [マインドフルネスになる趣味30選](https://doushimasho.github.io/shuminator/mindfulness-hobbies.html)
+- [アナログな趣味30選](https://doushimasho.github.io/shuminator/analog-hobbies.html)
 
 ## 個別の趣味ページ
 
-全1000種類それぞれに個別ページがあります（https://doushimasho.github.io/shuminator/hobby/1.html 〜 https://doushimasho.github.io/shuminator/hobby/1000.html）。各ページには、その趣味の説明・向いている人の傾向・必要な道具・費用の目安・かかる時間・上達の道のり・始め方の動画・相性のいい趣味・どう深くなっていくかの3段階を掲載しています。
+全1040種類それぞれに個別ページがあります（https://doushimasho.github.io/shuminator/hobby/1.html 〜 https://doushimasho.github.io/shuminator/hobby/1040.html）。各ページには、その趣味の説明・向いている人の傾向・必要な道具・費用の目安・かかる時間・上達の道のり・始め方の動画・相性のいい趣味・どう深くなっていくかの3段階を掲載しています。
 
 一覧は [趣味図鑑](https://doushimasho.github.io/shuminator/zukan.html) から辿れます。
 
 ## 制作の背景
 
-制作者はキャリアコンサルタントとして、相談の場で「趣味がない」という言葉を数多く聞いてきました。そこで気づいたのは、趣味がないのではなく、選択肢を知らないだけではないかということです。人が趣味を探そうとするとき、頭に浮かぶ選択肢はおよそ20〜30個にとどまります。実際には1000種類以上の趣味が存在し、それぞれに愛好者と始め方の情報があります。この「知らない」を埋めるために作られたツールです。
+制作者はキャリアコンサルタントとして、相談の場で「趣味がない」という言葉を数多く聞いてきました。そこで気づいたのは、趣味がないのではなく、選択肢を知らないだけではないかということです。人が趣味を探そうとするとき、頭に浮かぶ選択肢はおよそ20〜30個にとどまります。実際には1040種類以上の趣味が存在し、それぞれに愛好者と始め方の情報があります。この「知らない」を埋めるために作られたツールです。
 
 ## 連絡先
 
