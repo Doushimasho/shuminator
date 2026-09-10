@@ -1,10 +1,14 @@
 # =====================================================
 # シュミネーター 趣味図鑑ページ自動生成ワークフロー
 # 置き場所:リポジトリの .github/workflows/build-pages.yml
-# 動き:hobbies.js か videos.js が更新されたとき(または手動実行時)に
-#       build_pages.js を走らせ、全趣味の個別ページ・図鑑一覧・
-#       sitemap.xml を生成して自動コミットする。
-#       → 1000ページを手でアップロードする必要はない。
+# 動き:hobbies.js か videos.js か build_pages.js が更新されたとき
+#       (または手動実行時)に build_pages.js を走らせ、
+#       全趣味の個別ページ・一覧・おすすめ・飽きた・季節・sitemap.xml を
+#       生成して自動コミットする。
+#
+# ★ 2026-09 追加：next/ bored/ と季節ページを git add に含めた。
+#    ここに入れ忘れると、生成されてもコミットされず404になる
+#    （過去に random.html で同じ事故が起きている）。
 # =====================================================
 name: build-pages
 
@@ -37,7 +41,8 @@ jobs:
         run: |
           git config user.name "shuminator-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A
+          git add -A hobby next bored
+          git add *.html llms.txt sitemap.xml
           if git diff --cached --quiet; then
             echo "変更なし"
           else

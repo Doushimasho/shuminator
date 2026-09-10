@@ -368,6 +368,13 @@ function hobbyPage(h, i) {
     mt.forEach(j => { s += `<a class="mate" href="${SITE}/hobby/${j + 1}.html">${esc(HOBBIES[j][0])}</a>`; });
     s += `</div>`;
   }
+  /* この趣味の「好きな人へのおすすめ」ページがあれば案内する */
+  if (typeof REC_SET !== 'undefined' && REC_SET.has(i)) {
+    s += `\n<p style="margin-top:14px"><a href="${SITE}/next/${i + 1}.html?p=356">▶ ${esc(h[0])}が好きな人におすすめの趣味を見る</a><br><span style="font-size:12.5px;color:#7d726a">${esc(h[0])}の「何が」好きかで分けて紹介しています</span></p>`;
+  }
+  if (typeof BORED_SET !== 'undefined' && BORED_SET.has(i)) {
+    s += `\n<p style="margin-top:10px"><a href="${SITE}/bored/${i + 1}.html?p=357">▶ ${esc(h[0])}に飽きてきた人へ</a><br><span style="font-size:12.5px;color:#7d726a">やめる前に試せる、深める道と隣に移る道</span></p>`;
+  }
 
   // ===== ページ固有の解説文(データから生成) =====
   const c1 = cores[0], c2 = cores[1] || cores[0];
@@ -465,6 +472,11 @@ function zukanPage() {
     + `<h2>始めやすさから</h2><div class="picks">`
     + [["beginner-hobbies","初心者向け"],["easy-hobbies","すぐ始められる"],["midlife-hobbies","30代・40代から"],
        ["senior-hobbies","定年後に"],["lifelong-hobbies","一生続けられる"],["japanese-hobbies","和のもの"]]
+      .map(x=>`<a href="${SITE}/${x[0]}.html">${x[1]}</a>`).join("")
+    + `</div>`
+    + `<h2>季節から</h2><div class="picks">`
+    + [["spring-hobbies","春に始める"],["summer-hobbies","夏にやりたい"],
+       ["autumn-hobbies","秋に始める"],["winter-hobbies","冬にやりたい"]]
       .map(x=>`<a href="${SITE}/${x[0]}.html">${x[1]}</a>`).join("")
     + `</div></div>`;
   s += `\n<a class="cta-top" href="${SITE}/?p=305">▶ あなたに眠る趣味を診断してもらう<small>どれが自分に合うか、神様に見抜いてもらえます(無料・3分)</small></a>`;
@@ -1162,6 +1174,419 @@ function llmsTxt() {
   return t;
 }
 
+// ============================================================
+//  「○○が好きな人におすすめの趣味」ページ（next/N.html）
+//  ------------------------------------------------------------
+//  いちばんアクセスのある「○○な趣味一覧」の横展開。
+//  ある趣味を「すでに好きな人」を入口に、別ジャンルの趣味へ橋を架ける。
+//  ・魅力の核ごとに枝分かれさせる＝「その趣味の何が好きか」で行き先が変わる
+//  ・核だけで結ぶと「登山が好きな人にアイロンがけ」になるので、
+//    屋外度・費用・時間・習得曲線・成果のかたちの近さも見る
+// ============================================================
+const REC_SITU_W = [[7,1.0],[8,0.6],[12,0.7],[13,0.5],[11,0.5]];
+function situScore(a, b) {
+  let s = 0, t = 0;
+  REC_SITU_W.forEach(([i, k]) => { s += k * Math.abs((a[i]|0) - (b[i]|0)) / 4; t += k; });
+  return 1 - s / t;                      // 1=状況がほぼ同じ / 0=正反対
+}
+function sharedCores(a, b, min) {
+  return CORES.filter(c => (a[3][c]||0) >= min && (b[3][c]||0) >= min);
+}
+/* ある趣味 × ある核 で、おすすめを返す */
+function recFor(si, core, n) {
+  const S = HOBBIES[si], sv = coreVec(S);
+  return HOBBIES.map((h, j) => ({ h, j }))
+    .filter(({ h, j }) => {
+      if (j === si) return false;
+      if ((h[3][core]||0) < 3) return false;                 // その核が強いものだけ
+      if (h[2] === S[2]) return false;                       // 同じ細領域は「次の趣味」にならない
+      if (coreDist(sv, coreVec(h)) < 0.45) return false;     // ほぼ同じ趣味も除外
+      if (situScore(S, h) < 0.62) return false;              // 生活の中での位置が違いすぎる
+      if (sharedCores(S, h, 3).length < 2) return false;     // 強い核が2つ以上そろうものだけ
+      return true;
+    })
+    .map(o => {
+      const d = coreDist(sv, coreVec(o.h));
+      let s = (o.h[3][core]||0) * 1.0 + situScore(S, o.h) * 4.0 - d * 1.2;
+      if (o.h[1] !== S[1]) s += 0.9;                          // 別ジャンル＝橋渡しを優遇
+      s += (4 - (o.h[10]|0)) * 0.10;                          // 少しだけ珍しいほうを優遇
+      return Object.assign(o, { s });
+    })
+    .sort((a, b) => b.s - a.s).slice(0, n);
+}
+/* 「意外な組み合わせ」＝ジャンルが遠いのに、状況と核がよく合うもの */
+function recSurprise(si, used, n) {
+  const S = HOBBIES[si], sv = coreVec(S);
+  return HOBBIES.map((h, j) => ({ h, j }))
+    .filter(({ h, j }) => {
+      if (j === si || used.has(j)) return false;
+      if (h[1] === S[1]) return false;
+      if (coreDist(sv, coreVec(h)) < 0.5) return false;
+      if (situScore(S, h) < 0.55) return false;
+      return sharedCores(S, h, 3).length >= 2;                // 強い核が2つ以上そろう
+    })
+    .map(o => Object.assign(o, {
+      s: sharedCores(S, o.h, 3).length * 1.6 + situScore(S, o.h) * 2.2 + (4 - (o.h[10]|0)) * 0.35
+    }))
+    .sort((a, b) => b.s - a.s).slice(0, n);
+}
+/* なぜ合うのかを一行で書く（ページごとに文面が変わる） */
+function recWhy(S, h, skipCore) {
+  const sc = sharedCores(S, h, 3).filter(c => c !== skipCore);
+  const sc2 = sharedCores(S, h, 2).filter(c => c !== skipCore && !sc.includes(c));
+  const parts = [];
+  if (sc.length) parts.push(`「${sc.slice(0,2).join('」と「')}」も重なります`);
+  else if (sc2.length) parts.push(`ゆるく「${sc2[0]}」も重なります`);
+  const same = [];
+  if (Math.abs((S[7]|0)-(h[7]|0)) <= 1) same.push((h[7]|0) >= 3 ? '外でやるところ' : (h[7]|0) <= 1 ? '家の中でできるところ' : 'どこでもできるところ');
+  if (Math.abs((S[8]|0)-(h[8]|0)) <= 1) same.push((h[8]|0) <= 1 ? 'お金がかからないところ' : '費用の感じ');
+  if (Math.abs((S[12]|0)-(h[12]|0)) <= 1) same.push('ひと区切りの時間');
+  if (Math.abs((S[13]|0)-(h[13]|0)) <= 1) same.push('上達の道のり');
+  if (same.length) parts.push(`${same.slice(0,2).join('・')}が近い`);
+  return (parts.length ? parts.join('、') : '生活の中での位置が近い趣味です') + '。';
+}
+
+/* ---------- ページ本体 ---------- */
+const REC_CSS = `.rwhy{display:block;font-size:12.5px;color:#8a6a2f;background:#f6eed8;border-radius:8px;padding:5px 9px;margin-top:6px;line-height:1.6}
+.rlead{background:#f2ebda;border:1px solid #e5d9bd;border-radius:12px;padding:13px 15px;font-size:14px;color:#5c5148;margin:0 0 6px}
+.rsec{margin-top:26px}
+.rsec>h2{margin-bottom:4px}
+.rmore{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.rmore a{background:#efe6cf;border:1px solid #e0d2b0;border-radius:999px;padding:6px 13px;font-size:13px;text-decoration:none;color:#6b4a86}`;
+
+function recItem(S, o, p, skipCore) {
+  const h = o.h, i = o.j;
+  const cores = Object.entries(h[3]).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
+  const vd = (VIDEOS[h[0]] && VIDEOS[h[0]].v && VIDEOS[h[0]].v[0]) ? VIDEOS[h[0]].v[0] : null;
+  return `<a class="litem" href="${SITE}/hobby/${i+1}.html?p=${p}">`
+    + `<div class="lrow">`
+    + (vd ? `<img class="lthumb" loading="lazy" src="https://i.ytimg.com/vi/${esc(vd.id)}/mqdefault.jpg" alt="${esc(h[0])}の動画">` : `<div class="lthumb lnoimg">🔮</div>`)
+    + `<div class="lbody"><b>${esc(h[0])}</b>`
+    + `<span class="lchips">${cores.map(c=>`<i>${esc(c)}</i>`).join("")}</span>`
+    + `<span class="ldesc">${esc(h[5])}</span>`
+    + `<span class="rwhy">${esc(recWhy(S, h, skipCore))}</span>`
+    + `</div></div></a>`;
+}
+
+function recPage(si) {
+  const S = HOBBIES[si];
+  const name = S[0];
+  const url = `${SITE}/next/${si+1}.html`;
+  const cores = Object.entries(S[3]).sort((a,b)=>b[1]-a[1]).filter(x=>x[1]>=3).slice(0,4);
+  const used = new Set([si]);
+  const blocks = [];
+  cores.forEach(([c]) => {
+    const items = recFor(si, c, 5).filter(o => !used.has(o.j));
+    items.forEach(o => used.add(o.j));
+    if (items.length >= 3) blocks.push({ core: c, items });
+  });
+  const surprise = recSurprise(si, used, 3);
+  const total = blocks.reduce((a,b)=>a+b.items.length,0) + surprise.length;
+  if (total < 8) return null;   /* 数が揃わない趣味はページを作らない */
+
+  const coreNames = blocks.map(b => b.core);
+  const title = `${name}が好きな人におすすめの趣味${total}選`;
+  const h1 = `${name}が好きな人におすすめの趣味${total}選｜次にハマるのは、たぶんこのあたり`;
+  const lead = `${name}を楽しんでいる人へ。同じ喜びが味わえる趣味を、全${HOBBIES.length}種のデータベースから選びました。`;
+
+  const faq = [
+    [`${name}が好きな人には、どんな趣味が合いますか?`,
+     `${name}の魅力は「${coreNames.join('」「')}」に分けられます。このうちどれに惹かれているかで、次に合う趣味は変わります。このページでは魅力ごとに分けて${total}種類を紹介しています。`],
+    [`なぜこの組み合わせなのですか?`,
+     `全${HOBBIES.length}種を、20種類の「魅力の核」と、外でやるかどうか・費用・ひと区切りにかかる時間・上達の道のりといった軸で分類したデータから選んでいます。感覚ではなく、重なっている要素を計算して並べています。`],
+    [`${name}以外にも合う趣味を知りたい`,
+     `質問に答えるだけの趣味診断があります。全${HOBBIES.length}種の中から、あなたに眠っている趣味を1つ見抜きます。無料・登録不要・3分ほどです。`]
+  ];
+  const faqld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"FAQPage","mainEntity":faq.map(q=>({"@type":"Question","name":q[0],"acceptedAnswer":{"@type":"Answer","text":q[1]}}))})}</script>`;
+  const artld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"Article","headline":h1,
+    "author":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント"},
+    "publisher":{"@type":"Organization","name":"シュミネーター"},
+    "description":lead,"inLanguage":"ja","mainEntityOfPage":url})}</script>`;
+
+  let s = head(`${title}｜シュミネーター`,
+    `${lead} ${name}の「${coreNames.join('・')}」という魅力ごとに、次に合う趣味を紹介します。`,
+    url, artld + faqld);
+  s += `\n<p class="crumb"><a href="${SITE}/zukan.html">趣味図鑑</a> › <a href="${SITE}/hobby/${si+1}.html">${esc(name)}</a> › 好きな人におすすめ</p>`;
+  s += `\n<a class="cta-top" href="${SITE}/?p=350">▶ 自分に合う趣味を診断してもらう<small>質問に答えるだけ・3分・無料・全${HOBBIES.length}種から</small></a>`;
+  s += `\n<div class="card">`;
+  s += `\n<h1>${esc(h1)}</h1>`;
+  s += `\n<div class="rule"></div>`;
+  s += `\n<p class="desc">${esc(lead)}</p>`;
+  s += `\n<p style="font-size:14.5px">同じ趣味を好きな人でも、<b>その趣味の「何が」好きかは人によって違います</b>。${esc(name)}の場合、その魅力は大きく「${esc(coreNames.join('」「'))}」に分かれます。<br><br>どれに心が動いているかで、次に合う趣味は変わります。だからここでは、<b>魅力ごとに分けて</b>紹介します。ぜんぶ見るより、自分がうなずく見出しのところだけ読んでください。</p>`;
+
+  blocks.forEach(b => {
+    s += `\n<div class="rsec"><h2>「${esc(b.core)}」が好きなら</h2>`;
+    s += `<p class="rlead">${esc(name)}の「${esc(b.core)}」——${esc(CORE_TXT[b.core] || 'その趣味ならではの手応え')}。それを別のかたちで味わえるのが、次の趣味たちです。</p>`;
+    s += `<div class="llist">` + b.items.map(o => recItem(S, o, 351, b.core)).join('') + `</div></div>`;
+  });
+
+  if (surprise.length) {
+    s += `\n<div class="rsec"><h2>ジャンルは遠いのに、意外と合うもの</h2>`;
+    s += `<p class="rlead">${esc(name)}とは見た目がまるで違うのに、${esc(coreNames.slice(0,2).join('と'))}という中身が重なっている趣味です。「そんな組み合わせがあるのか」と思ったら、たぶん当たりです。</p>`;
+    s += `<div class="llist">` + surprise.map(o => recItem(S, o, 352)).join('') + `</div></div>`;
+  }
+
+  s += `\n<div class="rsec"><h2>${esc(name)}そのものを、もっと深めたい人へ</h2>`;
+  if (S[15]) {
+    s += `<p class="rlead">別の趣味を足すより、いま好きなものを深くするほうが合っている時期もあります。${esc(name)}は、こんなふうに深くなっていきます。</p>`;
+    s += `<dl class="faq2">` + S[15].map((t,k)=>`<dt>第${k+1}段階</dt><dd>${esc(t)}</dd>`).join('') + `</dl>`;
+  }
+  s += `<p style="margin-top:10px"><a href="${SITE}/hobby/${si+1}.html?p=353">▶ ${esc(name)}の図鑑ページを見る（道具・費用・始め方の動画）</a></p></div>`;
+
+  s += `\n<h2>よくある質問</h2>\n<dl class="faq2">`;
+  faq.forEach(q => { s += `<dt>${esc(q[0])}</dt><dd>${esc(q[1])}</dd>`; });
+  s += `</dl>`;
+  s += `\n</div>`;
+  s += `\n<a class="cta" href="${SITE}/?p=354">▶ あなたに眠っている趣味を診断する<small>全${HOBBIES.length}種から、神様が見抜きます(無料・3分)</small></a>`;
+  s += `\n<div class="card" style="margin-top:16px"><h2>ほかの趣味からも探す</h2><div class="rmore">${
+    REC_NEIGHBORS(si).map(k => `<a href="${SITE}/next/${k+1}.html">${esc(HOBBIES[k][0])}が好きな人へ</a>`).join('')
+  }</div></div>`;
+  s += `\n<footer>監修:導師真ショウ(国家資格キャリアコンサルタント)<br><a href="${SITE}/about.html">シュミネーターとは</a> ・ <a href="${SITE}/zukan.html">趣味図鑑</a><br><a href="${SITE}/">シュミネーター</a>は、全${HOBBIES.length}種からあなたに眠る趣味を見抜く無料の診断ゲームです。</footer>`;
+  s += `\n</div><a class="fab" href="${SITE}/?p=355">🔮 趣味を診断する</a></body></html>`;
+  return s.replace('<style>' + STYLE + '</style>', '<style>' + STYLE + REC_CSS + '</style>');
+}
+
+/* このページを作る趣味の一覧。人気度がある程度あるもの＝実際に検索される名前を対象にする。
+   REC_MIN_POP を下げれば対象は増えるが、検索されない名前のページが増える。 */
+const REC_MIN_POP = 3;
+const REC_TARGETS = HOBBIES.map((h, i) => i).filter(i => (HOBBIES[i][10]|0) >= REC_MIN_POP);
+const REC_SET = new Set(REC_TARGETS);
+/* 相互リンク用：同じジャンルの他のページを最大8件 */
+function REC_NEIGHBORS(si) {
+  const g = HOBBIES[si][1];
+  const same = REC_TARGETS.filter(i => i !== si && HOBBIES[i][1] === g).slice(0, 6);
+  const other = REC_TARGETS.filter(i => i !== si && HOBBIES[i][1] !== g).slice(0, 8 - same.length);
+  return same.concat(other);
+}
+
+
+
+// ============================================================
+//  「○○に飽きた人へ」ページ（bored/N.html）
+//  ------------------------------------------------------------
+//  「飽きた」の正体は、多くの場合その趣味の浅いところで止まっていること。
+//  だから①深める道 ②隣に移る道 ③正反対を試す道 の3本を示す。
+//  深まり3段階(h[15])が主役になる、このサイトにしか作れないページ。
+// ============================================================
+/* 隣：同じ喜びのまま形が変わるもの（近いほうを選ぶ。同ジャンルも可） */
+function boredNear(si, n) {
+  const S = HOBBIES[si], sv = coreVec(S);
+  return HOBBIES.map((h, j) => ({ h, j }))
+    .filter(({ h, j }) => {
+      if (j === si) return false;
+      if (h[2] === S[2]) return false;                    // 同じ細領域では「変わった気」がしない
+      const d = coreDist(sv, coreVec(h));
+      if (d < 0.30 || d > 0.95) return false;             // 近すぎず、遠すぎず
+      if (situScore(S, h) < 0.60) return false;
+      return sharedCores(S, h, 3).length >= 2;
+    })
+    .map(o => Object.assign(o, {
+      s: sharedCores(S, o.h, 3).length * 1.4 + situScore(S, o.h) * 2.0
+         - Math.abs(coreDist(sv, coreVec(o.h)) - 0.6) * 2.0 + (4 - (o.h[10]|0)) * 0.12
+    }))
+    .sort((a, b) => b.s - a.s).slice(0, n);
+}
+/* 正反対：核はいちばん遠いが、生活の中での位置は近いので試しやすいもの */
+function boredOpposite(si, used, n) {
+  const S = HOBBIES[si], sv = coreVec(S);
+  return HOBBIES.map((h, j) => ({ h, j }))
+    .filter(({ h, j }) => {
+      if (j === si || used.has(j)) return false;
+      if (h[1] === S[1]) return false;
+      if (situScore(S, h) < 0.60) return false;           // 生活には収まること
+      return coreDist(sv, coreVec(h)) > 1.05;             // 中身は思い切り違う
+    })
+    .map(o => Object.assign(o, {
+      s: coreDist(sv, coreVec(o.h)) * 1.5 + situScore(S, o.h) * 2.2 + (4 - (o.h[10]|0)) * 0.2
+    }))
+    .sort((a, b) => b.s - a.s).slice(0, n);
+}
+/* 飽きたページを作れる趣味の集合（個別ページからの導線に使う） */
+const BORED_SET = new Set(REC_TARGETS.filter(si => {
+  const S = HOBBIES[si];
+  return S[15] && S[15].length === 3 && boredNear(si, 5).length >= 3;
+}));
+function boredPage(si) {
+  const S = HOBBIES[si], name = S[0];
+  const url = `${SITE}/bored/${si+1}.html`;
+  const deep = S[15];
+  const near = boredNear(si, 5);
+  const used = new Set([si].concat(near.map(o => o.j)));
+  const opp = boredOpposite(si, used, 3);
+  if (!deep || deep.length !== 3 || near.length < 3) return null;
+
+  const title = `${name}に飽きたときに読むページ`;
+  const h1 = `${name}に飽きた——やめる前に、3つの道`;
+  const lead = `${name}が前ほど楽しくない。それは向いていなかったからではなく、その趣味の浅いところで止まっているだけかもしれません。`;
+  const faq = [
+    [`${name}に飽きました。やめたほうがいいですか?`,
+     `やめる前に、深まり方を確認してみてください。多くの趣味は、続けるうちに楽しみ方そのものが変わります。${name}の場合、${esc(deep[1])}という段階があります。ここに気づかないまま「飽きた」と感じている場合、まだ手前にいる可能性があります。`],
+    [`それでも戻らないときは?`,
+     `同じ喜びのまま形だけ変える方法があります。このページでは、${name}と同じ「${Object.entries(S[3]).sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]).join('」「')}」が味わえて、やることが違う趣味を紹介しています。`],
+    [`まったく違うことをしたい`,
+     `中身は正反対なのに、生活の中での位置（かかる時間・費用・室内か外か）が${name}と近い趣味も選んであります。生活を変えずに、気分だけ変えられます。`]
+  ];
+  const faqld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"FAQPage","mainEntity":faq.map(q=>({"@type":"Question","name":q[0],"acceptedAnswer":{"@type":"Answer","text":q[1]}}))})}</script>`;
+  const artld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"Article","headline":h1,
+    "author":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント"},
+    "publisher":{"@type":"Organization","name":"シュミネーター"},
+    "description":lead,"inLanguage":"ja","mainEntityOfPage":url})}</script>`;
+
+  let s = head(`${title}｜シュミネーター`,
+    `${lead} 深める道・隣に移る道・正反対を試す道の3つを、全${HOBBIES.length}種のデータから提案します。`,
+    url, artld + faqld);
+  s += `\n<p class="crumb"><a href="${SITE}/zukan.html">趣味図鑑</a> › <a href="${SITE}/hobby/${si+1}.html">${esc(name)}</a> › 飽きたとき</p>`;
+  s += `\n<div class="card">`;
+  s += `\n<h1>${esc(h1)}</h1>`;
+  s += `\n<div class="rule"></div>`;
+  s += `\n<p class="desc">${esc(lead)}</p>`;
+  s += `\n<p style="font-size:14.5px">趣味の「飽きた」には、いくつか違う中身があります。<b>本当に合わなかった</b>のか、<b>同じ層に留まりすぎた</b>のか、<b>単に疲れている</b>のか。<br><br>ここでは、やめる前に試せる道を3つ並べます。上から順に、変える度合いが大きくなります。</p>`;
+
+  s += `\n<div class="rsec"><h2>道1：まだ先があるかもしれません</h2>`;
+  s += `<p class="rlead">${esc(name)}は、続けるうちにこう変わっていきます。いま自分がどのあたりにいるか、確かめてみてください。第1段階で止まったまま「飽きた」と感じているなら、それは趣味のせいではありません。</p>`;
+  s += `<ol class="deep">` + deep.map((d,k)=>`<li><span class="dnum">${k+1}</span><span class="dtxt">${esc(d)}</span></li>`).join('') + `</ol>`;
+  s += `<p style="font-size:14px;margin-top:10px">第3段階まで来ている人は、そもそも飽きません。いま第1段階のあたりにいるなら、<b>次の段階に必要なことを一つだけ足してみる</b>のが近道です。道具を一段良くする、記録をつけはじめる、誰かと一緒にやってみる——変えるのは一つで足ります。</p></div>`;
+
+  s += `\n<div class="rsec"><h2>道2：同じ喜びのまま、形を変える</h2>`;
+  s += `<p class="rlead">${esc(name)}で味わっていたものはそのままに、やることだけ変える選び方です。ゼロから始めるより早く馴染みます。</p>`;
+  s += `<div class="llist">` + near.map(o => recItem(S, o, 361)).join('') + `</div></div>`;
+
+  if (opp.length) {
+    s += `\n<div class="rsec"><h2>道3：いっそ、正反対を試す</h2>`;
+    s += `<p class="rlead">中身は${esc(name)}と正反対なのに、かかる時間・費用・室内か外かは近い趣味です。<b>生活を変えずに、気分だけ変えられます。</b></p>`;
+    s += `<div class="llist">` + opp.map(o => recItem(S, o, 362)).join('') + `</div></div>`;
+  }
+  s += `\n<p style="margin-top:16px"><a href="${SITE}/hobby/${si+1}.html?p=363">▶ ${esc(name)}の図鑑ページに戻る</a>`;
+  if (typeof REC_SET !== 'undefined' && REC_SET.has(si)) s += `<br><a href="${SITE}/next/${si+1}.html?p=364">▶ ${esc(name)}が好きな人におすすめの趣味を見る</a>`;
+  s += `</p>`;
+  s += `\n<h2>よくある質問</h2>\n<dl class="faq2">`;
+  faq.forEach(q => { s += `<dt>${esc(q[0])}</dt><dd>${esc(q[1])}</dd>`; });
+  s += `</dl>\n</div>`;
+  s += `\n<a class="cta" href="${SITE}/?p=365">▶ まったく新しい趣味を診断してもらう<small>全${HOBBIES.length}種から、神様が見抜きます(無料・3分)</small></a>`;
+  s += `\n<footer>監修:導師真ショウ(国家資格キャリアコンサルタント)<br><a href="${SITE}/about.html">シュミネーターとは</a> ・ <a href="${SITE}/zukan.html">趣味図鑑</a><br><a href="${SITE}/">シュミネーター</a>は、全${HOBBIES.length}種からあなたに眠る趣味を見抜く無料の診断ゲームです。</footer>`;
+  s += `\n</div><a class="fab" href="${SITE}/?p=366">🔮 趣味を診断する</a></body></html>`;
+  return s.replace('<style>' + STYLE + '</style>', '<style>' + STYLE + REC_CSS + '</style>');
+}
+
+// ============================================================
+//  季節ページ（season-spring/summer/autumn/winter.html）
+//  ------------------------------------------------------------
+//  「夏 趣味」「冬 趣味」は毎年必ず検索される定番語。
+//  キーワードの自動判定は精度が出ない（靴磨きが秋、卓球が冬になった）ので、
+//  データベースから手で選んで並べている。
+// ============================================================
+const SEASONS = [
+  { slug:'spring-hobbies', name:'春', months:'3〜5月',
+    title:'春に始める趣味{N}選', h1:'春に始める趣味{N}選｜外に出たくなる季節の、今しかできないこと',
+    lead:'春だけの景色があり、春に始めると夏に効くものがあります。季節で選ぶという探し方です。',
+    intro:'趣味を「自分に合うかどうか」で選ぶと迷いますが、<b>「いまの季節に合うかどうか」</b>で選ぶと決まります。春は一年でいちばん外に出やすく、しかも<b>植えたものが夏に育つ</b>季節です。<br><br>ここでは、春にしかできないこと、春だから気持ちいいこと、そして春に始めると先で効くことに分けて紹介します。',
+    blocks:[
+      { h:'春にしかできないこと', t:'この時期を逃すと、次は一年後です。',
+        items:['花見めぐり','山菜採り','潮干狩り','磯遊び・潮干狩り','果物狩り','青春18きっぷ旅','野草・雑草観察','押し花づくり'] },
+      { h:'外に出たくなる季節だから', t:'暑くも寒くもない数週間は、屋外の趣味を試すのにいちばん向いています。',
+        items:['低山ハイキング','チェアリング','野鳥観察','水彩スケッチ','坂道・階段めぐり','ジオキャッシング','ロングライド','路上園芸観察'] },
+      { h:'いま始めると、夏に効くもの', t:'春に仕込んだものが、夏に返ってきます。育てる系の趣味は始める時期で結果が変わります。',
+        items:['ベランダ菜園','多肉植物','メダカ飼育','ビオトープづくり','カブトムシ・クワガタ飼育','ぬか床づくり','しいたけ栽培','苔テラリウム'] }
+    ] },
+  { slug:'summer-hobbies', name:'夏', months:'6〜8月',
+    title:'夏にやりたい趣味{N}選', h1:'夏にやりたい趣味{N}選｜水と、夜と、避暑のあいだで',
+    lead:'夏は水辺が最高に気持ちよく、そして夜が面白い季節です。暑さから逃げる趣味もあわせて紹介します。',
+    intro:'夏の趣味は<b>「水に入るか、夜に出るか、涼しい場所にこもるか」</b>のどれかです。<br><br>どれを選んでも夏らしいのに、体験はまるで違います。暑さに強い人は水と夜へ、苦手な人は室内へ。両方載せてあります。',
+    blocks:[
+      { h:'夏にしかできないこと', t:'夏の風物詩は、その数週間にしか存在しません。',
+        items:['花火大会めぐり','ホタル観賞','カブトムシ・クワガタ飼育','かき氷めぐり','昆虫標本づくり','盆踊り・祭り参加','海藻おしば','ビーチコーミング'] },
+      { h:'水と遊ぶ', t:'一年でこの時期だけ、水が味方になります。泳ぐ、浮かぶ、探す——関わり方はいくつもあります。',
+        items:['シュノーケリング','SUP','カヤック','サーフィン','大人の水泳','渓流釣り','ガサガサ(水辺採集)','沢登り'] },
+      { h:'夜が面白い', t:'日が落ちてからが本番の趣味です。暑い昼を避けて、夜に動くという手があります。',
+        items:['星空観察','天体写真','月面観察','フィールドレコーディング','工場夜景鑑賞','何もしない散歩'] },
+      { h:'暑さから逃げて、室内で', t:'外に出ない夏の過ごし方です。エアコンの効いた部屋でしかできないことをやる、という選択。',
+        items:['水草アクアリウム','海外ドラマ一気見','ジグソーパズル','深夜アニメ追い','ジオラマ制作','複雑系折り紙'] }
+    ] },
+  { slug:'autumn-hobbies', name:'秋', months:'9〜11月',
+    title:'秋に始める趣味{N}選', h1:'秋に始める趣味{N}選｜夜が長くなる季節の、こもり方と出かけ方',
+    lead:'秋は外が気持ちよく、しかも夜が長い。出かける趣味とこもる趣味の両方が成立する、いちばん贅沢な季節です。',
+    intro:'秋の面白さは、<b>外も中も両方いい</b>ことです。日中は屋外がちょうどよく、日が落ちてからは室内の時間が長い。<br><br>そして秋は、<b>冬と春に向けて仕込む</b>季節でもあります。いま始めておくと、半年後に返ってくるものがあります。',
+    blocks:[
+      { h:'秋にしかできないこと', t:'色づく数週間と、実りの季節にだけあるものです。',
+        items:['紅葉狩り','きのこ観察','木の実・ドングリ採集','果物狩り','月面観察','天然記念物めぐり','羽根ひろい','川原の石拾い'] },
+      { h:'夜が長くなるから', t:'日が短くなるぶん、室内の時間が増えます。長い夜に向いている趣味です。',
+        items:['スロー読書','ミステリー小説','SF小説','歴史・時代小説','ウイスキー飲み比べ','日本茶を淹れる','ノンフィクション読書','ジャーナリング手帳'] },
+      { h:'冬と春に向けて仕込む', t:'秋に仕込んだものは、冬や春に形になります。時期を外すと一年待つことになる趣味です。',
+        items:['味噌づくり','干物づくり','チューリップ球根栽培','草木染め','かぎ針編み','ドライフラワーづくり','ジャムづくり','ピクルスづくり'] }
+    ] },
+  { slug:'winter-hobbies', name:'冬', months:'12〜2月',
+    title:'冬にやりたい趣味{N}選', h1:'冬にやりたい趣味{N}選｜雪と、あたたまるものと、こもって深めるもの',
+    lead:'冬にしかない景色があり、冬にしか気持ちよくない温度があり、そして冬は何かを深めるのに向いています。',
+    intro:'冬の趣味は<b>「寒さの中に出ていく」か「あたたまる」か「こもる」か</b>に分かれます。<br><br>雪と氷は冬にしか存在しません。一方で、家から出ない時間が長い季節でもあるので、<b>手を動かして深める趣味</b>がいちばん進むのも冬です。',
+    blocks:[
+      { h:'冬にしかできないこと', t:'雪と氷は、この数か月にしか存在しません。',
+        items:['雪の結晶観察','ワカサギ釣り','スノーシュー','スノーボード','アイススケート','流氷ウォッチング','雪まつり・氷の祭典めぐり','イルミネーションめぐり','クリスマスマーケットめぐり'] },
+      { h:'あたたまる', t:'寒いからこそ効く趣味です。冬にいちばん気持ちがいいものを集めました。',
+        items:['サウナめぐり','銭湯めぐり','秘湯めぐり','温活','入浴剤コレクション','テントサウナ','スープ研究','チャイ研究'] },
+      { h:'こもって、深める', t:'外に出ない時間が長いぶん、手を動かす趣味がいちばん進みます。春までに形になります。',
+        items:['かぎ針編み','刺し子','ジグソーパズル','大人のピアノ','編みぐるみ','和綴じ製本','デジタルイラスト','ペン習字'] }
+    ] }
+];
+function seasonPage(cfg) {
+  const url = `${SITE}/${cfg.slug}.html`;
+  const byName = {}; HOBBIES.forEach((h, i) => { byName[h[0]] = i; });
+  const blocks = cfg.blocks.map(b => ({
+    h: b.h, t: b.t,
+    items: b.items.map(n => byName[n]).filter(i => i !== undefined).map(i => ({ h: HOBBIES[i], j: i }))
+  })).filter(b => b.items.length >= 3);
+  const total = blocks.reduce((a, b) => a + b.items.length, 0);
+  cfg = Object.assign({}, cfg, { title: cfg.title.replace('{N}', total), h1: cfg.h1.replace('{N}', total) });
+  const missing = cfg.blocks.flatMap(b => b.items).filter(n => byName[n] === undefined);
+  if (missing.length) console.warn(`  ${cfg.name}: データにない趣味名 ${missing.length}件 →`, missing.join('、'));
+
+  const faq = [
+    [`${cfg.name}に始めるのにおすすめの趣味は?`, `${cfg.months}に向いている趣味を${total}種類、「${cfg.blocks.map(b=>b.h).join('」「')}」に分けて紹介しています。全${HOBBIES.length}種の趣味データベースから選びました。`],
+    [`季節で趣味を選ぶ意味はありますか?`, `あります。同じ趣味でも、始める季節によって最初の体験がまったく変わります。屋外の趣味は気候がそのまま楽しさに直結しますし、育てる・仕込む系の趣味は始める時期を外すと一年待つことになります。`],
+    [`自分に合うものが分かりません`, `質問に答えるだけの趣味診断があります。全${HOBBIES.length}種の中から、あなたに眠っている趣味を1つ見抜きます。無料・登録不要・3分ほどです。`]
+  ];
+  const faqld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"FAQPage","mainEntity":faq.map(q=>({"@type":"Question","name":q[0],"acceptedAnswer":{"@type":"Answer","text":q[1]}}))})}</script>`;
+  const artld = `<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"Article","headline":cfg.h1,
+    "author":{"@type":"Person","name":"導師真ショウ","jobTitle":"国家資格キャリアコンサルタント"},
+    "publisher":{"@type":"Organization","name":"シュミネーター"},
+    "description":cfg.lead,"inLanguage":"ja","mainEntityOfPage":url})}</script>`;
+
+  let s = head(`${cfg.title}｜シュミネーター`, `${cfg.lead} 全${HOBBIES.length}種の趣味データベースから、${cfg.name}(${cfg.months})に向いているものを選びました。`, url, artld + faqld);
+  s += `\n<p class="crumb"><a href="${SITE}/zukan.html">趣味図鑑</a> › ${esc(cfg.title)}</p>`;
+  s += `\n<a class="cta-top" href="${SITE}/?p=370">▶ 自分に合う趣味を診断してもらう<small>質問に答えるだけ・3分・無料・全${HOBBIES.length}種から</small></a>`;
+  s += `\n<div class="card"><h1>${esc(cfg.h1)}</h1><div class="rule"></div>`;
+  s += `\n<p class="desc">${esc(cfg.lead)}</p>`;
+  s += `\n<p style="font-size:14.5px">${cfg.intro}</p>`;
+  blocks.forEach(b => {
+    s += `\n<div class="rsec"><h2>${esc(b.h)}</h2><p class="rlead">${esc(b.t)}</p><div class="llist">`;
+    b.items.forEach(o => {
+      const h = o.h, cores = Object.entries(h[3]).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
+      const vd = (VIDEOS[h[0]] && VIDEOS[h[0]].v && VIDEOS[h[0]].v[0]) ? VIDEOS[h[0]].v[0] : null;
+      s += `<a class="litem" href="${SITE}/hobby/${o.j+1}.html?p=371"><div class="lrow">`
+        + (vd ? `<img class="lthumb" loading="lazy" src="https://i.ytimg.com/vi/${esc(vd.id)}/mqdefault.jpg" alt="${esc(h[0])}の動画">` : `<div class="lthumb lnoimg">🔮</div>`)
+        + `<div class="lbody"><b>${esc(h[0])}</b><span class="lchips">${cores.map(c=>`<i>${esc(c)}</i>`).join("")}</span>`
+        + `<span class="ldesc">${esc(h[5])}</span></div></div>`
+        + (h[15] ? `<span class="ldeep">▸ ${esc(h[15][2])}</span>` : '') + `</a>`;
+    });
+    s += `</div></div>`;
+  });
+  s += `\n<h2>ほかの季節から探す</h2><div class="rmore">`
+    + SEASONS.filter(x => x.slug !== cfg.slug).map(x => `<a href="${SITE}/${x.slug}.html">${esc(x.name)}の趣味</a>`).join('') + `</div>`;
+  s += `\n<h2>よくある質問</h2>\n<dl class="faq2">`;
+  faq.forEach(q => { s += `<dt>${esc(q[0])}</dt><dd>${esc(q[1])}</dd>`; });
+  s += `</dl>\n</div>`;
+  s += `\n<a class="cta" href="${SITE}/?p=372">▶ あなたに眠っている趣味を診断する<small>全${HOBBIES.length}種から、神様が見抜きます(無料・3分)</small></a>`;
+  s += `\n<footer>監修:導師真ショウ(国家資格キャリアコンサルタント)<br><a href="${SITE}/about.html">シュミネーターとは</a> ・ <a href="${SITE}/zukan.html">趣味図鑑</a><br><a href="${SITE}/">シュミネーター</a>は、全${HOBBIES.length}種からあなたに眠る趣味を見抜く無料の診断ゲームです。</footer>`;
+  s += `\n</div><a class="fab" href="${SITE}/?p=373">🔮 趣味を診断する</a></body></html>`;
+  return s.replace('<style>' + STYLE + '</style>', '<style>' + STYLE + REC_CSS + '</style>');
+}
+
+
 // ---------- 出力 ----------`;
 fs.mkdirSync('hobby', { recursive: true });
 HOBBIES.forEach((h, i) => {
@@ -1187,12 +1612,45 @@ LIST_PAGES.forEach(cfg => {
 });
 console.log('一覧ページ:', listUrls.length, '枚');
 
+// 「○○が好きな人におすすめの趣味」ページ
+fs.mkdirSync('next', { recursive: true });
+const recUrls = [];
+REC_TARGETS.forEach(si => {
+  const html = recPage(si);
+  if (!html) return;
+  fs.writeFileSync(path.join('next', (si + 1) + '.html'), html);
+  recUrls.push('next/' + (si + 1) + '.html');
+});
+console.log('おすすめページ:', recUrls.length, '枚 /', REC_TARGETS.length, '種が対象');
+
+// 「○○に飽きた人へ」ページ
+fs.mkdirSync('bored', { recursive: true });
+const boredUrls = [];
+REC_TARGETS.forEach(si => {
+  const html = boredPage(si);
+  if (!html) return;
+  fs.writeFileSync(path.join('bored', (si + 1) + '.html'), html);
+  boredUrls.push('bored/' + (si + 1) + '.html');
+});
+console.log('飽きたページ:', boredUrls.length, '枚');
+
+// 季節ページ
+const seasonUrls = [];
+SEASONS.forEach(cfg => {
+  fs.writeFileSync(cfg.slug + '.html', seasonPage(cfg));
+  seasonUrls.push(cfg.slug + '.html');
+});
+console.log('季節ページ:', seasonUrls.length, '枚');
+
 const urls = [
   [`${SITE}/`, '1.0'],
   [`${SITE}/zukan.html`, '0.9'],
   [`${SITE}/about.html`, '0.9'],
   [`${SITE}/random.html`, '0.9'],
   ...listUrls.map(u => [`${SITE}/${u}`, '0.8']),
+  ...recUrls.map(u => [`${SITE}/${u}`, '0.7']),
+  ...boredUrls.map(u => [`${SITE}/${u}`, '0.7']),
+  ...seasonUrls.map(u => [`${SITE}/${u}`, '0.8']),
   [`${SITE}/hobby-finder.html`, '0.8'],
   [`${SITE}/solo-hobbies.html`, '0.7'],
   [`${SITE}/indoor-hobbies.html`, '0.7'],
